@@ -16,7 +16,7 @@ Task
 ## 快速开始
 
 ```powershell
-cd D:\skill\skill-agent
+cd skill-agent
 pip install -r requirements.txt
 ```
 
