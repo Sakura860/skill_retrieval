@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# 数据与模型（大文件不入库）
+data/skills/*.jsonl
+data/tasks/*.jsonl
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# 实验产物
+experiments/results/
+notebooks/*.ipynb
+
+# 密钥
+.env

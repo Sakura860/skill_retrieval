@@ -1,0 +1,33 @@
+llm:
+  provider: deepseek
+  model: deepseek-v4-pro
+  temperature: 0.0
+  thinking: disabled          # enabled | disabled
+  reasoning_effort: high      # high | max；仅 thinking=enabled 时发送
+
+retrieval:
+  method: multilevel          # bm25 | embedding | multilevel | model
+  top_k: 5
+  coarse_k: 20
+  coarse_weight: 0.4
+  embedding_model: all-MiniLM-L6-v2
+
+organization:
+  strategy: hierarchical     # flat | hierarchical | graph
+  detail_top_k: 3
+
+agent:
+  framework: plan-and-execute
+  max_steps: 10
+  enable_reflection: true
+
+evaluation:
+  metrics:
+    - skill_selection_f1
+    - sequence_accuracy
+    - task_success_rate
+    - avg_skill_calls
+    - redundant_call_rate
+    - skill_context_tokens
+    - total_tokens
+    - avg_execution_steps

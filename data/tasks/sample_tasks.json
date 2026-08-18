@@ -1,0 +1,7 @@
+[
+  {"id": "t001", "instruction": "计算 (35 + 42) * 3 的结果并告诉我答案。", "expected_skills": ["s005"], "expected_skill_sequence": ["s005"], "ground_truth": 231, "metadata": {}},
+  {"id": "t002", "instruction": "帮我搜索一下 2026 年最受关注的大模型新闻并汇总要点。", "expected_skills": ["s001", "s007"], "expected_skill_sequence": ["s001", "s007"], "ground_truth": null, "metadata": {}},
+  {"id": "t003", "instruction": "读取项目根目录的 README.md，并把内容翻译成中文。", "expected_skills": ["s002", "s006"], "expected_skill_sequence": ["s002", "s006"], "ground_truth": null, "metadata": {}},
+  {"id": "t004", "instruction": "写一段 Python 代码计算斐波那契数列前 10 项并执行它。", "expected_skills": ["s004"], "expected_skill_sequence": ["s004"], "ground_truth": null, "metadata": {}},
+  {"id": "t005", "instruction": "查询用户表中 18 岁以上用户的姓名。", "expected_skills": ["s008"], "expected_skill_sequence": ["s008"], "ground_truth": null, "metadata": {}}
+]

@@ -1,0 +1,5 @@
+-r requirements.txt
+
+# Embedding 与双塔训练
+torch>=2.1
+sentence-transformers>=2.2
