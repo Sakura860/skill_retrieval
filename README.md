@@ -122,7 +122,26 @@ agent = Agent(
 
 `Skill Context Tokens` 使用本地中英文估算器，便于比较组织策略；`Total Tokens` 优先采用 API 返回的真实 usage。Mock 模式使用同一估算器。
 
-任务有标准答案时，默认成功判定要求 Agent 执行成功且答案与 `ground_truth` 一致。复杂任务可通过 `run_benchmark(..., success_evaluator=...)` 注入环境 verifier。没有 ground truth 且 verifier 返回 `None` 的任务标记为 `unscored`，不会因为 handler 正常返回就计入成功率。
+任务有旧版 `ground_truth` 时会自动使用精确匹配验收。新任务通过私有的 `evaluation` 字段指定确定性 verifier；该字段不会进入 Planner 提示词：
+
+```json
+{
+  "id": "t001",
+  "instruction": "计算结果并写入 result.json",
+  "evaluation": {
+    "verifier_type": "file_state",
+    "expected_state": {
+      "files": {
+        "result.json": {"exists": true, "json": {"total": 231}}
+      }
+    },
+    "required_effects": ["result.json"],
+    "forbidden_effects": ["source.json"]
+  }
+}
+```
+
+内置 verifier 包括 `exact_match`、`json_match`、`file_state` 和 `sqlite_state`，统一接收任务、初始状态、最终状态、Agent 输出和执行轨迹，并返回可解释的 `VerifierResult`。复杂外部环境仍可通过 verifier registry 扩展；旧版 `success_evaluator` 参数保留兼容。没有 ground truth 或 verifier 的任务标记为 `unscored`，不会因为 handler 正常返回就计入成功率。
 
 `run_benchmark()` 在同一次检索结果上计算检索指标并执行 Agent，返回可直接序列化的分层结果：
 

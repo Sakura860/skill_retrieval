@@ -67,6 +67,29 @@ class Skill:
 
 
 @dataclass
+class TaskEvaluationConfig:
+    """不向 Planner 暴露的任务验收配置。"""
+
+    verifier_type: str
+    expected_output: Any = None
+    expected_state: Any = None
+    tolerance: float | None = None
+    required_effects: list[Any] = field(default_factory=list)
+    forbidden_effects: list[Any] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.verifier_type, str) or not self.verifier_type.strip():
+            raise ValueError("verifier_type 不能为空")
+        self.verifier_type = self.verifier_type.strip()
+        if self.tolerance is not None and self.tolerance < 0:
+            raise ValueError("tolerance 不能小于 0")
+        if not isinstance(self.required_effects, list):
+            raise TypeError("required_effects 必须是列表")
+        if not isinstance(self.forbidden_effects, list):
+            raise TypeError("forbidden_effects 必须是列表")
+
+
+@dataclass
 class Task:
     """Agent 任务及其评测标注。"""
     id: str
@@ -75,6 +98,16 @@ class Task:
     expected_skill_sequence: list[str] = field(default_factory=list)
     ground_truth: Any = None
     metadata: dict = field(default_factory=dict)
+    evaluation: TaskEvaluationConfig | None = None
+
+    def __post_init__(self) -> None:
+        if isinstance(self.evaluation, dict):
+            self.evaluation = TaskEvaluationConfig(**self.evaluation)
+        elif self.evaluation is not None and not isinstance(
+            self.evaluation,
+            TaskEvaluationConfig,
+        ):
+            raise TypeError("evaluation 必须是 TaskEvaluationConfig、字典或 None")
 
     def gold_sequence(self) -> list[str]:
         """返回顺序标注；未单独标注时沿用 expected_skills。"""

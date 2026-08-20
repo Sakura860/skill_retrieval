@@ -80,7 +80,10 @@ def test_execution_success_does_not_override_verifier_failure():
     assert metrics.task_success_rate == 0.0
     assert metrics.per_task[0]["execution_success"] is True
     assert metrics.per_task[0]["task_success"] is False
-    assert metrics.per_task[0]["failure_reason"] == "verifier_rejected"
+    assert metrics.per_task[0]["failure_reason"] == "output_mismatch"
+    assert metrics.per_task[0]["verifier_type"] == "ground_truth"
+    assert metrics.per_task[0]["verifier_expected"] == 231
+    assert metrics.per_task[0]["verifier_actual"] == "230"
 
 
 if __name__ == "__main__":

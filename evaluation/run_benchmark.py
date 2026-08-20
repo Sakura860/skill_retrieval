@@ -10,6 +10,7 @@ from core.llm import LLM
 from core.schemas import Task
 from data.loader import load_skills, load_tasks
 from evaluation.task_metrics import evaluate_agent
+from evaluation.verifiers import TaskVerifierRegistry
 from organization.hierarchical import HierarchicalOrganizer
 from retrieval.evaluator import aggregate_ranking_metrics, ranking_metrics
 from retrieval.multilevel import MultiLevelRetriever
@@ -23,6 +24,7 @@ def run_benchmark(
     llm=None,
     skill_handlers: dict[str, Callable[..., Any]] | None = None,
     success_evaluator=None,
+    verifier_registry: TaskVerifierRegistry | None = None,
     top_k: int = 5,
     retrieval_ks: tuple[int, ...] = (1, 5, 10),
     run_id: str | None = None,
@@ -70,7 +72,12 @@ def run_benchmark(
         )
         return result
 
-    task_metrics = evaluate_agent(run_fn, tasks, success_evaluator=success_evaluator)
+    task_metrics = evaluate_agent(
+        run_fn,
+        tasks,
+        success_evaluator=success_evaluator,
+        verifier_registry=verifier_registry,
+    )
     retrieval_metrics = aggregate_ranking_metrics(rankings, retrieval_ks)
     timestamp = datetime.now(timezone.utc)
     resolved_run_id = run_id or timestamp.strftime("%Y%m%dT%H%M%S%fZ")

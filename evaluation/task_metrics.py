@@ -4,8 +4,9 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from decimal import Decimal, InvalidOperation
 from typing import Any
+
+from evaluation.verifiers import TaskVerifierRegistry, VerifierResult, verify_task
 
 
 @dataclass
@@ -92,32 +93,17 @@ def _redundant_calls(selected: list[str], expected_sequence: list[str]) -> int:
     return redundant
 
 
-def _default_success(task: Any, result: dict) -> bool | None:
-    ground_truth = getattr(task, "ground_truth", None)
-    if ground_truth is None:
-        return None
-    if not result.get("success", False):
-        return False
-    answer = str(result.get("answer", "")).strip().casefold()
-    expected = str(ground_truth).strip().casefold()
-    try:
-        return Decimal(answer) == Decimal(expected)
-    except InvalidOperation:
-        pass
-    return answer == expected
-
-
 def evaluate_agent(
     run_fn: Callable[[Any], dict],
     tasks: list[Any],
     success_evaluator: Callable[[Any, dict], bool | None] | None = None,
+    verifier_registry: TaskVerifierRegistry | None = None,
 ) -> TaskMetrics:
     """执行任务并汇总 Agent、任务成功与效率指标。"""
     metrics = TaskMetrics(task_count=len(tasks))
     if not tasks:
         return metrics
 
-    judge = success_evaluator or _default_success
     total_redundant = 0
     total_calls = 0
     successful_tasks = 0
@@ -129,9 +115,26 @@ def evaluate_agent(
         expected_sequence = list(task.gold_sequence())
         calls = int(result.get("skill_calls", len(selected)))
         redundant = _redundant_calls(selected, expected_sequence)
-        judged = judge(task, result)
-        scored = judged is not None
-        task_success = bool(judged) if scored else None
+        if success_evaluator is not None:
+            judged = success_evaluator(task, result)
+            verification = None if judged is None else VerifierResult(
+                passed=bool(judged),
+                verifier_type=getattr(
+                    success_evaluator,
+                    "__name__",
+                    "external_evaluator",
+                ),
+                failure_reason=None if judged else "verifier_rejected",
+            )
+        else:
+            verification = verify_task(task, result, verifier_registry)
+        scored = verification is not None
+        execution_success = bool(result.get("success", False))
+        task_success = (
+            execution_success and verification.passed
+            if verification is not None
+            else None
+        )
         if scored:
             metrics.scored_task_count += 1
             successful_tasks += int(task_success)
@@ -146,13 +149,7 @@ def evaluate_agent(
         task_tokens = int(token_usage.get("total_tokens", 0))
         execution_steps = int(result.get("execution_steps", 0))
         execution_time_ms = float(result.get("execution_time_ms", 0.0))
-        execution_success = bool(result.get("success", False))
-        if success_evaluator is not None:
-            verifier_type = getattr(success_evaluator, "__name__", "external_evaluator")
-        elif getattr(task, "ground_truth", None) is not None:
-            verifier_type = "ground_truth"
-        else:
-            verifier_type = None
+        verifier_type = verification.verifier_type if verification else None
 
         failure_reason = result.get("failure_reason")
         if failure_reason is None:
@@ -161,7 +158,7 @@ def evaluate_agent(
             elif not scored:
                 failure_reason = "missing_verifier"
             elif task_success is False:
-                failure_reason = "verifier_rejected"
+                failure_reason = verification.failure_reason or "verifier_rejected"
 
         metrics.skill_selection_f1 += selection_f1
         metrics.sequence_accuracy += int(sequence_correct)
@@ -190,6 +187,9 @@ def evaluate_agent(
             "task_success": task_success,
             "scored": scored,
             "verifier_type": verifier_type,
+            "verifier_details": verification.details if verification else {},
+            "verifier_expected": verification.expected if verification else None,
+            "verifier_actual": verification.actual if verification else None,
             "failure_reason": failure_reason,
             "skill_calls": calls,
             "redundant_calls": redundant,
