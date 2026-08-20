@@ -1,17 +1,16 @@
 """项目演示入口。"""
 from __future__ import annotations
 
-from agent.agent import Agent
+import json
+
 from core.config import PROJECT_ROOT, load_config
 from core.llm import LLM
-from data.loader import load_skills, load_tasks
-from evaluation.task_metrics import evaluate_agent
+from evaluation.run_benchmark import run_benchmark
 from organization.flat import FlatOrganizer
 from organization.graph import GraphOrganizer
 from organization.hierarchical import HierarchicalOrganizer
 from retrieval.bm25 import BM25Retriever
 from retrieval.embedding import EmbeddingRetriever
-from retrieval.evaluator import evaluate_retrieval
 from retrieval.multilevel import MultiLevelRetriever
 
 
@@ -48,8 +47,6 @@ def build_organizer(config: dict):
 
 def main() -> None:
     config = load_config()
-    skills = load_skills(PROJECT_ROOT / "data" / "skills")
-    tasks = load_tasks(PROJECT_ROOT / "data" / "tasks")
     retriever = build_retriever(config)
     organizer = build_organizer(config)
 
@@ -61,36 +58,20 @@ def main() -> None:
         thinking=llm_config.get("thinking"),
         reasoning_effort=llm_config.get("reasoning_effort"),
     )
+    top_k = config["retrieval"]["top_k"]
     agent_config = config["agent"]
-    agent = Agent(
-        llm=llm,
+    result = run_benchmark(
+        PROJECT_ROOT / "data" / "skills",
+        PROJECT_ROOT / "data" / "tasks",
+        retriever=retriever,
         organizer=organizer,
+        llm=llm,
+        top_k=top_k,
+        retrieval_ks=tuple(config["evaluation"]["retrieval_ks"]),
         max_steps=agent_config["max_steps"],
         enable_reflection=agent_config["enable_reflection"],
     )
-
-    retrieval_metrics = evaluate_retrieval(retriever, tasks, skills)
-    retriever.index(skills)
-    top_k = config["retrieval"]["top_k"]
-
-    def run_task(task):
-        result = retriever.retrieve(task.instruction, top_k=top_k)
-        return agent.run(task, result)
-
-    task_metrics = evaluate_agent(run_task, tasks)
-
-    print(f"加载 Skill {len(skills)} 个，任务 {len(tasks)} 个")
-    print(f"LLM: {llm.provider} / {llm.model}")
-    print(f"思考模式: {llm.thinking or 'not-applicable'}")
-    print(f"检索器: {type(retriever).__name__}")
-    print(f"组织器: {type(organizer).__name__}")
-    print("\n检索指标")
-    for name, value in retrieval_metrics.items():
-        print(f"  {name}: {value:.4f}")
-    print("\nAgent 指标")
-    for name, value in task_metrics.to_dict().items():
-        formatted = f"{value:.4f}" if isinstance(value, float) else str(value)
-        print(f"  {name}: {formatted}")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

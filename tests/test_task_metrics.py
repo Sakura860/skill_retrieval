@@ -12,8 +12,8 @@ from evaluation.task_metrics import evaluate_agent
 
 def test_metrics():
     tasks = [
-        Task("t1", "task 1", ["s1", "s2"], ["s1", "s2"]),
-        Task("t2", "task 2", ["s3"], ["s3"]),
+        Task("t1", "task 1", ["s1", "s2"], ["s1", "s2"], "ok"),
+        Task("t2", "task 2", ["s3"], ["s3"], "expected"),
     ]
     results = {
         "t1": {
@@ -45,8 +45,46 @@ def test_metrics():
     assert metrics.skill_context_tokens == 80.0
     assert metrics.total_tokens == 70
     assert metrics.avg_execution_steps == 2.0
+    assert metrics.scored_task_count == 2
+    assert metrics.unscored_task_count == 0
+
+
+def test_unscored_task_is_not_counted_as_success():
+    task = Task("t1", "task without verifier", ["s1"], ["s1"])
+    result = {
+        "success": True,
+        "answer": "looks fine",
+        "selected_skill_ids": ["s1"],
+    }
+
+    metrics = evaluate_agent(lambda _: result, [task])
+
+    assert metrics.task_success_rate is None
+    assert metrics.scored_task_count == 0
+    assert metrics.unscored_task_count == 1
+    assert metrics.per_task[0]["execution_success"] is True
+    assert metrics.per_task[0]["task_success"] is None
+    assert metrics.per_task[0]["failure_reason"] == "missing_verifier"
+
+
+def test_execution_success_does_not_override_verifier_failure():
+    task = Task("t1", "calculate", ["s1"], ["s1"], 231)
+    result = {
+        "success": True,
+        "answer": "230",
+        "selected_skill_ids": ["s1"],
+    }
+
+    metrics = evaluate_agent(lambda _: result, [task])
+
+    assert metrics.task_success_rate == 0.0
+    assert metrics.per_task[0]["execution_success"] is True
+    assert metrics.per_task[0]["task_success"] is False
+    assert metrics.per_task[0]["failure_reason"] == "verifier_rejected"
 
 
 if __name__ == "__main__":
     test_metrics()
+    test_unscored_task_is_not_counted_as_success()
+    test_execution_success_does_not_override_verifier_failure()
     print("task metrics test passed")

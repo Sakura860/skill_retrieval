@@ -22,12 +22,24 @@ agent:
   enable_reflection: true
 
 evaluation:
+  retrieval_ks: [1, 5, 10]
   metrics:
-    - skill_selection_f1
-    - sequence_accuracy
-    - task_success_rate
-    - avg_skill_calls
-    - redundant_call_rate
-    - skill_context_tokens
-    - total_tokens
-    - avg_execution_steps
+    retrieval:
+      - recall@1
+      - recall@5
+      - recall@10
+      - mrr
+      - ndcg@1
+      - ndcg@5
+      - ndcg@10
+    agent:
+      - skill_selection_f1
+      - sequence_accuracy
+      - task_success_rate
+    efficiency:
+      - avg_skill_calls
+      - redundant_call_rate
+      - avg_skill_context_tokens
+      - total_tokens
+      - avg_execution_steps
+      - avg_execution_time_ms

@@ -149,6 +149,11 @@ class Agent:
             for item in trajectory
             if item.get("step") == "action" and item.get("skill_id")
         ]
+        execution_time_ms = sum(
+            float(item.get("duration_ms", 0.0))
+            for item in trajectory
+            if item.get("step") == "action"
+        )
         return {
             "trajectory": trajectory,
             "success": success,
@@ -158,4 +163,5 @@ class Agent:
             "skill_context_tokens": skill_context_tokens,
             "token_usage": token_usage,
             "execution_steps": execution_steps,
+            "execution_time_ms": execution_time_ms,
         }

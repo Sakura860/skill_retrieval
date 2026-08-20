@@ -25,6 +25,35 @@ def ndcg_at_k(ranked_ids: list[str], gold_ids: list[str], k: int) -> float:
     return dcg / ideal if ideal else 0.0
 
 
+def ranking_metrics(
+    ranked_ids: list[str],
+    gold_ids: list[str],
+    ks: tuple[int, ...] = (1, 5, 10),
+) -> dict[str, float]:
+    """计算单个任务的检索指标。"""
+    metrics = {"mrr": mrr(ranked_ids, gold_ids)}
+    for k in ks:
+        metrics[f"recall@{k}"] = recall_at_k(ranked_ids, gold_ids, k)
+        metrics[f"ndcg@{k}"] = ndcg_at_k(ranked_ids, gold_ids, k)
+    return metrics
+
+
+def aggregate_ranking_metrics(
+    rankings: list[tuple[list[str], list[str]]],
+    ks: tuple[int, ...] = (1, 5, 10),
+) -> dict[str, float]:
+    """对有检索标注的任务做宏平均。"""
+    valid = [(ranked, gold) for ranked, gold in rankings if gold]
+    if not valid:
+        return {}
+
+    aggregate: dict[str, float] = {}
+    for ranked_ids, gold_ids in valid:
+        for name, value in ranking_metrics(ranked_ids, gold_ids, ks).items():
+            aggregate[name] = aggregate.get(name, 0.0) + value
+    return {name: value / len(valid) for name, value in aggregate.items()}
+
+
 def evaluate_retrieval(
     retriever: BaseRetriever,
     tasks: list[Task],
@@ -33,23 +62,10 @@ def evaluate_retrieval(
 ) -> dict:
     """计算任务集上的平均检索指标。"""
     retriever.index(skills)
-    agg: dict[str, float] = {}
-    n = 0
+    rankings: list[tuple[list[str], list[str]]] = []
     for task in tasks:
         if not task.expected_skills:
             continue
         res = retriever.retrieve(task.instruction, top_k=max(ks))
-        ranked = res.ranked_ids()
-        gold = task.expected_skills
-        n += 1
-        agg.setdefault("mrr", 0.0)
-        agg["mrr"] += mrr(ranked, gold)
-        for k in ks:
-            agg.setdefault(f"recall@{k}", 0.0)
-            agg.setdefault(f"ndcg@{k}", 0.0)
-            agg[f"recall@{k}"] += recall_at_k(ranked, gold, k)
-            agg[f"ndcg@{k}"] += ndcg_at_k(ranked, gold, k)
-
-    if n == 0:
-        return {}
-    return {k: v / n for k, v in agg.items()}
+        rankings.append((res.ranked_ids(), list(task.expected_skills)))
+    return aggregate_ranking_metrics(rankings, ks)
