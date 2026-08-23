@@ -1,0 +1,284 @@
+{
+  "scope": "structural diagnostics only; no automatic dependency completion",
+  "task_count": 10,
+  "dependency_clean_cases": 9,
+  "missing_dependency_warnings": 1,
+  "cycle_warnings": 1,
+  "cases": [
+    {
+      "task_id": "tg01",
+      "diagnostic_type": "linear_dependency",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg02",
+      "diagnostic_type": "branch_merge_dependency",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg03",
+      "diagnostic_type": "long_chain",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg04",
+      "diagnostic_type": "long_chain",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg05",
+      "diagnostic_type": "long_chain",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg06",
+      "diagnostic_type": "strict_order",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg07",
+      "diagnostic_type": "strict_order",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    },
+    {
+      "task_id": "tg08",
+      "diagnostic_type": "missing_dependency",
+      "flat_candidate_order": [
+        "g_missing"
+      ],
+      "graph_order": [
+        "g_missing"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": true,
+      "cycle_warning": false,
+      "expected_graph_issue": "g_external_dictionary"
+    },
+    {
+      "task_id": "tg09",
+      "diagnostic_type": "cycle_detection",
+      "flat_candidate_order": [
+        "g_cycle_a",
+        "g_cycle_b"
+      ],
+      "graph_order": [
+        "g_cycle_a",
+        "g_cycle_b"
+      ],
+      "dependency_order_violations": [
+        [
+          "g_cycle_b",
+          "g_cycle_a"
+        ]
+      ],
+      "missing_dependency_warning": false,
+      "cycle_warning": true,
+      "expected_graph_issue": "cycle"
+    },
+    {
+      "task_id": "tg10",
+      "diagnostic_type": "stop_at_milestone",
+      "flat_candidate_order": [
+        "g_fetch",
+        "g_parse",
+        "g_schema",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "graph_order": [
+        "g_fetch",
+        "g_schema",
+        "g_parse",
+        "g_validate",
+        "g_normalize",
+        "g_summarize",
+        "g_write",
+        "g_approve",
+        "g_publish"
+      ],
+      "dependency_order_violations": [],
+      "missing_dependency_warning": false,
+      "cycle_warning": false,
+      "expected_graph_issue": null
+    }
+  ]
+}

@@ -1,0 +1,635 @@
+{
+  "run_info": {
+    "run_id": "task3-deepseek-smoke",
+    "timestamp": "2026-08-23T02:07:10.007286+00:00",
+    "task_count": 4,
+    "scored_task_count": 4,
+    "unscored_task_count": 0
+  },
+  "config": {
+    "retriever": "BM25Retriever",
+    "retriever_backend": "native",
+    "organizer": "FlatOrganizer",
+    "top_k": 24,
+    "retrieval_ks": [
+      1,
+      5,
+      10,
+      24
+    ],
+    "max_steps": 10,
+    "enable_reflection": false,
+    "task_ids": [
+      "tcalc01",
+      "tjson01",
+      "tfile01",
+      "tdb01"
+    ],
+    "environment_isolated": true,
+    "llm": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "thinking": "disabled",
+      "temperature": 0.0
+    }
+  },
+  "metrics": {
+    "retrieval": {
+      "mrr": 0.5964912280701754,
+      "recall@1": 0.5,
+      "ndcg@1": 0.5,
+      "recall@5": 0.75,
+      "ndcg@5": 0.625,
+      "recall@10": 0.75,
+      "ndcg@10": 0.625,
+      "recall@24": 1.0,
+      "ndcg@24": 0.6828445532899398
+    },
+    "agent": {
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "task_success_rate": 1.0
+    },
+    "efficiency": {
+      "avg_skill_context_tokens": 4644.0,
+      "prompt_tokens": 13026,
+      "completion_tokens": 350,
+      "total_tokens": 13376,
+      "avg_total_tokens_per_task": 3344.0,
+      "avg_skill_calls": 1.0,
+      "redundant_call_rate": 0.0,
+      "avg_execution_steps": 2.0,
+      "avg_execution_time_ms": 0.8790500000941392
+    }
+  },
+  "per_task": [
+    {
+      "task_id": "tcalc01",
+      "instruction": "计算整数表达式 (18 + 7) * 4。",
+      "ground_truth": null,
+      "retrieved_skill_ids": [
+        "scalc_int",
+        "scalc_dec",
+        "scalc_unit",
+        "scalc_pct",
+        "scalc_agg",
+        "scalc_eq",
+        "sdb_insert",
+        "sdb_update",
+        "sdb_delete",
+        "sdb_select",
+        "sdb_aggregate",
+        "sdb_join",
+        "sjson_extract",
+        "sjson_rename",
+        "sjson_merge",
+        "sjson_filter",
+        "sjson_sort",
+        "sjson_csv",
+        "sfile_create",
+        "sfile_overwrite",
+        "sfile_append",
+        "sfile_copy",
+        "sfile_move",
+        "sfile_patch_json"
+      ],
+      "retrieved_scores": [
+        14.127339835216723,
+        14.127339835216723,
+        6.586047385372562,
+        4.855710900372713,
+        4.855710900372713,
+        4.495925792209484,
+        1.153532090413356,
+        1.153532090413356,
+        1.153532090413356,
+        1.059973195039696,
+        1.059973195039696,
+        1.059973195039696,
+        1.0196032762137581,
+        1.0196032762137581,
+        0.9637168820851858,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "retrieval_metrics": {
+        "mrr": 1.0,
+        "recall@1": 1.0,
+        "ndcg@1": 1.0,
+        "recall@5": 1.0,
+        "ndcg@5": 1.0,
+        "recall@10": 1.0,
+        "ndcg@10": 1.0,
+        "recall@24": 1.0,
+        "ndcg@24": 1.0
+      },
+      "selected_skill_ids": [
+        "scalc_int"
+      ],
+      "expected_skill_ids": [
+        "scalc_int"
+      ],
+      "expected_skill_sequence": [
+        "scalc_int"
+      ],
+      "skill_selection_f1": 1.0,
+      "sequence_correct": true,
+      "execution_success": true,
+      "task_success": true,
+      "scored": true,
+      "verifier_type": "exact_match",
+      "verifier_details": {
+        "effects": []
+      },
+      "verifier_expected": 100,
+      "verifier_actual": "100",
+      "failure_reason": null,
+      "skill_calls": 1,
+      "redundant_calls": 0,
+      "skill_context_tokens": 4644,
+      "token_usage": {
+        "prompt_tokens": 3253,
+        "completion_tokens": 93,
+        "total_tokens": 3346
+      },
+      "execution_steps": 2,
+      "execution_time_ms": 0.11679999988700729,
+      "answer": "100",
+      "trajectory": [
+        {
+          "step": "plan",
+          "content": "evaluate_integer_expression",
+          "plan": [
+            {
+              "skill_name": "evaluate_integer_expression",
+              "arguments": {
+                "expression": "(18 + 7) * 4"
+              },
+              "reason": "任务要求计算整数表达式 (18 + 7) * 4，该表达式只包含整数、括号和 +、* 运算，符合 evaluate_integer_expression 技能的适用边界。"
+            }
+          ]
+        },
+        {
+          "step": "action",
+          "content": "100",
+          "index": 1,
+          "skill_id": "scalc_int",
+          "skill_name": "evaluate_integer_expression",
+          "arguments": {
+            "expression": "(18 + 7) * 4"
+          },
+          "success": true,
+          "duration_ms": 0.11679999988700729
+        }
+      ]
+    },
+    {
+      "task_id": "tjson01",
+      "instruction": "从 {\"name\":\"Ada\",\"age\":37,\"city\":\"London\"} 中只提取 name 和 age。",
+      "ground_truth": null,
+      "retrieved_skill_ids": [
+        "sdb_insert",
+        "sdb_update",
+        "sdb_delete",
+        "sfile_create",
+        "sfile_overwrite",
+        "sfile_append",
+        "sfile_copy",
+        "sfile_move",
+        "sfile_patch_json",
+        "sdb_select",
+        "sdb_aggregate",
+        "sdb_join",
+        "scalc_int",
+        "scalc_dec",
+        "scalc_pct",
+        "scalc_eq",
+        "scalc_unit",
+        "scalc_agg",
+        "sjson_extract",
+        "sjson_rename",
+        "sjson_filter",
+        "sjson_merge",
+        "sjson_sort",
+        "sjson_csv"
+      ],
+      "retrieved_scores": [
+        0.7411571705231317,
+        0.7411571705231317,
+        0.7411571705231317,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6810445418856713,
+        0.6810445418856713,
+        0.6810445418856713,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "retrieval_metrics": {
+        "mrr": 0.05263157894736842,
+        "recall@1": 0.0,
+        "ndcg@1": 0.0,
+        "recall@5": 0.0,
+        "ndcg@5": 0.0,
+        "recall@10": 0.0,
+        "ndcg@10": 0.0,
+        "recall@24": 1.0,
+        "ndcg@24": 0.23137821315975915
+      },
+      "selected_skill_ids": [
+        "sjson_extract"
+      ],
+      "expected_skill_ids": [
+        "sjson_extract"
+      ],
+      "expected_skill_sequence": [
+        "sjson_extract"
+      ],
+      "skill_selection_f1": 1.0,
+      "sequence_correct": true,
+      "execution_success": true,
+      "task_success": true,
+      "scored": true,
+      "verifier_type": "json_match",
+      "verifier_details": {
+        "effects": []
+      },
+      "verifier_expected": {
+        "output": {
+          "age": 37,
+          "name": "Ada"
+        }
+      },
+      "verifier_actual": {
+        "output": {
+          "age": 37,
+          "name": "Ada"
+        }
+      },
+      "failure_reason": null,
+      "skill_calls": 1,
+      "redundant_calls": 0,
+      "skill_context_tokens": 4644,
+      "token_usage": {
+        "prompt_tokens": 3263,
+        "completion_tokens": 88,
+        "total_tokens": 3351
+      },
+      "execution_steps": 2,
+      "execution_time_ms": 0.0625000002401066,
+      "answer": "{\"age\": 37, \"name\": \"Ada\"}",
+      "trajectory": [
+        {
+          "step": "plan",
+          "content": "extract_json_fields",
+          "plan": [
+            {
+              "skill_name": "extract_json_fields",
+              "arguments": {
+                "data": {
+                  "name": "Ada",
+                  "age": 37,
+                  "city": "London"
+                },
+                "fields": [
+                  "name",
+                  "age"
+                ]
+              },
+              "reason": "从给定 JSON 对象中提取 name 和 age 字段"
+            }
+          ]
+        },
+        {
+          "step": "action",
+          "content": "{\"age\": 37, \"name\": \"Ada\"}",
+          "index": 1,
+          "skill_id": "sjson_extract",
+          "skill_name": "extract_json_fields",
+          "arguments": {
+            "data": {
+              "name": "Ada",
+              "age": 37,
+              "city": "London"
+            },
+            "fields": [
+              "name",
+              "age"
+            ]
+          },
+          "success": true,
+          "duration_ms": 0.0625000002401066
+        }
+      ]
+    },
+    {
+      "task_id": "tfile01",
+      "instruction": "在受控目录中新建 report.txt，内容为 hello。",
+      "ground_truth": null,
+      "retrieved_skill_ids": [
+        "sfile_create",
+        "sfile_overwrite",
+        "sfile_append",
+        "sfile_copy",
+        "sfile_move",
+        "sfile_patch_json",
+        "scalc_unit",
+        "sjson_filter",
+        "sjson_sort",
+        "sdb_insert",
+        "sdb_update",
+        "sdb_delete",
+        "sdb_select",
+        "sdb_aggregate",
+        "sjson_extract",
+        "sjson_rename",
+        "sjson_merge",
+        "sdb_join",
+        "scalc_int",
+        "scalc_dec",
+        "scalc_pct",
+        "scalc_eq",
+        "scalc_agg",
+        "sjson_csv"
+      ],
+      "retrieved_scores": [
+        12.585466649621505,
+        12.585466649621505,
+        12.585466649621505,
+        12.585466649621505,
+        12.585466649621505,
+        12.585466649621505,
+        3.7934035773771444,
+        2.2448438010095577,
+        2.2448438010095577,
+        2.1411798582398838,
+        2.1411798582398838,
+        2.1411798582398838,
+        1.967516356376257,
+        1.967516356376257,
+        1.5955302639296245,
+        1.5955302639296245,
+        1.5080762166013755,
+        1.3620890837713426,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "retrieval_metrics": {
+        "mrr": 1.0,
+        "recall@1": 1.0,
+        "ndcg@1": 1.0,
+        "recall@5": 1.0,
+        "ndcg@5": 1.0,
+        "recall@10": 1.0,
+        "ndcg@10": 1.0,
+        "recall@24": 1.0,
+        "ndcg@24": 1.0
+      },
+      "selected_skill_ids": [
+        "sfile_create"
+      ],
+      "expected_skill_ids": [
+        "sfile_create"
+      ],
+      "expected_skill_sequence": [
+        "sfile_create"
+      ],
+      "skill_selection_f1": 1.0,
+      "sequence_correct": true,
+      "execution_success": true,
+      "task_success": true,
+      "scored": true,
+      "verifier_type": "file_state",
+      "verifier_details": {
+        "effects": [
+          "report.txt"
+        ]
+      },
+      "verifier_expected": {
+        "files": {
+          "report.txt": {
+            "content": "hello",
+            "exists": true
+          }
+        }
+      },
+      "verifier_actual": {
+        "files": {
+          "report.txt": {
+            "exists": true,
+            "content": "hello"
+          }
+        }
+      },
+      "failure_reason": null,
+      "skill_calls": 1,
+      "redundant_calls": 0,
+      "skill_context_tokens": 4644,
+      "token_usage": {
+        "prompt_tokens": 3253,
+        "completion_tokens": 90,
+        "total_tokens": 3343
+      },
+      "execution_steps": 2,
+      "execution_time_ms": 2.111200000399549,
+      "answer": "report.txt",
+      "trajectory": [
+        {
+          "step": "plan",
+          "content": "create_text_file",
+          "plan": [
+            {
+              "skill_name": "create_text_file",
+              "arguments": {
+                "path": "report.txt",
+                "content": "hello"
+              },
+              "reason": "任务要求在受控目录中新建 report.txt 并写入内容 hello。create_text_file 技能适用于创建不存在的文件并写入内容，且不会覆盖已有文件，符合任务要求。"
+            }
+          ]
+        },
+        {
+          "step": "action",
+          "content": "report.txt",
+          "index": 1,
+          "skill_id": "sfile_create",
+          "skill_name": "create_text_file",
+          "arguments": {
+            "path": "report.txt",
+            "content": "hello"
+          },
+          "success": true,
+          "duration_ms": 2.111200000399549
+        }
+      ]
+    },
+    {
+      "task_id": "tdb01",
+      "instruction": "查询 users 表中 age>=18 的用户姓名，按姓名升序返回。",
+      "ground_truth": null,
+      "retrieved_skill_ids": [
+        "sdb_aggregate",
+        "sdb_join",
+        "sdb_select",
+        "sjson_extract",
+        "sjson_rename",
+        "sjson_filter",
+        "sjson_sort",
+        "sjson_merge",
+        "scalc_int",
+        "scalc_dec",
+        "scalc_eq",
+        "sjson_csv",
+        "sdb_insert",
+        "sdb_update",
+        "sdb_delete",
+        "scalc_agg",
+        "scalc_pct",
+        "sfile_create",
+        "sfile_overwrite",
+        "sfile_append",
+        "sfile_copy",
+        "sfile_move",
+        "sfile_patch_json",
+        "scalc_unit"
+      ],
+      "retrieved_scores": [
+        13.108729940443354,
+        10.344442547419224,
+        3.5572995547401103,
+        3.216641398401166,
+        3.216641398401166,
+        3.216641398401166,
+        3.216641398401166,
+        3.040331167593668,
+        2.764159430468581,
+        2.764159430468581,
+        2.739965707779943,
+        1.9201036828886386,
+        1.8946892609364876,
+        1.8946892609364876,
+        1.8946892609364876,
+        1.7920572501921446,
+        1.1671733885716082,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.6903768784362839,
+        0.0
+      ],
+      "retrieval_metrics": {
+        "mrr": 0.3333333333333333,
+        "recall@1": 0.0,
+        "ndcg@1": 0.0,
+        "recall@5": 1.0,
+        "ndcg@5": 0.5,
+        "recall@10": 1.0,
+        "ndcg@10": 0.5,
+        "recall@24": 1.0,
+        "ndcg@24": 0.5
+      },
+      "selected_skill_ids": [
+        "sdb_select"
+      ],
+      "expected_skill_ids": [
+        "sdb_select"
+      ],
+      "expected_skill_sequence": [
+        "sdb_select"
+      ],
+      "skill_selection_f1": 1.0,
+      "sequence_correct": true,
+      "execution_success": true,
+      "task_success": true,
+      "scored": true,
+      "verifier_type": "sqlite_state",
+      "verifier_details": {
+        "effects": []
+      },
+      "verifier_expected": [
+        [
+          "Ada"
+        ],
+        [
+          "Cara"
+        ]
+      ],
+      "verifier_actual": [
+        [
+          "Ada"
+        ],
+        [
+          "Cara"
+        ]
+      ],
+      "failure_reason": null,
+      "skill_calls": 1,
+      "redundant_calls": 0,
+      "skill_context_tokens": 4644,
+      "token_usage": {
+        "prompt_tokens": 3257,
+        "completion_tokens": 79,
+        "total_tokens": 3336
+      },
+      "execution_steps": 2,
+      "execution_time_ms": 1.225699999849894,
+      "answer": "[[\"Ada\"], [\"Cara\"]]",
+      "trajectory": [
+        {
+          "step": "plan",
+          "content": "select_sqlite_rows",
+          "plan": [
+            {
+              "skill_name": "select_sqlite_rows",
+              "arguments": {
+                "query": "SELECT name FROM users WHERE age >= 18 ORDER BY name ASC",
+                "parameters": []
+              },
+              "reason": "查询 users 表中 age>=18 的用户姓名，并按姓名升序返回。"
+            }
+          ]
+        },
+        {
+          "step": "action",
+          "content": "[[\"Ada\"], [\"Cara\"]]",
+          "index": 1,
+          "skill_id": "sdb_select",
+          "skill_name": "select_sqlite_rows",
+          "arguments": {
+            "query": "SELECT name FROM users WHERE age >= 18 ORDER BY name ASC",
+            "parameters": []
+          },
+          "success": true,
+          "duration_ms": 1.225699999849894
+        }
+      ]
+    }
+  ]
+}

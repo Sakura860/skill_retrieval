@@ -1,0 +1,41 @@
+{
+  "experiment_id": "task4_organization_20260823T022006Z",
+  "timestamp_utc": "20260823T022006Z",
+  "hypothesis": "With identical BM25 candidates and context budgets, hierarchical brief-plus-top-detail disclosure reduces context without lowering task success.",
+  "split": "dev",
+  "task_ids": [
+    "tcalc01",
+    "tcalc02",
+    "tcalc04",
+    "tcalc06",
+    "tcalc07",
+    "tjson01",
+    "tjson03",
+    "tjson04",
+    "tjson06",
+    "tjson07",
+    "tfile01",
+    "tfile03",
+    "tfile04",
+    "tfile06",
+    "tdb01",
+    "tdb03",
+    "tdb05",
+    "tdb06"
+  ],
+  "task_count": 18,
+  "repeats": 3,
+  "retriever": "BM25Retriever(text_level=brief)",
+  "candidate_source": "task.metadata.candidate_skill_ids",
+  "context_budget_source": "task.metadata.slice.context_budget_tokens",
+  "organizers": [
+    "FlatOrganizer",
+    "HierarchicalOrganizer"
+  ],
+  "hierarchical_detail_top_k": 3,
+  "model": "deepseek-v4-pro",
+  "temperature": 0.0,
+  "thinking": "disabled",
+  "reflection": false,
+  "initial_state": "fresh isolated TaskEnvironment per observation"
+}

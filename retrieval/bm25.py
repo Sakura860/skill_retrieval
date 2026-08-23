@@ -46,7 +46,7 @@ class BM25Retriever(BaseRetriever):
         tf = Counter(doc_tokens)
         dl = len(doc_tokens)
         score = 0.0
-        for q in set(q_tokens):
+        for q in sorted(set(q_tokens)):
             if q not in tf:
                 continue
             n = self._df.get(q, 0)

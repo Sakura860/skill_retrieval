@@ -177,6 +177,7 @@ def evaluate_agent(
             "ground_truth": getattr(task, "ground_truth", None),
             "retrieved_skill_ids": list(result.get("retrieved_skill_ids", [])),
             "retrieved_scores": list(result.get("retrieved_scores", [])),
+            "raw_bm25_skill_ids": list(result.get("raw_bm25_skill_ids", [])),
             "retrieval_metrics": dict(result.get("retrieval_metrics", {})),
             "selected_skill_ids": selected,
             "expected_skill_ids": expected,
@@ -194,6 +195,12 @@ def evaluate_agent(
             "skill_calls": calls,
             "redundant_calls": redundant,
             "skill_context_tokens": context_tokens,
+            "context_budget_tokens": result.get("context_budget_tokens"),
+            "candidate_count": result.get("candidate_count"),
+            "target_gold_rank": result.get("target_gold_rank"),
+            "exposed_skill_ids": list(result.get("exposed_skill_ids", [])),
+            "detailed_skill_ids": list(result.get("detailed_skill_ids", [])),
+            "truncated_skill_ids": list(result.get("truncated_skill_ids", [])),
             "token_usage": {
                 "prompt_tokens": prompt_tokens,
                 "completion_tokens": completion_tokens,
@@ -202,6 +209,9 @@ def evaluate_agent(
             "execution_steps": execution_steps,
             "execution_time_ms": execution_time_ms,
             "answer": result.get("answer", ""),
+            "trajectory": list(result.get("trajectory", [])),
+            "initial_state": result.get("initial_state"),
+            "final_state": result.get("final_state"),
         })
 
     task_count = len(tasks)

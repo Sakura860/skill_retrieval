@@ -1,0 +1,2397 @@
+{
+  "failure_type_counts": {
+    "success": 84,
+    "execution_failed": 18,
+    "file_state_mismatch": 6
+  },
+  "cases": [
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 1,
+      "task_id": "tcalc06",
+      "flat": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {
+          "effects": []
+        },
+        "verifier_expected": 42,
+        "verifier_actual": "42",
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 607,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "truncated_skill_ids": [
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "token_usage": {
+          "prompt_tokens": 540,
+          "completion_tokens": 80,
+          "total_tokens": 620
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.04360000002634479,
+        "answer": "42",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "values": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "任务要求计算数值列表的总和，直接使用 aggregate_number_list 技能，操作选择 sum。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "42",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "values": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": true,
+            "duration_ms": 0.04360000002634479
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 1,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {},
+        "verifier_expected": 42,
+        "verifier_actual": "缺少参数: values",
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 656,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_csv",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 628,
+          "completion_tokens": 64,
+          "total_tokens": 692
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.014199999895936344,
+        "answer": "缺少参数: values",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "list": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "对数值列表求和"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: values",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "list": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": false,
+            "duration_ms": 0.014199999895936344
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 1,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": -49
+    },
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 1,
+      "task_id": "tdb03",
+      "flat": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {
+          "effects": [
+            "query_result"
+          ]
+        },
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            1
+          ]
+        ],
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 1964,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 1452,
+          "completion_tokens": 96,
+          "total_tokens": 1548
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 8.538899999621208,
+        "answer": "{\"updated\": 1}",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "where": {
+                    "name": "Bob"
+                  },
+                  "changes": {
+                    "active": 1
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的行的 active 字段为 1，符合任务要求。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "{\"updated\": 1}",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "where": {
+                "name": "Bob"
+              },
+              "changes": {
+                "active": 1
+              }
+            },
+            "success": true,
+            "duration_ms": 8.538899999621208
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-kqrzny9a\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-kqrzny9a\\task.db",
+          "query_result": [
+            [
+              1
+            ]
+          ]
+        },
+        "repeat": 1,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {},
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            0
+          ]
+        ],
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 805,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "sdb_update",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select",
+          "scalc_unit"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 709,
+          "completion_tokens": 96,
+          "total_tokens": 805
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.013500000022759195,
+        "answer": "缺少参数: changes",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "set": {
+                    "active": 1
+                  },
+                  "where": {
+                    "name": "Bob"
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的记录的 active 字段为 1，无需其他技能。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: changes",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "set": {
+                "active": 1
+              },
+              "where": {
+                "name": "Bob"
+              }
+            },
+            "success": false,
+            "duration_ms": 0.013500000022759195
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-8t2qjulx\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-8t2qjulx\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "repeat": 1,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": 1159
+    },
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 2,
+      "task_id": "tcalc06",
+      "flat": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {
+          "effects": []
+        },
+        "verifier_expected": 42,
+        "verifier_actual": "42",
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 607,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "truncated_skill_ids": [
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "token_usage": {
+          "prompt_tokens": 540,
+          "completion_tokens": 80,
+          "total_tokens": 620
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.038500000300700776,
+        "answer": "42",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "values": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "任务要求计算数值列表的总和，直接使用 aggregate_number_list 技能，操作选择 sum。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "42",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "values": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": true,
+            "duration_ms": 0.038500000300700776
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 2,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {},
+        "verifier_expected": 42,
+        "verifier_actual": "缺少参数: values",
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 656,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_csv",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 628,
+          "completion_tokens": 65,
+          "total_tokens": 693
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.024700000722077675,
+        "answer": "缺少参数: values",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "numbers": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "计算数值列表的总和"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: values",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "numbers": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": false,
+            "duration_ms": 0.024700000722077675
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 2,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": -49
+    },
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 2,
+      "task_id": "tdb03",
+      "flat": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {
+          "effects": [
+            "query_result"
+          ]
+        },
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            1
+          ]
+        ],
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 1964,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 1452,
+          "completion_tokens": 96,
+          "total_tokens": 1548
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 4.8371999992014025,
+        "answer": "{\"updated\": 1}",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "where": {
+                    "name": "Bob"
+                  },
+                  "changes": {
+                    "active": 1
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的行的 active 字段为 1，符合任务要求。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "{\"updated\": 1}",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "where": {
+                "name": "Bob"
+              },
+              "changes": {
+                "active": 1
+              }
+            },
+            "success": true,
+            "duration_ms": 4.8371999992014025
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-wosd0kfj\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-wosd0kfj\\task.db",
+          "query_result": [
+            [
+              1
+            ]
+          ]
+        },
+        "repeat": 2,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {},
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            0
+          ]
+        ],
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 805,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "sdb_update",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select",
+          "scalc_unit"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 709,
+          "completion_tokens": 92,
+          "total_tokens": 801
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.014700000065204222,
+        "answer": "缺少参数: changes",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "set": {
+                    "active": 1
+                  },
+                  "where": {
+                    "name": "Bob"
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的记录的 active 字段为 1。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: changes",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "set": {
+                "active": 1
+              },
+              "where": {
+                "name": "Bob"
+              }
+            },
+            "success": false,
+            "duration_ms": 0.014700000065204222
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-zwi7wia4\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-zwi7wia4\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "repeat": 2,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": 1159
+    },
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 3,
+      "task_id": "tcalc06",
+      "flat": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {
+          "effects": []
+        },
+        "verifier_expected": 42,
+        "verifier_actual": "42",
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 607,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg"
+        ],
+        "truncated_skill_ids": [
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "token_usage": {
+          "prompt_tokens": 540,
+          "completion_tokens": 80,
+          "total_tokens": 620
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.0473000000056345,
+        "answer": "42",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "values": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "任务要求计算数值列表的总和，直接使用 aggregate_number_list 技能，操作选择 sum。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "42",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "values": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": true,
+            "duration_ms": 0.0473000000056345
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 3,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tcalc06",
+        "instruction": "求数值列表 [5, 7, 11, 19] 的总和。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "retrieved_scores": [
+          4.716983932471597,
+          4.476243065014713,
+          6.27722939250342,
+          4.476243065014713,
+          4.367477833535963,
+          3.4575799457785727,
+          2.2883040633751244,
+          2.2883040633751244,
+          2.1628777669368766,
+          1.2687007871613663,
+          1.2687007871613663,
+          1.153532090413356,
+          1.153532090413356,
+          1.153532090413356,
+          1.059973195039696,
+          1.059973195039696,
+          1.059973195039696,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "raw_bm25_skill_ids": [
+          "scalc_agg",
+          "scalc_pct",
+          "scalc_int",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sjson_csv",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.3333333333333333,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 1.0,
+          "ndcg@3": 0.5,
+          "recall@5": 1.0,
+          "ndcg@5": 0.5,
+          "recall@10": 1.0,
+          "ndcg@10": 0.5,
+          "recall@20": 1.0,
+          "ndcg@20": 0.5
+        },
+        "selected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_ids": [
+          "scalc_agg"
+        ],
+        "expected_skill_sequence": [
+          "scalc_agg"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "exact_match",
+        "verifier_details": {},
+        "verifier_expected": 42,
+        "verifier_actual": "缺少参数: values",
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 656,
+        "context_budget_tokens": 800,
+        "candidate_count": 20,
+        "target_gold_rank": 3,
+        "exposed_skill_ids": [
+          "scalc_pct",
+          "scalc_int",
+          "scalc_agg",
+          "scalc_dec",
+          "scalc_eq",
+          "scalc_unit",
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_merge",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_csv",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "sfile_create",
+          "sfile_overwrite"
+        ],
+        "detailed_skill_ids": [
+          "scalc_pct"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 628,
+          "completion_tokens": 64,
+          "total_tokens": 692
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.014900000678608194,
+        "answer": "缺少参数: values",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "aggregate_number_list",
+            "plan": [
+              {
+                "skill_name": "aggregate_number_list",
+                "arguments": {
+                  "numbers": [
+                    5,
+                    7,
+                    11,
+                    19
+                  ],
+                  "operation": "sum"
+                },
+                "reason": "对数值列表求和"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: values",
+            "index": 1,
+            "skill_id": "scalc_agg",
+            "skill_name": "aggregate_number_list",
+            "arguments": {
+              "numbers": [
+                5,
+                7,
+                11,
+                19
+              ],
+              "operation": "sum"
+            },
+            "success": false,
+            "duration_ms": 0.014900000678608194
+          }
+        ],
+        "initial_state": {
+          "files": {}
+        },
+        "final_state": {
+          "files": {}
+        },
+        "repeat": 3,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": -49
+    },
+    {
+      "case_type": "outcome_disagreement",
+      "repeat": 3,
+      "task_id": "tdb03",
+      "flat": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": true,
+        "task_success": true,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {
+          "effects": [
+            "query_result"
+          ]
+        },
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            1
+          ]
+        ],
+        "failure_reason": null,
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 1964,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 1452,
+          "completion_tokens": 96,
+          "total_tokens": 1548
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 5.335699999704957,
+        "answer": "{\"updated\": 1}",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "where": {
+                    "name": "Bob"
+                  },
+                  "changes": {
+                    "active": 1
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的行的 active 字段为 1，符合任务要求。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "{\"updated\": 1}",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "where": {
+                "name": "Bob"
+              },
+              "changes": {
+                "active": 1
+              }
+            },
+            "success": true,
+            "duration_ms": 5.335699999704957
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-wvvbzuj5\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-wvvbzuj5\\task.db",
+          "query_result": [
+            [
+              1
+            ]
+          ]
+        },
+        "repeat": 3,
+        "organizer": "FlatOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "hierarchical": {
+        "task_id": "tdb03",
+        "instruction": "把 users 表中 name=Bob 的 active 更新为 1。",
+        "ground_truth": null,
+        "retrieved_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sdb_update",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select"
+        ],
+        "retrieved_scores": [
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          2.8642310510909907,
+          1.8946892609364876,
+          2.707237101453066,
+          2.656555497271461,
+          1.8946892609364876,
+          1.8946892609364876,
+          1.7410177369253672
+        ],
+        "raw_bm25_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "scalc_unit",
+          "sdb_insert",
+          "sdb_update",
+          "sdb_delete",
+          "sdb_select",
+          "sdb_aggregate",
+          "sdb_join",
+          "scalc_pct",
+          "scalc_eq",
+          "scalc_int",
+          "scalc_dec",
+          "sfile_create",
+          "sfile_overwrite",
+          "sfile_append",
+          "sfile_copy",
+          "sfile_move",
+          "sfile_patch_json",
+          "scalc_agg",
+          "sjson_csv"
+        ],
+        "retrieval_metrics": {
+          "mrr": 0.2,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@3": 0.0,
+          "ndcg@3": 0.0,
+          "recall@5": 1.0,
+          "ndcg@5": 0.38685280723454163,
+          "recall@10": 1.0,
+          "ndcg@10": 0.38685280723454163,
+          "recall@20": 1.0,
+          "ndcg@20": 0.38685280723454163
+        },
+        "selected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_ids": [
+          "sdb_update"
+        ],
+        "expected_skill_sequence": [
+          "sdb_update"
+        ],
+        "skill_selection_f1": 1.0,
+        "sequence_correct": true,
+        "execution_success": false,
+        "task_success": false,
+        "scored": true,
+        "verifier_type": "sqlite_state",
+        "verifier_details": {},
+        "verifier_expected": [
+          [
+            1
+          ]
+        ],
+        "verifier_actual": [
+          [
+            0
+          ]
+        ],
+        "failure_reason": "execution_failed",
+        "skill_calls": 1,
+        "redundant_calls": 0,
+        "skill_context_tokens": 805,
+        "context_budget_tokens": 2000,
+        "candidate_count": 10,
+        "target_gold_rank": 5,
+        "exposed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter",
+          "sjson_sort",
+          "sjson_merge",
+          "sdb_update",
+          "sdb_insert",
+          "sdb_delete",
+          "sdb_select",
+          "scalc_unit"
+        ],
+        "detailed_skill_ids": [
+          "sjson_extract",
+          "sjson_rename",
+          "sjson_filter"
+        ],
+        "truncated_skill_ids": [],
+        "token_usage": {
+          "prompt_tokens": 709,
+          "completion_tokens": 92,
+          "total_tokens": 801
+        },
+        "execution_steps": 2,
+        "execution_time_ms": 0.019400000383029692,
+        "answer": "缺少参数: changes",
+        "trajectory": [
+          {
+            "step": "plan",
+            "content": "update_sqlite_rows",
+            "plan": [
+              {
+                "skill_name": "update_sqlite_rows",
+                "arguments": {
+                  "table": "users",
+                  "set": {
+                    "active": 1
+                  },
+                  "where": {
+                    "name": "Bob"
+                  }
+                },
+                "reason": "直接更新 users 表中 name 为 Bob 的记录的 active 字段为 1。"
+              }
+            ]
+          },
+          {
+            "step": "action",
+            "content": "缺少参数: changes",
+            "index": 1,
+            "skill_id": "sdb_update",
+            "skill_name": "update_sqlite_rows",
+            "arguments": {
+              "table": "users",
+              "set": {
+                "active": 1
+              },
+              "where": {
+                "name": "Bob"
+              }
+            },
+            "success": false,
+            "duration_ms": 0.019400000383029692
+          }
+        ],
+        "initial_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-gybqodr3\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "final_state": {
+          "files": {},
+          "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb03-gybqodr3\\task.db",
+          "query_result": [
+            [
+              0
+            ]
+          ]
+        },
+        "repeat": 3,
+        "organizer": "HierarchicalOrganizer",
+        "api_error": null,
+        "attempts": 1
+      },
+      "context_token_saving": 1159
+    }
+  ]
+}

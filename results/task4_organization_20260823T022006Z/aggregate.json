@@ -1,0 +1,312 @@
+{
+  "overall": {
+    "FlatOrganizer": {
+      "observations": 54,
+      "api_failures": 0,
+      "task_success_rate": 0.8333333333333334,
+      "skill_selection_f1": 0.898148148148148,
+      "sequence_accuracy": 0.8333333333333334,
+      "avg_context_tokens": 1104.9444444444443,
+      "total_tokens": 51771,
+      "redundant_call_rate": 0.10526315789473684,
+      "across_repeat": {
+        "task_success_rate": {
+          "mean": 0.8333333333333334,
+          "sample_sd": 0.0
+        },
+        "skill_selection_f1": {
+          "mean": 0.898148148148148,
+          "sample_sd": 0.0
+        },
+        "sequence_accuracy": {
+          "mean": 0.8333333333333334,
+          "sample_sd": 0.0
+        },
+        "avg_context_tokens": {
+          "mean": 1104.9444444444443,
+          "sample_sd": 0.0
+        },
+        "total_tokens": {
+          "mean": 17257.0,
+          "sample_sd": 19.924858845171276
+        },
+        "redundant_call_rate": {
+          "mean": 0.10526315789473684,
+          "sample_sd": 0.0
+        }
+      }
+    },
+    "HierarchicalOrganizer": {
+      "observations": 54,
+      "api_failures": 0,
+      "task_success_rate": 0.7222222222222222,
+      "skill_selection_f1": 0.9814814814814814,
+      "sequence_accuracy": 0.9444444444444444,
+      "avg_context_tokens": 793.0555555555555,
+      "total_tokens": 41942,
+      "redundant_call_rate": 0.0,
+      "across_repeat": {
+        "task_success_rate": {
+          "mean": 0.7222222222222222,
+          "sample_sd": 0.0
+        },
+        "skill_selection_f1": {
+          "mean": 0.9814814814814814,
+          "sample_sd": 0.0
+        },
+        "sequence_accuracy": {
+          "mean": 0.9444444444444444,
+          "sample_sd": 0.0
+        },
+        "avg_context_tokens": {
+          "mean": 793.0555555555555,
+          "sample_sd": 0.0
+        },
+        "total_tokens": {
+          "mean": 13980.666666666666,
+          "sample_sd": 27.006172134038792
+        },
+        "redundant_call_rate": {
+          "mean": 0.0,
+          "sample_sd": 0.0
+        }
+      }
+    }
+  },
+  "stratified": [
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "candidate_count",
+      "value": 5,
+      "observations": 18,
+      "api_failures": 0,
+      "task_success_rate": 0.8333333333333334,
+      "skill_selection_f1": 0.9166666666666666,
+      "sequence_accuracy": 0.8333333333333334,
+      "avg_context_tokens": 841.5,
+      "total_tokens": 14034,
+      "redundant_call_rate": 0.14285714285714285
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "candidate_count",
+      "value": 10,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 1.0,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 1312.857142857143,
+      "total_tokens": 22915,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "candidate_count",
+      "value": 20,
+      "observations": 15,
+      "api_failures": 0,
+      "task_success_rate": 0.6,
+      "skill_selection_f1": 0.7333333333333332,
+      "sequence_accuracy": 0.6,
+      "avg_context_tokens": 1130.0,
+      "total_tokens": 14822,
+      "redundant_call_rate": 0.2
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 1,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 1117.7142857142858,
+      "total_tokens": 20148,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 3,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 0.9523809523809523,
+      "sequence_accuracy": 0.8571428571428571,
+      "avg_context_tokens": 1083.4285714285713,
+      "total_tokens": 19941,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 5,
+      "observations": 12,
+      "api_failures": 0,
+      "task_success_rate": 0.75,
+      "skill_selection_f1": 0.625,
+      "sequence_accuracy": 0.5,
+      "avg_context_tokens": 1120.25,
+      "total_tokens": 11682,
+      "redundant_call_rate": 0.4
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 800,
+      "observations": 18,
+      "api_failures": 0,
+      "task_success_rate": 0.8333333333333334,
+      "skill_selection_f1": 0.75,
+      "sequence_accuracy": 0.6666666666666666,
+      "avg_context_tokens": 723.6666666666666,
+      "total_tokens": 12566,
+      "redundant_call_rate": 0.2857142857142857
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 1200,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 0.9523809523809523,
+      "sequence_accuracy": 0.8571428571428571,
+      "avg_context_tokens": 1111.4285714285713,
+      "total_tokens": 20351,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "FlatOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 2000,
+      "observations": 15,
+      "api_failures": 0,
+      "task_success_rate": 0.8,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 1553.4,
+      "total_tokens": 18854,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "candidate_count",
+      "value": 5,
+      "observations": 18,
+      "api_failures": 0,
+      "task_success_rate": 0.8333333333333334,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 721.1666666666666,
+      "total_tokens": 12847,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "candidate_count",
+      "value": 10,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 788.0,
+      "total_tokens": 16074,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "candidate_count",
+      "value": 20,
+      "observations": 15,
+      "api_failures": 0,
+      "task_success_rate": 0.4,
+      "skill_selection_f1": 0.9333333333333332,
+      "sequence_accuracy": 0.8,
+      "avg_context_tokens": 886.4,
+      "total_tokens": 13021,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 1,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 788.0,
+      "total_tokens": 15907,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 3,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.7142857142857143,
+      "skill_selection_f1": 0.9523809523809523,
+      "sequence_accuracy": 0.8571428571428571,
+      "avg_context_tokens": 820.1428571428571,
+      "total_tokens": 16906,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "target_gold_rank",
+      "value": 5,
+      "observations": 12,
+      "api_failures": 0,
+      "task_success_rate": 0.5,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 754.5,
+      "total_tokens": 9129,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 800,
+      "observations": 18,
+      "api_failures": 0,
+      "task_success_rate": 0.6666666666666666,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 690.0,
+      "total_tokens": 12603,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 1200,
+      "observations": 21,
+      "api_failures": 0,
+      "task_success_rate": 0.8571428571428571,
+      "skill_selection_f1": 0.9523809523809523,
+      "sequence_accuracy": 0.8571428571428571,
+      "avg_context_tokens": 870.0,
+      "total_tokens": 17562,
+      "redundant_call_rate": 0.0
+    },
+    {
+      "organizer": "HierarchicalOrganizer",
+      "dimension": "context_budget_tokens",
+      "value": 2000,
+      "observations": 15,
+      "api_failures": 0,
+      "task_success_rate": 0.6,
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "avg_context_tokens": 809.0,
+      "total_tokens": 11777,
+      "redundant_call_rate": 0.0
+    }
+  ]
+}

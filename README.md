@@ -68,7 +68,7 @@ LLM(provider="deepseek")  # 真实实验
 LLM(provider="mock")      # 离线测试
 ```
 
-`openai` 包仅作为 DeepSeek 官方 OpenAI 兼容协议的客户端使用，项目不提供 OpenAI 或 Anthropic 模型入口。
+`openai` 包仅作为 DeepSeek 官方 OpenAI 兼容协议的客户端使用，项目不提供 OpenAI 或 Anthropic 模型入口。若运行环境暂时无法安装该包，DeepSeek 调用会回退到同一兼容 HTTP 接口；在仅系统 curl 网络通道可用的 Windows 环境中再安全回退到 curl，API Key 通过标准输入传递，不出现在进程参数中。
 
 ## Skill 数据结构
 
@@ -106,6 +106,8 @@ agent = Agent(
 ```
 
 未注册函数、未知技能、缺少必填参数或执行异常都会记为失败。项目不再通过 `exec()` 运行数据中的任意代码。
+
+`benchmark_v01` 使用统一 `SkillRegistry` 注册 24 个确定性 handler。每条任务在独立 `TaskEnvironment` 中 setup，文件访问只能使用受控相对路径，SQLite 写操作使用参数化语句，读查询使用只读连接；Agent 返回运行前后状态快照后环境立即 teardown。`execution_success` 只表示调用有效，最终仍必须由 Task verifier 判定 `task_success`。
 
 ## 端到端指标
 
@@ -180,7 +182,7 @@ agent = Agent(
 }
 ```
 
-逐任务结果同时保留检索排名、检索分数、调用序列、`execution_success`、`task_success`、verifier 类型、失败原因、Token 和耗时，便于判断失败发生在检索、规划、执行还是验收阶段。
+逐任务结果同时保留原始 BM25 排名、固定候选顺序、实际暴露/详细披露/裁剪的 Skill ID、上下文预算与实际 Token、调用序列、初末状态、`execution_success`、`task_success`、verifier 类型和失败原因，便于判断失败发生在候选、披露、规划、执行还是验收阶段。
 
 ## 实验
 
@@ -190,14 +192,34 @@ python experiments/run_experiment.py
 
 脚本比较 BM25、Embedding、多层检索与三种组织策略。默认使用 DeepSeek，完整消融会产生多次 API 调用。每次实验会在 `results/` 下保存包含配置、聚合指标和逐任务证据的 JSON。离线测试请显式传入 `LLM(provider="mock")`。
 
+导师反馈后的 Flat vs Hierarchical 定向数据位于 `data/benchmark_v01/`，包含 24 个 hard-negative Skill、34 条主任务和 10 条独立 Graph 诊断任务。数据假设、受控候选排名、dev/test 划分及当前使用边界见该目录的 `README.md`。任务 4 实验入口会直接消费每条任务固定的 BM25 候选顺序与预算：
+
+```powershell
+python experiments/run_task4_organization.py --split dev --repeats 3
+```
+
+脚本只比较 Flat 与 Hierarchical，逐条创建隔离环境，并保存配置快照、逐任务 JSONL、聚合 JSON/CSV、失败案例和 Graph 结构诊断。已完成的 108 个真实 DeepSeek 观测及结论见 `results/task4_organization_20260823T022006Z/analysis.md`；test split 保留到方案冻结后再运行。
+
+任务 3 的四任务族真实 DeepSeek smoke：
+
+```powershell
+python experiments/run_task3_smoke.py
+```
+
+该脚本只跑四条单步 dev 任务、关闭 Reflection，并将完整结果保存到 `results/`；真实 API 不会在单元测试中调用。
+
 ## 测试
 
 ```powershell
 python tests/test_smoke.py
+python tests/test_benchmark_dataset.py
 python tests/test_task_metrics.py
+python tests/test_execution_runtime.py
+python tests/test_real_handlers_e2e.py
 python tests/test_retrieval_metrics.py
 python tests/test_benchmark_output.py
 python tests/test_agent_execution.py
+python tests/test_task4_experiment_controls.py
 python tests/test_deepseek_config.py
 ```
 

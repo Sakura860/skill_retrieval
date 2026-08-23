@@ -3,6 +3,11 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
+import subprocess
+import tempfile
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any, Optional
 
@@ -95,17 +100,121 @@ class LLM:
         return self._parse_json(raw)
 
     def _deepseek(self, messages: list[dict], **kwargs: Any) -> str:
-        import openai
+        request_options = self._deepseek_request_options(messages, kwargs)
+        try:
+            import openai
+        except ModuleNotFoundError:
+            return self._deepseek_http(messages, request_options)
 
         client = openai.OpenAI(api_key=self.api_key, base_url=self.base_url)
-        request_options = self._deepseek_request_options(messages, kwargs)
-        resp = client.chat.completions.create(**request_options)
-        output = resp.choices[0].message.content or ""
-        usage = getattr(resp, "usage", None)
+        response = client.chat.completions.create(**request_options)
+        output = response.choices[0].message.content or ""
+        usage = getattr(response, "usage", None)
         if usage:
             self._record_usage(
                 getattr(usage, "prompt_tokens", 0),
                 getattr(usage, "completion_tokens", 0),
+            )
+        else:
+            self._record_estimated_usage(messages, output)
+        return output
+
+    def _deepseek_http(
+        self,
+        messages: list[dict],
+        request_options: dict[str, Any],
+    ) -> str:
+        """SDK 不可用时使用标准库调用同一兼容接口。"""
+        body = dict(request_options)
+        body.update(body.pop("extra_body", {}))
+        request = urllib.request.Request(
+            f"{self.base_url.rstrip('/')}/chat/completions",
+            data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=120) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            error_body = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(
+                f"DeepSeek HTTP {exc.code}: {error_body[:500]}"
+            ) from exc
+        except urllib.error.URLError as exc:
+            if shutil.which("curl"):
+                payload = self._deepseek_curl(body)
+            else:
+                raise RuntimeError(f"DeepSeek 网络请求失败: {exc.reason}") from exc
+
+        return self._parse_deepseek_payload(messages, payload)
+
+    def _deepseek_curl(self, body: dict[str, Any]) -> dict[str, Any]:
+        """urllib 无法使用系统网络通道时，通过 curl 安全回退。"""
+        body_path: str | None = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                suffix=".json",
+                delete=False,
+            ) as stream:
+                json.dump(body, stream, ensure_ascii=False)
+                body_path = stream.name
+            headers = (
+                f"Authorization: Bearer {self.api_key}\n"
+                "Content-Type: application/json\n"
+            )
+            completed = subprocess.run(
+                [
+                    shutil.which("curl") or "curl",
+                    "--silent",
+                    "--show-error",
+                    "--fail-with-body",
+                    "--max-time",
+                    "120",
+                    "--request",
+                    "POST",
+                    "--header",
+                    "@-",
+                    "--data-binary",
+                    f"@{body_path}",
+                    f"{self.base_url.rstrip('/')}/chat/completions",
+                ],
+                input=headers,
+                text=True,
+                capture_output=True,
+                timeout=130,
+                check=False,
+            )
+        finally:
+            if body_path:
+                Path(body_path).unlink(missing_ok=True)
+        if completed.returncode != 0:
+            error = (completed.stdout or completed.stderr).strip()
+            raise RuntimeError(f"DeepSeek curl 请求失败: {error[:500]}")
+        try:
+            return json.loads(completed.stdout)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError("DeepSeek curl 响应不是有效 JSON") from exc
+
+    def _parse_deepseek_payload(
+        self,
+        messages: list[dict],
+        payload: dict[str, Any],
+    ) -> str:
+        try:
+            output = payload["choices"][0]["message"].get("content") or ""
+        except (KeyError, IndexError, TypeError) as exc:
+            raise RuntimeError("DeepSeek 响应缺少 choices[0].message.content") from exc
+        usage = payload.get("usage") or {}
+        if usage:
+            self._record_usage(
+                usage.get("prompt_tokens", 0),
+                usage.get("completion_tokens", 0),
             )
         else:
             self._record_estimated_usage(messages, output)

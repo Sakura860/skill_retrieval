@@ -6,6 +6,7 @@ import json
 from core.config import PROJECT_ROOT, load_config
 from core.llm import LLM
 from evaluation.run_benchmark import run_benchmark
+from execution.handlers import create_default_skill_registry
 from organization.flat import FlatOrganizer
 from organization.graph import GraphOrganizer
 from organization.hierarchical import HierarchicalOrganizer
@@ -66,6 +67,7 @@ def main() -> None:
         retriever=retriever,
         organizer=organizer,
         llm=llm,
+        skill_registry=create_default_skill_registry(),
         top_k=top_k,
         retrieval_ks=tuple(config["evaluation"]["retrieval_ks"]),
         max_steps=agent_config["max_steps"],

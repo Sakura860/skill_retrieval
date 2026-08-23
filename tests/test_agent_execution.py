@@ -61,7 +61,7 @@ def test_structured_execution():
 
     assert result["success"] is True
     assert result["selected_skill_ids"] == ["s1", "s2"]
-    assert result["answer"] == "hello\nhello->zh"
+    assert result["answer"] == "hello->zh"
     assert result["execution_steps"] == 3
 
 

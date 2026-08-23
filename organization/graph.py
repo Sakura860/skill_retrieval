@@ -4,11 +4,21 @@ from __future__ import annotations
 from collections import defaultdict, deque
 
 from core.schemas import Skill, Task
-from .base import BaseOrganizer
+from .base import BaseOrganizer, OrganizedContext, append_whole_block
 
 
 class GraphOrganizer(BaseOrganizer):
     def organize(self, skills: list[Skill], task: Task | None = None) -> str:
+        return self.organize_context(skills, task).text
+
+    def organize_context(
+        self,
+        skills: list[Skill],
+        task: Task | None = None,
+        context_budget_tokens: int | None = None,
+    ) -> OrganizedContext:
+        if context_budget_tokens is not None and context_budget_tokens < 1:
+            raise ValueError("context_budget_tokens 必须大于 0")
         by_id = {s.id: s for s in skills}
         missing_dependencies = sorted({
             dependency
@@ -37,12 +47,41 @@ class GraphOrganizer(BaseOrganizer):
         cyclic = [sid for sid in indeg if sid not in order]
         order += cyclic
 
-        lines = ["可用技能（依赖顺序）："]
-        for sid in order:
+        blocks: list[str] = []
+        header_added = append_whole_block(
+            blocks,
+            "可用技能（依赖顺序）：",
+            context_budget_tokens,
+        )
+        exposed: list[str] = []
+        truncated: list[str] = []
+        for index, sid in enumerate(order):
+            if not header_added:
+                truncated.append(sid)
+                continue
             s = by_id[sid]
-            lines.append(f"\n- {s.to_prompt(detailed=True)}")
+            block = f"- {s.to_prompt(detailed=True)}"
+            if append_whole_block(blocks, block, context_budget_tokens):
+                exposed.append(sid)
+            else:
+                truncated.extend(order[index:])
+                break
         if missing_dependencies:
-            lines.append(f"\n警告：候选集中缺少依赖：{', '.join(missing_dependencies)}")
+            append_whole_block(
+                blocks,
+                f"警告：候选集中缺少依赖：{', '.join(missing_dependencies)}",
+                context_budget_tokens,
+            )
         if cyclic:
-            lines.append(f"\n警告：检测到依赖环：{', '.join(cyclic)}")
-        return "\n".join(lines)
+            append_whole_block(
+                blocks,
+                f"警告：检测到依赖环：{', '.join(cyclic)}",
+                context_budget_tokens,
+            )
+        return OrganizedContext(
+            text="\n".join(blocks),
+            exposed_skill_ids=exposed,
+            detailed_skill_ids=list(exposed),
+            truncated_skill_ids=truncated,
+            context_budget_tokens=context_budget_tokens,
+        )

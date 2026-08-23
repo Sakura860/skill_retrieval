@@ -1,0 +1,164 @@
+{
+  "run_info": {
+    "run_id": "task3-deepseek-smoke",
+    "timestamp": "2026-08-23T02:06:07.150939+00:00",
+    "task_count": 1,
+    "scored_task_count": 1,
+    "unscored_task_count": 0
+  },
+  "config": {
+    "retriever": "BM25Retriever",
+    "retriever_backend": "native",
+    "organizer": "HierarchicalOrganizer",
+    "top_k": 24,
+    "retrieval_ks": [
+      1,
+      5,
+      10,
+      24
+    ],
+    "max_steps": 10,
+    "enable_reflection": false,
+    "task_ids": [
+      "tcalc01"
+    ],
+    "environment_isolated": true,
+    "llm": {
+      "provider": "deepseek",
+      "model": "deepseek-v4-pro",
+      "thinking": "disabled",
+      "temperature": 0.0
+    }
+  },
+  "metrics": {
+    "retrieval": {
+      "mrr": 1.0,
+      "recall@1": 1.0,
+      "ndcg@1": 1.0,
+      "recall@5": 1.0,
+      "ndcg@5": 1.0,
+      "recall@10": 1.0,
+      "ndcg@10": 1.0,
+      "recall@24": 1.0,
+      "ndcg@24": 1.0
+    },
+    "agent": {
+      "skill_selection_f1": 1.0,
+      "sequence_accuracy": 1.0,
+      "task_success_rate": 1.0
+    },
+    "efficiency": {
+      "avg_skill_context_tokens": 1134.0,
+      "prompt_tokens": 956,
+      "completion_tokens": 72,
+      "total_tokens": 1028,
+      "avg_total_tokens_per_task": 1028.0,
+      "avg_skill_calls": 1.0,
+      "redundant_call_rate": 0.0,
+      "avg_execution_steps": 2.0,
+      "avg_execution_time_ms": 0.11530000028869836
+    }
+  },
+  "per_task": [
+    {
+      "task_id": "tcalc01",
+      "instruction": "计算整数表达式 (18 + 7) * 4。",
+      "ground_truth": null,
+      "retrieved_skill_ids": [
+        "scalc_int",
+        "scalc_dec",
+        "scalc_unit",
+        "scalc_pct",
+        "scalc_agg",
+        "scalc_eq",
+        "sdb_insert",
+        "sdb_update",
+        "sdb_delete",
+        "sdb_select",
+        "sdb_aggregate",
+        "sdb_join",
+        "sjson_extract",
+        "sjson_rename",
+        "sjson_merge",
+        "sjson_filter",
+        "sjson_sort",
+        "sjson_csv",
+        "sfile_create",
+        "sfile_overwrite",
+        "sfile_append",
+        "sfile_copy",
+        "sfile_move",
+        "sfile_patch_json"
+      ],
+      "retrieved_scores": [
+        14.127339835216723,
+        14.127339835216723,
+        6.586047385372562,
+        4.855710900372713,
+        4.855710900372713,
+        4.495925792209484,
+        1.153532090413356,
+        1.153532090413356,
+        1.153532090413356,
+        1.059973195039696,
+        1.059973195039696,
+        1.059973195039696,
+        1.0196032762137581,
+        1.0196032762137581,
+        0.9637168820851858,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "retrieval_metrics": {
+        "mrr": 1.0,
+        "recall@1": 1.0,
+        "ndcg@1": 1.0,
+        "recall@5": 1.0,
+        "ndcg@5": 1.0,
+        "recall@10": 1.0,
+        "ndcg@10": 1.0,
+        "recall@24": 1.0,
+        "ndcg@24": 1.0
+      },
+      "selected_skill_ids": [
+        "scalc_int"
+      ],
+      "expected_skill_ids": [
+        "scalc_int"
+      ],
+      "expected_skill_sequence": [
+        "scalc_int"
+      ],
+      "skill_selection_f1": 1.0,
+      "sequence_correct": true,
+      "execution_success": true,
+      "task_success": true,
+      "scored": true,
+      "verifier_type": "exact_match",
+      "verifier_details": {
+        "effects": []
+      },
+      "verifier_expected": 100,
+      "verifier_actual": "100",
+      "failure_reason": null,
+      "skill_calls": 1,
+      "redundant_calls": 0,
+      "skill_context_tokens": 1134,
+      "token_usage": {
+        "prompt_tokens": 956,
+        "completion_tokens": 72,
+        "total_tokens": 1028
+      },
+      "execution_steps": 2,
+      "execution_time_ms": 0.11530000028869836,
+      "answer": "100"
+    }
+  ]
+}

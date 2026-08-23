@@ -1,0 +1,22 @@
+{
+  "users_basic": {
+    "type": "sqlite",
+    "setup_sql": [
+      "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, active INTEGER)",
+      "INSERT INTO users VALUES (1, 'Ada', 37, 1)",
+      "INSERT INTO users VALUES (2, 'Bob', 16, 0)",
+      "INSERT INTO users VALUES (3, 'Cara', 22, 1)"
+    ]
+  },
+  "users_orders": {
+    "type": "sqlite",
+    "setup_sql": [
+      "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT)",
+      "CREATE TABLE orders(id INTEGER PRIMARY KEY, user_id INTEGER, amount REAL)",
+      "INSERT INTO users VALUES (1, 'Ada')",
+      "INSERT INTO users VALUES (3, 'Cara')",
+      "INSERT INTO orders VALUES (101, 1, 50.0)",
+      "INSERT INTO orders VALUES (102, 3, 75.5)"
+    ]
+  }
+}
