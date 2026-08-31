@@ -1,0 +1,1013 @@
+{
+  "experiment_id": "20260824T094016Z",
+  "created_at": "2026-08-24T09:40:16.979705+00:00",
+  "dataset": "benchmark_v02",
+  "split": "dev",
+  "task_ids": [
+    "v2graph01",
+    "v2graph02"
+  ],
+  "model": "deepseek-v4-pro",
+  "controlled": {
+    "original_candidates": "task fixture with prerequisite intentionally omitted",
+    "typed_edges": "task.metadata.graph_edges",
+    "only_changed_variable": "max_additional_skills: 0 versus 2",
+    "temperature": 0.0,
+    "thinking": "disabled"
+  },
+  "runs": {
+    "without_completion": {
+      "per_task": [
+        {
+          "task_id": "v2graph01",
+          "instruction": "先复制 source.txt 为 backup.txt 并保留源文件，再在 backup.txt 末尾追加一行 extra。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg"
+          ],
+          "retrieved_scores": [
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            3.9041478861310566,
+            1.8163803957890468,
+            1.5714712749387307,
+            1.2808717906494902
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_copy",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_eq",
+            "scalc_pct"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@5": 0.5,
+            "ndcg@5": 0.3065735963827292,
+            "recall@10": 0.5,
+            "ndcg@10": 0.3065735963827292,
+            "recall@24": 0.5,
+            "ndcg@24": 0.3065735963827292
+          },
+          "selected_skill_ids": [
+            "sfile_move",
+            "sfile_append"
+          ],
+          "expected_skill_ids": [
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "expected_skill_sequence": [
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "skill_selection_f1": 0.5,
+          "sequence_correct": false,
+          "execution_success": true,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "path": "source.txt"
+          },
+          "verifier_expected": {
+            "source.txt": {
+              "content": "base",
+              "exists": true
+            }
+          },
+          "verifier_actual": {
+            "source.txt": null
+          },
+          "failure_reason": "file_state_mismatch",
+          "skill_calls": 2,
+          "redundant_calls": 1,
+          "skill_context_tokens": 1773,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 1773,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [
+            "expansion_limit_reached"
+          ],
+          "token_usage": {
+            "prompt_tokens": 1371,
+            "completion_tokens": 148,
+            "total_tokens": 1519
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 3.9212999981828034,
+          "answer": "backup.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "move_file -> append_text_file",
+              "plan": [
+                {
+                  "skill_name": "move_file",
+                  "arguments": {
+                    "source": "$input.source",
+                    "destination": "$input.destination"
+                  },
+                  "reason": "将源文件移动到目标位置，实现复制并保留源文件的效果，因为移动后源文件消失，但目标文件已存在，后续追加操作可在目标文件上进行。"
+                },
+                {
+                  "skill_name": "append_text_file",
+                  "arguments": {
+                    "path": "$input.destination",
+                    "content": "$input.append_content"
+                  },
+                  "reason": "在目标文件末尾追加指定内容，完成追加一行 extra 的任务。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sfile_create",
+                "sfile_overwrite",
+                "sfile_append",
+                "sfile_move",
+                "sfile_patch_json",
+                "scalc_unit",
+                "sjson_csv",
+                "sdb_insert",
+                "scalc_agg"
+              ],
+              "selection_evidence": [],
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "backup.txt",
+              "index": 1,
+              "skill_id": "sfile_move",
+              "skill_name": "move_file",
+              "arguments": {
+                "source": "source.txt",
+                "destination": "backup.txt"
+              },
+              "success": true,
+              "duration_ms": 2.7066999973612837
+            },
+            {
+              "step": "action",
+              "content": "backup.txt",
+              "index": 2,
+              "skill_id": "sfile_append",
+              "skill_name": "append_text_file",
+              "arguments": {
+                "path": "backup.txt",
+                "content": "\nextra"
+              },
+              "success": true,
+              "duration_ms": 1.2146000008215196
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "source.txt": {
+                "exists": true,
+                "content": "base"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "backup.txt": {
+                "exists": true,
+                "content": "base\nextra"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2graph02",
+          "instruction": "先创建 settings.json，再只把其中 theme 修改为 dark 并保留 lang。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "retrieved_scores": [
+            11.899042298250423,
+            3.170912666600519,
+            2.571185115555256,
+            2.571185115555256,
+            2.571185115555256,
+            2.571185115555256,
+            2.4614409835663804,
+            1.9650197107184926,
+            1.2162605538034539,
+            1.2162605538034539
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_eq",
+            "scalc_pct"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 0.5,
+            "ndcg@1": 1.0,
+            "recall@5": 0.5,
+            "ndcg@5": 0.6131471927654584,
+            "recall@10": 0.5,
+            "ndcg@10": 0.6131471927654584,
+            "recall@24": 0.5,
+            "ndcg@24": 0.6131471927654584
+          },
+          "selected_skill_ids": [
+            "sfile_patch_json"
+          ],
+          "expected_skill_ids": [
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "expected_skill_sequence": [
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "skill_selection_f1": 0.6666666666666666,
+          "sequence_correct": false,
+          "execution_success": false,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "path": "settings.json"
+          },
+          "verifier_expected": {
+            "settings.json": {
+              "exists": true,
+              "json": {
+                "lang": "zh",
+                "theme": "dark"
+              }
+            }
+          },
+          "verifier_actual": {
+            "settings.json": null
+          },
+          "failure_reason": "execution_failed",
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 2066,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 2066,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "detailed_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [
+            "expansion_limit_reached"
+          ],
+          "token_usage": {
+            "prompt_tokens": 1572,
+            "completion_tokens": 92,
+            "total_tokens": 1664
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.0823000011441763,
+          "answer": "FileNotFoundError: 文件不存在: settings.json",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "patch_json_file",
+              "plan": [
+                {
+                  "skill_name": "patch_json_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "patch": "$input.patch"
+                  },
+                  "reason": "任务要求修改 settings.json 中的 theme 为 dark 并保留其他键，patch_json_file 技能正好用于读取已有 JSON 并只更新 patch 中的键，符合要求。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sfile_patch_json",
+                "scalc_unit",
+                "sjson_extract",
+                "sjson_rename",
+                "sjson_filter",
+                "sjson_sort",
+                "sjson_merge",
+                "sjson_csv",
+                "sdb_select",
+                "sdb_aggregate"
+              ],
+              "selection_evidence": [],
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "FileNotFoundError: 文件不存在: settings.json",
+              "index": 1,
+              "skill_id": "sfile_patch_json",
+              "skill_name": "patch_json_file",
+              "arguments": {
+                "path": "settings.json",
+                "patch": {
+                  "theme": "dark"
+                }
+              },
+              "success": false,
+              "duration_ms": 1.0823000011441763
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 2,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.6666666666666666,
+          "ndcg@1": 0.5,
+          "ndcg@10": 0.4598603945740938,
+          "ndcg@24": 0.4598603945740938,
+          "ndcg@5": 0.4598603945740938,
+          "recall@1": 0.25,
+          "recall@10": 0.5,
+          "recall@24": 0.5,
+          "recall@5": 0.5
+        },
+        "agent": {
+          "skill_selection_f1": 0.5833333333333333,
+          "sequence_accuracy": 0.0,
+          "task_success_rate": 0.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 1919.5,
+          "total_tokens": 3183,
+          "avg_total_tokens_per_task": 1591.5,
+          "avg_skill_calls": 1.5,
+          "avg_planner_calls": 1.0,
+          "avg_argument_repairs": 0.0
+        }
+      }
+    },
+    "with_prerequisite_completion": {
+      "per_task": [
+        {
+          "task_id": "v2graph01",
+          "instruction": "先复制 source.txt 为 backup.txt 并保留源文件，再在 backup.txt 末尾追加一行 extra。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg"
+          ],
+          "retrieved_scores": [
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            5.3463425936683455,
+            3.9041478861310566,
+            1.8163803957890468,
+            1.5714712749387307,
+            1.2808717906494902
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_copy",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_eq",
+            "scalc_pct"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@5": 0.5,
+            "ndcg@5": 0.3065735963827292,
+            "recall@10": 0.5,
+            "ndcg@10": 0.3065735963827292,
+            "recall@24": 0.5,
+            "ndcg@24": 0.3065735963827292
+          },
+          "selected_skill_ids": [
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "expected_skill_ids": [
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "expected_skill_sequence": [
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "backup.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "backup.txt": {
+                "content": "base\nextra",
+                "exists": true
+              },
+              "source.txt": {
+                "content": "base",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "backup.txt": {
+                "exists": true,
+                "content": "base\nextra"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "base"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 1979,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 1979,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg",
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_insert",
+            "scalc_agg",
+            "sfile_copy",
+            "sfile_append"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [
+            "sfile_copy"
+          ],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 1507,
+            "completion_tokens": 145,
+            "total_tokens": 1652
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 4.837800002860604,
+          "answer": "backup.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "copy_file_preserve_source -> append_text_file",
+              "plan": [
+                {
+                  "skill_name": "copy_file_preserve_source",
+                  "arguments": {
+                    "source": "$input.source",
+                    "destination": "$input.destination"
+                  },
+                  "reason": "复制源文件到目标文件，保留源文件，且目标文件不存在，符合复制技能要求。"
+                },
+                {
+                  "skill_name": "append_text_file",
+                  "arguments": {
+                    "path": "$input.destination",
+                    "content": "$input.append_content"
+                  },
+                  "reason": "在复制后的目标文件末尾追加内容，内容已包含前导换行符，符合追加技能要求。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sfile_create",
+                "sfile_overwrite",
+                "sfile_move",
+                "sfile_patch_json",
+                "scalc_unit",
+                "sjson_csv",
+                "sdb_insert",
+                "scalc_agg",
+                "sfile_copy",
+                "sfile_append"
+              ],
+              "selection_evidence": [],
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "backup.txt",
+              "index": 1,
+              "skill_id": "sfile_copy",
+              "skill_name": "copy_file_preserve_source",
+              "arguments": {
+                "source": "source.txt",
+                "destination": "backup.txt"
+              },
+              "success": true,
+              "duration_ms": 3.643800002464559
+            },
+            {
+              "step": "action",
+              "content": "backup.txt",
+              "index": 2,
+              "skill_id": "sfile_append",
+              "skill_name": "append_text_file",
+              "arguments": {
+                "path": "backup.txt",
+                "content": "\nextra"
+              },
+              "success": true,
+              "duration_ms": 1.194000000396045
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "source.txt": {
+                "exists": true,
+                "content": "base"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "backup.txt": {
+                "exists": true,
+                "content": "base\nextra"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "base"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2graph02",
+          "instruction": "先创建 settings.json，再只把其中 theme 修改为 dark 并保留 lang。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "retrieved_scores": [
+            11.899042298250423,
+            3.170912666600519,
+            2.571185115555256,
+            2.571185115555256,
+            2.571185115555256,
+            2.571185115555256,
+            2.4614409835663804,
+            1.9650197107184926,
+            1.2162605538034539,
+            1.2162605538034539
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_patch_json",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_eq",
+            "scalc_pct"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 0.5,
+            "ndcg@1": 1.0,
+            "recall@5": 0.5,
+            "ndcg@5": 0.6131471927654584,
+            "recall@10": 0.5,
+            "ndcg@10": 0.6131471927654584,
+            "recall@24": 0.5,
+            "ndcg@24": 0.6131471927654584
+          },
+          "selected_skill_ids": [
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "expected_skill_ids": [
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "expected_skill_sequence": [
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "settings.json"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "settings.json": {
+                "exists": true,
+                "json": {
+                  "lang": "zh",
+                  "theme": "dark"
+                }
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "settings.json": {
+                "exists": true,
+                "content": "{\"lang\": \"zh\", \"theme\": \"dark\"}",
+                "json": {
+                  "lang": "zh",
+                  "theme": "dark"
+                }
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 2266,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 2266,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "detailed_skill_ids": [
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sfile_create",
+            "sfile_patch_json"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [
+            "sfile_create"
+          ],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 1704,
+            "completion_tokens": 123,
+            "total_tokens": 1827
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 4.9295999997411855,
+          "answer": "{\"lang\": \"zh\", \"theme\": \"dark\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "create_text_file -> patch_json_file",
+              "plan": [
+                {
+                  "skill_name": "create_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.initial_content"
+                  },
+                  "reason": "创建 settings.json 文件，内容为初始 JSON 字符串。"
+                },
+                {
+                  "skill_name": "patch_json_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "patch": "$input.patch"
+                  },
+                  "reason": "只修改 theme 为 dark，保留 lang 字段。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "scalc_unit",
+                "sjson_extract",
+                "sjson_rename",
+                "sjson_filter",
+                "sjson_sort",
+                "sjson_merge",
+                "sjson_csv",
+                "sdb_select",
+                "sdb_aggregate",
+                "sfile_create",
+                "sfile_patch_json"
+              ],
+              "selection_evidence": [],
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "settings.json",
+              "index": 1,
+              "skill_id": "sfile_create",
+              "skill_name": "create_text_file",
+              "arguments": {
+                "path": "settings.json",
+                "content": "{\"theme\":\"light\",\"lang\":\"zh\"}"
+              },
+              "success": true,
+              "duration_ms": 2.038499998889165
+            },
+            {
+              "step": "action",
+              "content": "{\"lang\": \"zh\", \"theme\": \"dark\"}",
+              "index": 2,
+              "skill_id": "sfile_patch_json",
+              "skill_name": "patch_json_file",
+              "arguments": {
+                "path": "settings.json",
+                "patch": {
+                  "theme": "dark"
+                }
+              },
+              "success": true,
+              "duration_ms": 2.8911000008520205
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {
+              "settings.json": {
+                "exists": true,
+                "content": "{\"lang\": \"zh\", \"theme\": \"dark\"}",
+                "json": {
+                  "lang": "zh",
+                  "theme": "dark"
+                }
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 2,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.6666666666666666,
+          "ndcg@1": 0.5,
+          "ndcg@10": 0.4598603945740938,
+          "ndcg@24": 0.4598603945740938,
+          "ndcg@5": 0.4598603945740938,
+          "recall@1": 0.25,
+          "recall@10": 0.5,
+          "recall@24": 0.5,
+          "recall@5": 0.5
+        },
+        "agent": {
+          "skill_selection_f1": 1.0,
+          "sequence_accuracy": 1.0,
+          "task_success_rate": 1.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 2122.5,
+          "total_tokens": 3479,
+          "avg_total_tokens_per_task": 1739.5,
+          "avg_skill_calls": 2.0,
+          "avg_planner_calls": 1.0,
+          "avg_argument_repairs": 0.0
+        }
+      }
+    }
+  }
+}

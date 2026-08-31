@@ -60,6 +60,13 @@ def main() -> None:
                 run_id=run_id,
                 max_steps=config["agent"]["max_steps"],
                 enable_reflection=config["agent"]["enable_reflection"],
+                planner_mode=config["agent"].get("planner_mode", "one_stage"),
+                max_argument_repairs=config["agent"].get(
+                    "max_argument_repairs", 1
+                ),
+                planner_disclosure_level=config["agent"].get(
+                    "planner_disclosure_level", "full"
+                ),
             )
             runs.append(out)
             retrieval = out["metrics"]["retrieval"]

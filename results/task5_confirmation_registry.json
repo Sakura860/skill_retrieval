@@ -1,0 +1,14 @@
+{
+  "runs": [
+    {
+      "protocol_id": "task5-end-to-end-preregistered-20260830-v01",
+      "protocol_sha256": "9b218d49fc100745927f9d5631d5dcc56a0f2a1ba2b0a8f17b0c0414c2e15d9e",
+      "experiment_id": "20260830T143714Z",
+      "output_path": "D:\\skill\\skill-agent\\results\\task5_confirmation_frozen_20260830.json",
+      "status": "completed",
+      "created_at": "2026-08-30T14:37:14.513296+00:00",
+      "completed_at": "2026-08-30T14:38:10.991850+00:00",
+      "result_sha256": "c0e3042931d7a898bc86461e7199888ea33fbf0f7dc1f1b042a383c2acc037ad"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "protocol_id": "task5-end-to-end-preregistered-20260830-v01",
+  "status": "frozen",
+  "created_at": "2026-08-30T22:40:00+08:00",
+  "dataset": {
+    "name": "benchmark_v02",
+    "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks_sha256": "3dd6101e8feda1deb52ad5abece3aa14c37cf4abc2084645c01ac18226706fb3",
+    "environment_fixtures_sha256": "6668fe257fb0877a3b2c834b23b915a67e6fd85521104fcaf7e7c3bced6315db",
+    "development_task_ids": [
+      "v2body01", "v2body03", "v2body04", "v2body06", "v2rank01",
+      "v2rank02", "v2graph01", "v2graph02", "v2alt02", "v2schema01"
+    ],
+    "confirmation_task_ids": [
+      "v2body02", "v2body05", "v2alt01", "v2schema02", "v2confirm01",
+      "v2confirm02", "v2confirm03", "v2confirm04", "v2confirm05",
+      "v2confirm06"
+    ]
+  },
+  "controlled": {
+    "model": "deepseek-v4-pro",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "retriever": "BM25Retriever(text_level=brief)",
+    "candidate_source": "retriever_top_k",
+    "retrieval_top_k": 10,
+    "organizer": "HierarchicalOrganizer(detail_top_k=0 for adaptive_signals; 3 for one_stage)",
+    "environment": "isolated task fixture",
+    "reflection": false,
+    "max_argument_repairs": 1
+  },
+  "development_methods": ["one_stage", "adaptive_signals"],
+  "decision_rules": {
+    "two_stage_vs_one_stage": {
+      "candidate_method": "adaptive_signals",
+      "minimum_absolute_task_success_gain": 0.10,
+      "maximum_total_token_ratio": 1.15,
+      "maximum_p50_end_to_end_latency_ratio": 1.80,
+      "all_conditions_required": true
+    },
+    "adaptive_vs_always_full": {
+      "maximum_absolute_task_success_drop": 0.02,
+      "minimum_total_token_reduction": 0.10,
+      "minimum_p50_end_to_end_latency_reduction": 0.15,
+      "success_condition_required": true,
+      "cost_condition": "token_or_latency"
+    }
+  },
+  "confirmation_policy": {
+    "allowed_only_after_status": "frozen",
+    "maximum_runs": 1,
+    "development_use_forbidden": true
+  },
+  "note": "End-to-end protocol with real BM25 top-10. No gold injection. Retrieval metrics and Agent outcomes share the same candidates."
+}

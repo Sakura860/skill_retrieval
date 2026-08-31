@@ -1,0 +1,61 @@
+{
+  "freeze_id": "task5-freeze-candidate-20260830-v02",
+  "status": "confirmation_completed",
+  "confirmation_allowed": false,
+  "disclosure_protocol_sha256": "fcdd6a70b2e8300fcc737fd15accd8d66a2a178a119107943aa181acd04a1a74",
+  "end_to_end_development_protocol_sha256": "508f6c7b11bb9553e3cd09acf0514baae232693bff143e973cc158152ea7296e",
+  "end_to_end_frozen_protocol_sha256": "9b218d49fc100745927f9d5631d5dcc56a0f2a1ba2b0a8f17b0c0414c2e15d9e",
+  "frozen_change": "Only status changed from development_preregistered to frozen after the three development repeats passed; controlled settings, task IDs, hashes, methods, and decision rules are unchanged.",
+  "signal_policy_sha256": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968",
+  "disclosure_repeat_summary": {
+    "path": "results/task5_disclosure_dev_preregistered_v07_summary.json",
+    "sha256": "17b5ba969a6862c6c74cf6e78be26e6fa1b0f8bcf9abea16a1025b8fe7a8eab5",
+    "all_repeats_pass": true,
+    "task_success_rate": 1.0,
+    "mean_token_reduction_vs_always_full": 0.11445968003250688
+  },
+  "end_to_end_repeat_summary": {
+    "path": "results/task5_end_to_end_dev_v01_summary.json",
+    "sha256": "10e48ca7d4114d20c6cbd689eb3d7c3651a958e99a886b7e6b80a03731c696b5",
+    "all_repeats_pass": true,
+    "one_stage_task_success_rate": 0.7,
+    "adaptive_signals_task_success_rate": 0.8,
+    "mean_token_reduction_vs_one_stage": 0.119649163656248,
+    "mean_p50_latency_increase_vs_one_stage": 0.4794229041965141
+  },
+  "published_baseline_evidence": {
+    "protocol": "published_baselines_v02",
+    "controls_and_encoder_path": "results/published_baselines_controls_encoder_dev_v02_20260830.json",
+    "controls_and_encoder_sha256": "474dc29c3f01190021b035811e461730287e105156cc4dc42e799d3870fee56a",
+    "strict_pipeline_path": "results/published_baselines_skillrouter_pipeline_dev_v02_top20_20260830.json",
+    "strict_pipeline_sha256": "bc7e1e5952324874899c23fe4b260f52cca37ac1f708714b2751be777a91cccb",
+    "upstream_commit": "2f0c69fe6786bfee6312a1ab5d5f69abdc6bd245",
+    "fallback_allowed": false
+  },
+  "confirmation": {
+    "protocol": "configs/task5_end_to_end_preregistered_20260830.json",
+    "methods": ["one_stage", "adaptive_signals"],
+    "split": "confirmation",
+    "maximum_logical_runs": 1,
+    "persistent_registry": "results/task5_confirmation_registry.json",
+    "resume_policy": "An interrupted logical run may only resume the exact registered output; it does not create a new run.",
+    "status": "completed",
+    "logical_runs_used": 1,
+    "result_path": "results/task5_confirmation_frozen_20260830.json",
+    "result_sha256": "c0e3042931d7a898bc86461e7199888ea33fbf0f7dc1f1b042a383c2acc037ad",
+    "registry_sha256": "276775effd16f977350c0cf1c7f3abf18fced59826e6156fbb2b6fb6efb4ae0e",
+    "decision_audit_path": "results/task5_confirmation_decision_audit_20260830.json",
+    "decision_audit_sha256": "e54c68251f2d224f3ad9904a298fbe6d0e49db29e468fc7118d5878cc1d960d5",
+    "corrected_preregistered_decision": "pass",
+    "one_stage_task_success_rate": 0.9,
+    "adaptive_signals_task_success_rate": 1.0,
+    "adaptive_signals_total_token_ratio": 0.9493446687920651,
+    "adaptive_signals_p50_latency_ratio": 1.6583582216958297
+  },
+  "blocking_conditions": [],
+  "non_blocking_followups": [
+    "Run the official SkillRouter public 78k/79k large-pool benchmark on CUDA for reciprocal external-dataset validation.",
+    "Evaluate Graph-of-Skills later as the external structural baseline without changing this disclosure confirmation protocol."
+  ],
+  "next_transition": "Report the frozen confirmation once and do not retune adaptive_signals from these tasks. Any new method requires a new development/confirmation split and a new protocol ID."
+}

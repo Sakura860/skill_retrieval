@@ -1,0 +1,47 @@
+{
+  "audit_id": "task5-confirmation-decision-audit-20260830-v01",
+  "source_result": {
+    "path": "results/task5_confirmation_frozen_20260830.json",
+    "sha256": "c0e3042931d7a898bc86461e7199888ea33fbf0f7dc1f1b042a383c2acc037ad",
+    "registry": "results/task5_confirmation_registry.json",
+    "logical_runs": 1,
+    "rerun_performed": false,
+    "source_result_modified": false
+  },
+  "issue": {
+    "field": "decision_report.two_stage_vs_one_stage.checks.task_success_gain",
+    "stored_status": "fail",
+    "stored_float_gain": 0.09999999999999998,
+    "threshold": 0.1,
+    "cause": "Binary floating-point representation made the exact 1/10 task gain slightly smaller than 0.1."
+  },
+  "exact_count_audit": {
+    "one_stage_successes": 9,
+    "adaptive_signals_successes": 10,
+    "scored_tasks_per_method": 10,
+    "exact_absolute_task_success_gain": "1/10",
+    "meets_minimum_absolute_task_success_gain": true
+  },
+  "corrected_decision": {
+    "status": "pass",
+    "checks": {
+      "task_success_gain": true,
+      "total_token_ratio": true,
+      "p50_latency_ratio": true
+    },
+    "observed": {
+      "task_success_gain": 0.1,
+      "total_token_ratio": 0.9493446687920651,
+      "p50_latency_ratio": 1.6583582216958297
+    }
+  },
+  "code_correction": {
+    "comparison_tolerance": 1e-12,
+    "runner_path": "experiments/run_task5_disclosure.py",
+    "runner_sha256": "48a7f9effed30e064cc242da56a0023b56c1d5034f40e1e198c0258f003ed518",
+    "regression_test_path": "tests/test_task5_confirmation_guard.py",
+    "regression_test_sha256": "70eb106b7832eaa6302fd391785f601ff149431fb446cc551b33b85eb2e34b24",
+    "regression_test_status": "passed"
+  },
+  "interpretation": "The frozen end-to-end confirmation meets all preregistered two-stage-vs-one-stage criteria. The always-full comparison is incomplete by design because the confirmation run only included the frozen final candidate and one-stage control."
+}

@@ -1,0 +1,295 @@
+{
+  "experiment_id": "20260824T093451Z",
+  "created_at": "2026-08-24T09:34:51.890287+00:00",
+  "model": "deepseek-v4-pro",
+  "dataset": "benchmark_v01",
+  "split": "dev",
+  "task_ids": [
+    "tdb01"
+  ],
+  "controlled": {
+    "retriever": "BM25Retriever(text_level=brief)",
+    "candidate_source": "task_fixture",
+    "context_budget_source": "task_metadata",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "initial_environment": "isolated task fixture"
+  },
+  "methods": {
+    "two_stage_one_repair": {
+      "planner_mode": "two_stage",
+      "max_argument_repairs": 1,
+      "detail_top_k": 0
+    }
+  },
+  "runs": {
+    "two_stage_one_repair": {
+      "per_task": [
+        {
+          "task_id": "tdb01",
+          "instruction": "查询 users 表中 age>=18 的用户姓名，按姓名升序返回。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_select",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_eq",
+            "sjson_csv",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "scalc_agg",
+            "scalc_pct",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append"
+          ],
+          "retrieved_scores": [
+            13.108729940443354,
+            10.344442547419224,
+            3.5572995547401103,
+            3.216641398401166,
+            3.216641398401166,
+            3.216641398401166,
+            3.216641398401166,
+            3.040331167593668,
+            2.764159430468581,
+            2.764159430468581,
+            2.739965707779943,
+            1.9201036828886386,
+            1.8946892609364876,
+            1.8946892609364876,
+            1.8946892609364876,
+            1.7920572501921446,
+            1.1671733885716082,
+            0.6903768784362839,
+            0.6903768784362839,
+            0.6903768784362839
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_select",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_eq",
+            "sjson_csv",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "scalc_agg",
+            "scalc_pct",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_unit"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [],
+          "expected_skill_ids": [
+            "sdb_select"
+          ],
+          "expected_skill_sequence": [
+            "sdb_select"
+          ],
+          "skill_selection_f1": 0.0,
+          "sequence_correct": false,
+          "execution_success": false,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "sqlite_state",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": [
+            [
+              "Ada"
+            ],
+            [
+              "Cara"
+            ]
+          ],
+          "verifier_actual": [
+            [
+              "Ada"
+            ],
+            [
+              "Cara"
+            ]
+          ],
+          "failure_reason": "schema_validation_failed",
+          "skill_calls": 0,
+          "redundant_calls": 0,
+          "skill_context_tokens": 942,
+          "context_budget_tokens": 2000,
+          "planner_mode": "two_stage",
+          "planner_calls": 3,
+          "repair_attempts": 1,
+          "validation_errors": [
+            "步骤 2 (sort_json_records): arguments.records[] 的 $last_output 类型不兼容：前一步返回 array，参数要求 object"
+          ],
+          "selection_evidence": [
+            {
+              "requirement": "查询 users 表中 age>=18 的用户姓名",
+              "skill_id": "sdb_select"
+            },
+            {
+              "requirement": "按姓名升序返回",
+              "skill_id": "sjson_sort"
+            }
+          ],
+          "selection_context_tokens": 516,
+          "planning_context_tokens": 426,
+          "candidate_count": 20,
+          "target_gold_rank": 3,
+          "exposed_skill_ids": [
+            "sdb_aggregate",
+            "sdb_join",
+            "sdb_select",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_eq",
+            "scalc_agg",
+            "scalc_pct",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append"
+          ],
+          "detailed_skill_ids": [
+            "sdb_select",
+            "sjson_sort"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 1488,
+            "completion_tokens": 303,
+            "total_tokens": 1791
+          },
+          "execution_steps": 1,
+          "execution_time_ms": 0.0,
+          "answer": "",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "未生成有效计划",
+              "plan": [],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sdb_select",
+                "sjson_sort"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "查询 users 表中 age>=18 的用户姓名",
+                  "skill_id": "sdb_select"
+                },
+                {
+                  "requirement": "按姓名升序返回",
+                  "skill_id": "sjson_sort"
+                }
+              ],
+              "validation_errors": [
+                "步骤 2 (sort_json_records): arguments.records[] 的 $last_output 类型不兼容：前一步返回 array，参数要求 object"
+              ],
+              "repair_attempts": 1
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb01-lq_90w1c\\task.db",
+            "query_result": [
+              [
+                "Ada"
+              ],
+              [
+                "Cara"
+              ]
+            ]
+          },
+          "final_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-tdb01-lq_90w1c\\task.db",
+            "query_result": [
+              [
+                "Ada"
+              ],
+              [
+                "Cara"
+              ]
+            ]
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 1,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.3333333333333333,
+          "ndcg@1": 0.0,
+          "ndcg@10": 0.5,
+          "ndcg@20": 0.5,
+          "ndcg@3": 0.5,
+          "ndcg@5": 0.5,
+          "recall@1": 0.0,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 1.0,
+          "recall@5": 1.0
+        },
+        "agent": {
+          "skill_selection_f1": 0.0,
+          "sequence_accuracy": 0.0,
+          "task_success_rate": 0.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 942.0,
+          "total_tokens": 1791,
+          "avg_total_tokens_per_task": 1791.0,
+          "avg_skill_calls": 0.0,
+          "avg_planner_calls": 3.0,
+          "avg_argument_repairs": 1.0
+        }
+      }
+    }
+  }
+}

@@ -32,25 +32,51 @@ class Skill:
             tags = " ".join(self.tags)
             return f"{self.name} {self.category} {self.brief_description} {tags}".strip()
         if level == "detailed":
-            examples = " ".join(self.examples)
             return (
                 f"{self.name} {self.category} {self.brief_description} "
-                f"{self.detailed_description} {examples}"
+                f"{self.detailed_description}"
             ).strip()
+        if level in {"all", "body"}:
+            body = {
+                "name": self.name,
+                "category": self.category,
+                "brief_description": self.brief_description,
+                "detailed_description": self.detailed_description,
+                "parameters": self.parameters,
+                "returns": self.returns,
+                "tags": self.tags,
+                "examples": self.examples,
+                "dependencies": self.dependencies,
+                "metadata": self.metadata,
+            }
+            return json.dumps(body, ensure_ascii=False, sort_keys=True)
         raise ValueError(f"不支持的描述层级: {level}")
 
-    def to_prompt(self, detailed: bool = False) -> str:
-        """生成注入 Agent 上下文的技能说明。"""
+    def to_prompt(
+        self,
+        detailed: bool = False,
+        level: str | None = None,
+    ) -> str:
+        """生成注入 Agent 上下文的 brief/schema/full 分层说明。
+
+        ``detailed`` 保留为兼容参数；新代码应显式传入 ``level``。
+        """
+        resolved_level = level or ("full" if detailed else "brief")
+        if resolved_level not in {"brief", "schema", "full"}:
+            raise ValueError("prompt level 必须是 brief、schema 或 full")
         text = f"{self.name}: {self.brief_description}"
-        if not detailed:
+        if resolved_level == "brief":
             return text
-        details = [text, f"详细说明: {self.detailed_description}"]
+        details = [text]
         if self.parameters:
             details.append(
                 f"参数Schema: {json.dumps(self.parameters, ensure_ascii=False)}"
             )
         if self.returns:
             details.append(f"返回Schema: {json.dumps(self.returns, ensure_ascii=False)}")
+        if resolved_level == "schema":
+            return "\n".join(details)
+        details.insert(1, f"详细说明: {self.detailed_description}")
         if self.dependencies:
             details.append(f"依赖: {', '.join(self.dependencies)}")
         if self.examples:
@@ -99,8 +125,11 @@ class Task:
     ground_truth: Any = None
     metadata: dict = field(default_factory=dict)
     evaluation: TaskEvaluationConfig | None = None
+    inputs: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        if not isinstance(self.inputs, dict):
+            raise TypeError("inputs 必须是字典")
         if isinstance(self.evaluation, dict):
             self.evaluation = TaskEvaluationConfig(**self.evaluation)
         elif self.evaluation is not None and not isinstance(

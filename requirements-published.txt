@@ -1,0 +1,7 @@
+# Optional dependencies for the official SkillRouter open-model baselines.
+# Kept separate so mock/offline development remains lightweight.
+torch>=2.1
+transformers>=4.51
+numpy
+safetensors
+sentencepiece

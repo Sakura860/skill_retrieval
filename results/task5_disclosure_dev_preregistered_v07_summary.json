@@ -1,0 +1,121 @@
+{
+  "protocol_sha256": "fcdd6a70b2e8300fcc737fd15accd8d66a2a178a119107943aa181acd04a1a74",
+  "source_manifest": {
+    "core/llm.py": "0310dfd75311f68788e8ff4575a9234581f2bcaf6bcf49fdbdac1bb4dcd3ee94",
+    "core/schemas.py": "702c7e364e08d8475a263de8e2a022bbdca2e9f4ab9c8e430d08cd426e9c38cf",
+    "agent/agent.py": "d75fa93ac08ad0a504791ea3bd7b8d9872020df19d58a79a848745671a67deaf",
+    "agent/planner.py": "5d68b6bf87e29054a58a48ea1bf1eca776a8554e98a202c95b78dd1b9f1b17ae",
+    "agent/disclosure_policy.py": "8e5612826b2441fd85da37e23b6be2b0c442e12135cf216f09869774ca832e3b",
+    "agent/schema_validation.py": "6ea08b04a3af0b5bd3e5620833102b59181f919c187473c2f89acbc84782bb0e",
+    "evaluation/run_benchmark.py": "bc1ee4b4f97e95c622f99dea77b3bbf09b88e5645ad8fa8805d790740c4b2c5d",
+    "evaluation/task_metrics.py": "fedc1a34d91921ba781d21043b7bb20edd631c0cf6c2deea4c3b7584f71e9e5b",
+    "evaluation/verifiers.py": "ed2469b27799f4b608127c3070ece05c4ad4985e427b149ed990df956b97c7d9",
+    "execution/handlers.py": "ca8030c4e23fb2323723f12e215b56768c5329b7f5338f1fdbcbf402611af8a6",
+    "organization/hierarchical.py": "7f32cb6ce82a8d5d51423680fad423bebf35a836e39e52ac8316374cc070cddf",
+    "retrieval/bm25.py": "0fed46d5e76e769195f51692e43a42c4d3aee1c128e3c9691d2b16a2a1f19cd5",
+    "experiments/run_task5_disclosure.py": "e5b73caa0771f661a4200a30e47c0dc7d3ad964260e64217b5329563a1739c84",
+    "configs/disclosure_policy_v01.json": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968"
+  },
+  "task_ids": [
+    "v2body01",
+    "v2body03",
+    "v2body04",
+    "v2body06",
+    "v2rank01",
+    "v2rank02",
+    "v2graph01",
+    "v2graph02",
+    "v2alt02",
+    "v2schema01"
+  ],
+  "repeat_count": 3,
+  "inputs": [
+    "results\\task5_disclosure_dev_preregistered_v07_run1.json",
+    "results\\task5_disclosure_dev_preregistered_v07_run2.json",
+    "results\\task5_disclosure_dev_preregistered_v07_run3.json"
+  ],
+  "methods": {
+    "always_full": {
+      "task_success_rate": {
+        "mean": 1.0,
+        "sample_sd": 0.0
+      },
+      "total_tokens": {
+        "mean": 8849.666666666666,
+        "sample_sd": 31.50132272355136
+      },
+      "p50_end_to_end_ms": {
+        "mean": 3047.9415999999824,
+        "sample_sd": 223.64047668063532
+      },
+      "resolved_level_counts": [
+        {
+          "full": 10
+        },
+        {
+          "full": 10
+        },
+        {
+          "full": 10
+        }
+      ]
+    },
+    "adaptive_signals": {
+      "task_success_rate": {
+        "mean": 1.0,
+        "sample_sd": 0.0
+      },
+      "total_tokens": {
+        "mean": 7836.666666666667,
+        "sample_sd": 8.504900548115382
+      },
+      "p50_end_to_end_ms": {
+        "mean": 3047.3828333333586,
+        "sample_sd": 156.06785301157953
+      },
+      "resolved_level_counts": [
+        {
+          "full": 2,
+          "brief": 6,
+          "schema": 2
+        },
+        {
+          "full": 2,
+          "brief": 6,
+          "schema": 2
+        },
+        {
+          "full": 2,
+          "brief": 6,
+          "schema": 2
+        }
+      ]
+    }
+  },
+  "paired": {
+    "token_reduction": {
+      "mean": 0.11445968003250688,
+      "sample_sd": 0.00346556398493681
+    },
+    "p50_latency_reduction": {
+      "mean": -0.0010986330592624622,
+      "sample_sd": 0.03395340487358343
+    },
+    "per_repeat_token_reduction": [
+      0.11721652967008223,
+      0.1105692900884554,
+      0.115593220338983
+    ],
+    "per_repeat_p50_latency_reduction": [
+      0.014807849911452009,
+      -0.04008526868925455,
+      0.021981519600015154
+    ],
+    "decision_statuses": [
+      "pass",
+      "pass",
+      "pass"
+    ],
+    "all_repeats_pass": true
+  }
+}

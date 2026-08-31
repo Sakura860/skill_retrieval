@@ -1,0 +1,84 @@
+{
+  "protocol_id": "task5-preregistered-20260830-v07",
+  "status": "development_preregistered",
+  "created_at": "2026-08-30T20:45:00+08:00",
+  "dataset": {
+    "name": "benchmark_v02",
+    "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks_sha256": "3dd6101e8feda1deb52ad5abece3aa14c37cf4abc2084645c01ac18226706fb3",
+    "environment_fixtures_sha256": "6668fe257fb0877a3b2c834b23b915a67e6fd85521104fcaf7e7c3bced6315db",
+    "development_task_ids": [
+      "v2body01",
+      "v2body03",
+      "v2body04",
+      "v2body06",
+      "v2rank01",
+      "v2rank02",
+      "v2graph01",
+      "v2graph02",
+      "v2alt02",
+      "v2schema01"
+    ],
+    "confirmation_task_ids": [
+      "v2body02",
+      "v2body05",
+      "v2alt01",
+      "v2schema02",
+      "v2confirm01",
+      "v2confirm02",
+      "v2confirm03",
+      "v2confirm04",
+      "v2confirm05",
+      "v2confirm06"
+    ]
+  },
+  "controlled": {
+    "model": "deepseek-v4-pro",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "retriever": "BM25Retriever(text_level=brief)",
+    "candidate_source": "retriever_top_k_gold_augmented_diagnostic",
+    "retrieval_top_k": 10,
+    "organizer": "HierarchicalOrganizer(detail_top_k=0)",
+    "environment": "isolated task fixture",
+    "reflection": false,
+    "max_argument_repairs": 1
+  },
+  "development_methods": [
+    "one_stage",
+    "always_brief",
+    "always_schema",
+    "always_full",
+    "adaptive",
+    "adaptive_signals"
+  ],
+  "decision_rules": {
+    "two_stage_vs_one_stage": {
+      "minimum_absolute_task_success_gain": 0.10,
+      "maximum_total_token_ratio": 1.15,
+      "maximum_p50_end_to_end_latency_ratio": 1.80,
+      "all_conditions_required": true
+    },
+    "adaptive_vs_always_full": {
+      "maximum_absolute_task_success_drop": 0.02,
+      "minimum_total_token_reduction": 0.10,
+      "minimum_p50_end_to_end_latency_reduction": 0.15,
+      "success_condition_required": true,
+      "cost_condition": "token_or_latency"
+    }
+  },
+  "confirmation_policy": {
+    "allowed_only_after_status": "frozen",
+    "maximum_runs": 1,
+    "development_use_forbidden": true,
+    "current_note": "Ten confirmation tasks across five task families are protected; no model-based confirmation run is allowed before freezing."
+  },
+  "revision_note": "v07 adds adaptive_signals after v06 showed even concise model self-report cost more than it saved. The auditable policy is stored in configs/disclosure_policy_v01.json and uses only task text, named inputs, selected Skill schemas, and dev-derived behavior markers; it never reads verifier labels. Model-based adaptive remains as a failure control. Confirmation remains untouched.",
+  "published_baselines": {
+    "skillrouter_repository": "https://github.com/zhengyanzhao1997/SkillRouter",
+    "skillrouter_upstream_commit": "2f0c69fe6786bfee6312a1ab5d5f69abdc6bd245",
+    "skillrouter_encoder_model": "pipizhao/SkillRouter-Embedding-0.6B",
+    "skillrouter_reranker_model": "pipizhao/SkillRouter-Reranker-0.6B",
+    "fallback_allowed": false
+  }
+}

@@ -1,0 +1,1462 @@
+{
+  "planning": {
+    "dataset": "benchmark_v01",
+    "split": "dev",
+    "repeat_count": 3,
+    "files": [
+      "D:\\skill\\skill-agent\\results\\task5_planning_v01_dev_dataflow_v2.json",
+      "D:\\skill\\skill-agent\\results\\task5_planning_v01_dev_repeat2.json",
+      "D:\\skill\\skill-agent\\results\\task5_planning_v01_dev_repeat3.json"
+    ],
+    "task_ids": [
+      "tcalc01",
+      "tcalc02",
+      "tcalc04",
+      "tcalc06",
+      "tcalc07",
+      "tjson01",
+      "tjson03",
+      "tjson04",
+      "tjson06",
+      "tjson07",
+      "tfile01",
+      "tfile03",
+      "tfile04",
+      "tfile06",
+      "tdb01",
+      "tdb03",
+      "tdb05",
+      "tdb06"
+    ],
+    "methods": {
+      "one_stage": {
+        "metrics": {
+          "task_success_rate": {
+            "n": 3,
+            "mean": 0.7222222222222222,
+            "sample_sd": 0.0,
+            "min": 0.7222222222222222,
+            "max": 0.7222222222222222
+          },
+          "skill_selection_f1": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "sequence_accuracy": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_skill_context_tokens": {
+            "n": 3,
+            "mean": 807.5,
+            "sample_sd": 0.0,
+            "min": 807.5,
+            "max": 807.5
+          },
+          "total_tokens": {
+            "n": 3,
+            "mean": 14479.333333333334,
+            "sample_sd": 32.562759915789286,
+            "min": 14448.0,
+            "max": 14513.0
+          },
+          "avg_planner_calls": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_argument_repairs": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          }
+        },
+        "stable_task_outcomes": 18,
+        "task_count": 18,
+        "per_task": {
+          "tcalc01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc02": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc06": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson01": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson03": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson06": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb03": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb05": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          }
+        }
+      },
+      "two_stage_no_repair": {
+        "metrics": {
+          "task_success_rate": {
+            "n": 3,
+            "mean": 0.9259259259259259,
+            "sample_sd": 0.03207501495497923,
+            "min": 0.8888888888888888,
+            "max": 0.9444444444444444
+          },
+          "skill_selection_f1": {
+            "n": 3,
+            "mean": 0.9259259259259259,
+            "sample_sd": 0.03207501495497923,
+            "min": 0.8888888888888888,
+            "max": 0.9444444444444444
+          },
+          "sequence_accuracy": {
+            "n": 3,
+            "mean": 0.9259259259259259,
+            "sample_sd": 0.03207501495497923,
+            "min": 0.8888888888888888,
+            "max": 0.9444444444444444
+          },
+          "avg_skill_context_tokens": {
+            "n": 3,
+            "mean": 541.6666666666666,
+            "sample_sd": 0.0,
+            "min": 541.6666666666666,
+            "max": 541.6666666666666
+          },
+          "total_tokens": {
+            "n": 3,
+            "mean": 15423.666666666666,
+            "sample_sd": 20.428737928059416,
+            "min": 15409.0,
+            "max": 15447.0
+          },
+          "avg_planner_calls": {
+            "n": 3,
+            "mean": 2.0,
+            "sample_sd": 0.0,
+            "min": 2.0,
+            "max": 2.0
+          },
+          "avg_argument_repairs": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          }
+        },
+        "stable_task_outcomes": 17,
+        "task_count": 18,
+        "per_task": {
+          "tcalc01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc02": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson03": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "sequence_correct": [
+              false,
+              false,
+              false
+            ],
+            "outcome_stable": true
+          },
+          "tjson04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson06": {
+            "successes": [
+              false,
+              true,
+              true
+            ],
+            "success_count": 2,
+            "selection_f1": [
+              0.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              false,
+              true,
+              true
+            ],
+            "outcome_stable": false
+          },
+          "tjson07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb05": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          }
+        }
+      },
+      "two_stage_one_repair": {
+        "metrics": {
+          "task_success_rate": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "skill_selection_f1": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "sequence_accuracy": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_skill_context_tokens": {
+            "n": 3,
+            "mean": 541.6666666666666,
+            "sample_sd": 0.0,
+            "min": 541.6666666666666,
+            "max": 541.6666666666666
+          },
+          "total_tokens": {
+            "n": 3,
+            "mean": 15828.0,
+            "sample_sd": 32.046840717924134,
+            "min": 15795.0,
+            "max": 15859.0
+          },
+          "avg_planner_calls": {
+            "n": 3,
+            "mean": 2.0555555555555554,
+            "sample_sd": 0.0,
+            "min": 2.0555555555555554,
+            "max": 2.0555555555555554
+          },
+          "avg_argument_repairs": {
+            "n": 3,
+            "mean": 0.05555555555555555,
+            "sample_sd": 0.0,
+            "min": 0.05555555555555555,
+            "max": 0.05555555555555555
+          }
+        },
+        "stable_task_outcomes": 18,
+        "task_count": 18,
+        "per_task": {
+          "tcalc01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc02": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tcalc07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tjson07": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile04": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tfile06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb03": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb05": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "tdb06": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          }
+        }
+      }
+    }
+  },
+  "graph": {
+    "dataset": "benchmark_v02",
+    "split": "dev",
+    "repeat_count": 3,
+    "files": [
+      "D:\\skill\\skill-agent\\results\\task5_graph_v02_dev.json",
+      "D:\\skill\\skill-agent\\results\\task5_graph_v02_dev_repeat2.json",
+      "D:\\skill\\skill-agent\\results\\task5_graph_v02_dev_repeat3.json"
+    ],
+    "task_ids": [
+      "v2graph01",
+      "v2graph02"
+    ],
+    "methods": {
+      "without_completion": {
+        "metrics": {
+          "task_success_rate": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "skill_selection_f1": {
+            "n": 3,
+            "mean": 0.41666666666666663,
+            "sample_sd": 0.1443375672974064,
+            "min": 0.3333333333333333,
+            "max": 0.5833333333333333
+          },
+          "sequence_accuracy": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "avg_skill_context_tokens": {
+            "n": 3,
+            "mean": 1919.5,
+            "sample_sd": 0.0,
+            "min": 1919.5,
+            "max": 1919.5
+          },
+          "total_tokens": {
+            "n": 3,
+            "mean": 3162.0,
+            "sample_sd": 20.518284528683193,
+            "min": 3142.0,
+            "max": 3183.0
+          },
+          "avg_planner_calls": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_argument_repairs": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          }
+        },
+        "stable_task_outcomes": 2,
+        "task_count": 2,
+        "per_task": {
+          "v2graph01": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              0.5,
+              0.0,
+              0.0
+            ],
+            "sequence_correct": [
+              false,
+              false,
+              false
+            ],
+            "outcome_stable": true
+          },
+          "v2graph02": {
+            "successes": [
+              false,
+              false,
+              false
+            ],
+            "success_count": 0,
+            "selection_f1": [
+              0.6666666666666666,
+              0.6666666666666666,
+              0.6666666666666666
+            ],
+            "sequence_correct": [
+              false,
+              false,
+              false
+            ],
+            "outcome_stable": true
+          }
+        }
+      },
+      "with_prerequisite_completion": {
+        "metrics": {
+          "task_success_rate": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "skill_selection_f1": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "sequence_accuracy": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_skill_context_tokens": {
+            "n": 3,
+            "mean": 2122.5,
+            "sample_sd": 0.0,
+            "min": 2122.5,
+            "max": 2122.5
+          },
+          "total_tokens": {
+            "n": 3,
+            "mean": 3473.6666666666665,
+            "sample_sd": 4.618802153517006,
+            "min": 3471.0,
+            "max": 3479.0
+          },
+          "avg_planner_calls": {
+            "n": 3,
+            "mean": 1.0,
+            "sample_sd": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "avg_argument_repairs": {
+            "n": 3,
+            "mean": 0.0,
+            "sample_sd": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          }
+        },
+        "stable_task_outcomes": 2,
+        "task_count": 2,
+        "per_task": {
+          "v2graph01": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          },
+          "v2graph02": {
+            "successes": [
+              true,
+              true,
+              true
+            ],
+            "success_count": 3,
+            "selection_f1": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "sequence_correct": [
+              true,
+              true,
+              true
+            ],
+            "outcome_stable": true
+          }
+        },
+        "added_skill_ids": {
+          "v2graph01": [
+            [
+              "sfile_copy"
+            ],
+            [
+              "sfile_copy"
+            ],
+            [
+              "sfile_copy"
+            ]
+          ],
+          "v2graph02": [
+            [
+              "sfile_create"
+            ],
+            [
+              "sfile_create"
+            ],
+            [
+              "sfile_create"
+            ]
+          ]
+        },
+        "additions_stable": true
+      }
+    }
+  }
+}

@@ -38,10 +38,16 @@ def run_benchmark(
     enable_reflection: bool = True,
     use_task_candidate_fixtures: bool = False,
     use_task_context_budget: bool = False,
+    planner_mode: str = "one_stage",
+    max_argument_repairs: int = 1,
+    planner_disclosure_level: str = "full",
+    ensure_gold_in_retrieval: bool = False,
 ) -> dict:
     """在同一次检索结果上运行检索、Agent 和效率评测。"""
     if top_k < 1:
         raise ValueError("top_k 必须大于 0")
+    if use_task_candidate_fixtures and ensure_gold_in_retrieval:
+        raise ValueError("task fixture 与 gold augmentation 不能同时启用")
     retrieval_ks = tuple(sorted(set(retrieval_ks)))
     if not retrieval_ks or retrieval_ks[0] < 1:
         raise ValueError("retrieval_ks 必须包含正整数")
@@ -72,6 +78,9 @@ def run_benchmark(
         enable_reflection=enable_reflection,
         skill_handlers=skill_handlers,
         skill_registry=skill_registry,
+        planner_mode=planner_mode,
+        max_argument_repairs=max_argument_repairs,
+        planner_disclosure_level=planner_disclosure_level,
     )
 
     retriever.index(skills)
@@ -89,6 +98,7 @@ def run_benchmark(
             top_k=retrieval_top_k,
         )
         raw_ranked_ids = raw_retrieval.ranked_ids()
+        injected_ids: list[str] = []
         if use_task_candidate_fixtures:
             candidate_ids = list(task.metadata.get("candidate_skill_ids", []))
             if not candidate_ids:
@@ -106,15 +116,32 @@ def run_benchmark(
                 skills=[skill_by_id[item] for item in candidate_ids],
                 scores=[float(score_by_id.get(item, 0.0)) for item in candidate_ids],
             )
+        elif ensure_gold_in_retrieval:
+            candidate_ids = raw_ranked_ids[:top_k]
+            for gold_id in task.expected_skills:
+                if gold_id in candidate_ids:
+                    continue
+                if len(candidate_ids) >= top_k:
+                    candidate_ids.pop()
+                candidate_ids.append(gold_id)
+                injected_ids.append(gold_id)
+            score_by_id = dict(zip(raw_ranked_ids, raw_retrieval.scores))
+            retrieval = RetrievalResult(
+                query=task.instruction,
+                skills=[skill_by_id[item] for item in candidate_ids],
+                scores=[float(score_by_id.get(item, 0.0)) for item in candidate_ids],
+            )
         else:
             retrieval = raw_retrieval.top_k(top_k)
         ranked_ids = retrieval.ranked_ids()
         gold_ids = list(task.expected_skills)
-        rankings.append((ranked_ids, gold_ids))
+        metric_ranked_ids = raw_ranked_ids if ensure_gold_in_retrieval else ranked_ids
+        rankings.append((metric_ranked_ids, gold_ids))
         context_budget = None
         if use_task_context_budget:
             context_budget = task.metadata.get("slice", {}).get(
-                "context_budget_tokens"
+                "context_budget_tokens",
+                task.metadata.get("context_budget_tokens"),
             )
             if not isinstance(context_budget, int) or context_budget < 1:
                 raise ValueError(f"任务 {task.id} 缺少有效的上下文预算")
@@ -137,11 +164,12 @@ def run_benchmark(
         result["retrieved_scores"] = list(retrieval.scores)
         result["raw_bm25_skill_ids"] = raw_ranked_ids
         result["candidate_count"] = len(ranked_ids)
+        result["gold_augmented_skill_ids"] = injected_ids
         result["target_gold_rank"] = task.metadata.get("slice", {}).get(
             "target_gold_rank"
         )
         result["retrieval_metrics"] = (
-            ranking_metrics(ranked_ids, gold_ids, retrieval_ks)
+            ranking_metrics(metric_ranked_ids, gold_ids, retrieval_ks)
             if gold_ids
             else {}
         )
@@ -177,7 +205,13 @@ def run_benchmark(
             "organizer": type(organizer).__name__,
             "top_k": top_k,
             "candidate_source": (
-                "task_fixture" if use_task_candidate_fixtures else "retriever_top_k"
+                "task_fixture"
+                if use_task_candidate_fixtures
+                else (
+                    "retriever_top_k_gold_augmented"
+                    if ensure_gold_in_retrieval
+                    else "retriever_top_k"
+                )
             ),
             "context_budget_source": (
                 "task_slice" if use_task_context_budget else "unbounded"
@@ -185,6 +219,9 @@ def run_benchmark(
             "retrieval_ks": list(retrieval_ks),
             "max_steps": max_steps,
             "enable_reflection": enable_reflection,
+            "planner_mode": planner_mode,
+            "max_argument_repairs": max_argument_repairs,
+            "planner_disclosure_level": planner_disclosure_level,
             "task_ids": [task.id for task in tasks],
             "environment_isolated": skill_registry is not None,
             "llm": llm_config,

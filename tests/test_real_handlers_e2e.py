@@ -11,6 +11,7 @@ from evaluation.run_benchmark import run_benchmark
 from execution.handlers import create_default_skill_registry
 from execution.registry import SkillRegistry
 from organization.flat import FlatOrganizer
+from organization.hierarchical import HierarchicalOrganizer
 from retrieval.bm25 import BM25Retriever
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,6 +100,81 @@ class ScriptedLLM:
         return "not used"
 
 
+class InputReferenceLLM:
+    def __init__(self):
+        self.provider = "scripted"
+        self.model = "scripted-input-references"
+        self.temperature = 0.0
+        self.thinking = None
+        self.usage = {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+        }
+        tasks = load_tasks(DATA / "tasks.jsonl")
+        self.instructions = {
+            task.id: task.instruction
+            for task in tasks
+            if task.id in {"tjson07", "tfile03"}
+        }
+
+    def generate_json(self, messages):
+        prompt = messages[-1]["content"]
+        task_id = next(
+            item for item, instruction in self.instructions.items()
+            if f"任务：{instruction}\n" in prompt
+        )
+        if "此阶段不要生成参数" in prompt:
+            return {
+                "skill_ids": (
+                    ["sjson_extract", "sjson_rename"]
+                    if task_id == "tjson07"
+                    else ["sfile_append"]
+                )
+            }
+        if task_id == "tjson07" and "无效计划" not in prompt:
+            return {
+                "plan": [{
+                    "skill_name": "extract_json_fields",
+                    "arguments": {
+                        "data": "$task",
+                        "fields": "$input.fields",
+                    },
+                }]
+            }
+        if task_id == "tjson07":
+            return {
+                "plan": [
+                    {
+                        "skill_name": "extract_json_fields",
+                        "arguments": {
+                            "data": "$input.data",
+                            "fields": "$input.fields",
+                        },
+                    },
+                    {
+                        "skill_name": "rename_json_keys",
+                        "arguments": {
+                            "data": "$last_output",
+                            "mapping": "$input.mapping",
+                        },
+                    },
+                ]
+            }
+        return {
+            "plan": [{
+                "skill_name": "append_text_file",
+                "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.append_content",
+                },
+            }]
+        }
+
+    def generate(self, messages):
+        return "not used"
+
+
 def _scripted_llm(task_ids: set[str]) -> ScriptedLLM:
     tasks = load_tasks(DATA / "tasks.jsonl")
     by_id = {task.id: task for task in tasks}
@@ -164,7 +240,40 @@ def test_handler_success_without_required_effect_is_task_failure():
     assert result["metrics"]["agent"]["task_success_rate"] == 0.0
 
 
+def test_two_stage_task_inputs_fix_json_binding_and_exact_newline_contracts():
+    result = run_benchmark(
+        DATA / "skills.jsonl",
+        DATA / "tasks.jsonl",
+        retriever=BM25Retriever(text_level="brief"),
+        organizer=HierarchicalOrganizer(detail_top_k=0),
+        llm=InputReferenceLLM(),
+        skill_registry=create_default_skill_registry(),
+        environment_fixtures_path=DATA / "environment_fixtures.json",
+        task_ids={"tjson07", "tfile03"},
+        top_k=24,
+        retrieval_ks=(1, 5, 24),
+        enable_reflection=False,
+        planner_mode="two_stage",
+        max_argument_repairs=1,
+        run_id="task-input-contract-regression",
+    )
+
+    rows = {row["task_id"]: row for row in result["per_task"]}
+    assert result["metrics"]["agent"]["task_success_rate"] == 1.0
+    assert rows["tjson07"]["repair_attempts"] == 1
+    assert rows["tjson07"]["planner_calls"] == 3
+    assert rows["tjson07"]["validation_errors"] == []
+    assert rows["tfile03"]["repair_attempts"] == 0
+    assert rows["tfile03"]["planner_calls"] == 2
+    file_action = next(
+        item for item in rows["tfile03"]["trajectory"]
+        if item["step"] == "action"
+    )
+    assert file_action["arguments"]["content"] == "\ndone"
+
+
 if __name__ == "__main__":
     test_30_tasks_run_through_real_handlers_and_verifiers()
     test_handler_success_without_required_effect_is_task_failure()
+    test_two_stage_task_inputs_fix_json_binding_and_exact_newline_contracts()
     print("real handler end-to-end tests passed")

@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -49,6 +50,7 @@ class LLM:
         _load_project_env()
         self.temperature = temperature
         self._usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+        self._calls: list[dict[str, Any]] = []
         if provider not in self.SUPPORTED_PROVIDERS:
             supported = ", ".join(sorted(self.SUPPORTED_PROVIDERS))
             raise ValueError(f"不支持的 provider: {provider}；仅支持: {supported}")
@@ -81,6 +83,11 @@ class LLM:
         """返回当前实例累计 Token 用量。"""
         return dict(self._usage)
 
+    @property
+    def calls(self) -> list[dict[str, Any]]:
+        """返回不含 prompt 正文的逐调用成本和延迟轨迹。"""
+        return [dict(item) for item in self._calls]
+
     def _record_usage(self, prompt_tokens: int, completion_tokens: int) -> None:
         self._usage["prompt_tokens"] += int(prompt_tokens)
         self._usage["completion_tokens"] += int(completion_tokens)
@@ -88,16 +95,54 @@ class LLM:
 
     def generate(self, messages: list[dict], **kwargs: Any) -> str:
         """生成文本。"""
-        if self.provider == "deepseek":
-            return self._deepseek(messages, **kwargs)
-        return self._mock(messages)
+        phase = str(kwargs.pop("_phase", "") or self._infer_phase(messages))
+        usage_before = dict(self._usage)
+        started = time.perf_counter()
+        success = False
+        error_type = None
+        try:
+            if self.provider == "deepseek":
+                output = self._deepseek(messages, **kwargs)
+            else:
+                output = self._mock(messages)
+            success = True
+            return output
+        except Exception as exc:
+            error_type = type(exc).__name__
+            raise
+        finally:
+            usage_delta = {
+                key: self._usage[key] - usage_before.get(key, 0)
+                for key in self._usage
+            }
+            self._calls.append({
+                "phase": phase,
+                "provider": self.provider,
+                "model": self.model,
+                "duration_ms": (time.perf_counter() - started) * 1000,
+                "prompt_tokens": usage_delta["prompt_tokens"],
+                "completion_tokens": usage_delta["completion_tokens"],
+                "total_tokens": usage_delta["total_tokens"],
+                "message_count": len(messages),
+                "prompt_chars": sum(
+                    len(str(message.get("content", ""))) for message in messages
+                ),
+                "success": success,
+                "error_type": error_type,
+            })
 
     def generate_json(self, messages: list[dict], **kwargs: Any) -> Any:
         """生成并解析 JSON。"""
         if self.provider == "deepseek":
             kwargs.setdefault("response_format", {"type": "json_object"})
         raw = self.generate(messages, **kwargs)
-        return self._parse_json(raw)
+        try:
+            return self._parse_json(raw)
+        except (json.JSONDecodeError, ValueError, SyntaxError) as exc:
+            preview = raw[:500].replace("\n", "\\n")
+            raise ValueError(
+                f"LLM 返回的 JSON 无法解析；响应前 500 字符: {preview!r}"
+            ) from exc
 
     def _deepseek(self, messages: list[dict], **kwargs: Any) -> str:
         request_options = self._deepseek_request_options(messages, kwargs)
@@ -186,6 +231,8 @@ class LLM:
                 ],
                 input=headers,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 capture_output=True,
                 timeout=130,
                 check=False,
@@ -275,16 +322,65 @@ class LLM:
         self._record_usage(estimate_tokens(prompt_text), estimate_tokens(output))
 
     @staticmethod
+    def _infer_phase(messages: list[dict]) -> str:
+        """根据稳定的 prompt 标记区分选择、规划、修复与反思调用。"""
+        text = "\n".join(str(message.get("content", "")) for message in messages)
+        if "Schema 校验错误" in text:
+            return "argument_repair"
+        if "候选技能概览" in text:
+            return "skill_selection"
+        if "已选技能定义" in text or "可用技能" in text:
+            return "argument_planning"
+        if "执行轨迹" in text and "反思" in text:
+            return "reflection"
+        return "unspecified"
+
+    @staticmethod
     def _parse_json(raw: str) -> Any:
         """解析 JSON，并兼容 Markdown 代码块。"""
         raw = raw.strip()
         if raw.startswith("```"):
-            raw = raw.strip("`")
-            if raw.startswith("json"):
-                raw = raw[4:]
+            lines = raw.splitlines()
+            if lines and lines[0].strip().lower() in {"```", "```json"}:
+                lines = lines[1:]
+            if lines and lines[-1].strip() == "```":
+                lines = lines[:-1]
+            raw = "\n".join(lines).strip()
         try:
             return json.loads(raw)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as direct_error:
+            import ast
             import re
-            m = re.search(r"\{.*\}", raw, re.S)
-            return json.loads(m.group(0)) if m else None
+
+            decoder = json.JSONDecoder()
+            starts = [raw.find("{")]
+            if starts[0] < 0:
+                starts = [raw.find("[")]
+            for start in starts:
+                if start < 0:
+                    continue
+                candidate = raw[start:]
+                try:
+                    value, _ = decoder.raw_decode(candidate)
+                    return value
+                except json.JSONDecodeError:
+                    pass
+            repaired = re.sub(
+                r"(:\s*)(\$(?:last_output|task|input\.[A-Za-z_][\w.]*))"
+                r"\s*([,}\]])",
+                r'\1"\2"\3',
+                raw,
+            )
+            repaired = re.sub(r",\s*([}\]])", r"\1", repaired)
+            if repaired != raw:
+                try:
+                    return json.loads(repaired)
+                except json.JSONDecodeError:
+                    pass
+            try:
+                value = ast.literal_eval(raw)
+            except (ValueError, SyntaxError):
+                raise direct_error
+            if isinstance(value, (dict, list)):
+                return value
+            raise direct_error

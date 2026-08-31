@@ -1,0 +1,36 @@
+{
+  "config_id": "task5-integrated-candidate-20260824",
+  "status": "candidate",
+  "frozen_at": null,
+  "model": {
+    "provider": "deepseek",
+    "name": "deepseek-v4-pro",
+    "temperature": 0.0,
+    "thinking": "disabled"
+  },
+  "retrieval": {
+    "method": "bm25",
+    "text_level": "detailed",
+    "top_k": 10,
+    "candidate_source": "retriever_top_k"
+  },
+  "organization": {
+    "strategy": "typed_graph",
+    "max_additional_skills": 2,
+    "expand_relation_types": ["prerequisite"]
+  },
+  "agent": {
+    "planner_mode": "two_stage",
+    "max_argument_repairs": 1,
+    "max_steps": 10,
+    "enable_reflection": false
+  },
+  "evaluation": {
+    "dataset": "benchmark_v02",
+    "dev_repeats_required": 3,
+    "context_budget_source": "task_metadata",
+    "environment": "isolated task fixture",
+    "retrieval_ks": [1, 3, 5, 10, 20],
+    "heldout_policy": "test is rejected until status is frozen"
+  }
+}

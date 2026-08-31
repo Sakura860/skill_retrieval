@@ -19,7 +19,9 @@ def build_retriever(config: dict):
     retrieval_config = config["retrieval"]
     method = retrieval_config["method"]
     if method == "bm25":
-        return BM25Retriever()
+        return BM25Retriever(
+            text_level=retrieval_config.get("bm25_text_level", "brief")
+        )
     if method == "embedding":
         return EmbeddingRetriever(retrieval_config["embedding_model"])
     if method == "multilevel":
@@ -72,6 +74,11 @@ def main() -> None:
         retrieval_ks=tuple(config["evaluation"]["retrieval_ks"]),
         max_steps=agent_config["max_steps"],
         enable_reflection=agent_config["enable_reflection"],
+        planner_mode=agent_config.get("planner_mode", "one_stage"),
+        max_argument_repairs=agent_config.get("max_argument_repairs", 1),
+        planner_disclosure_level=agent_config.get(
+            "planner_disclosure_level", "full"
+        ),
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

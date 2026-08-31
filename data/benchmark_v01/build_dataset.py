@@ -51,6 +51,8 @@ NUM = {"type": "number"}
 BOOL = {"type": "boolean"}
 ARR = {"type": "array"}
 OBJ = {"type": "object"}
+OBJ_ARR = {"type": "array", "items": OBJ}
+ROW_ARR = {"type": "array", "items": ARR}
 
 
 SKILLS = [
@@ -118,8 +120,8 @@ SKILLS = [
         "sjson_filter", "filter_json_records", "json_text",
         "转换 JSON 记录并返回新的 JSON。",
         "按一个字段的等值条件筛选对象数组；不排序、不合并对象。",
-        {"records": ARR, "field": STR, "equals": {}},
-        ["records", "field", "equals"], ARR,
+        {"records": OBJ_ARR, "field": STR, "equals": {}},
+        ["records", "field", "equals"], OBJ_ARR,
         "保留 active=true 的记录。", "按 age 升序排列，应使用排序技能。",
     ),
     skill(
@@ -134,15 +136,15 @@ SKILLS = [
         "sjson_sort", "sort_json_records", "json_text",
         "转换 JSON 记录并返回新的 JSON。",
         "按指定字段稳定排序对象数组；不筛选记录、不重命名字段。",
-        {"records": ARR, "field": STR, "descending": BOOL},
-        ["records", "field"], ARR,
+        {"records": OBJ_ARR, "field": STR, "descending": BOOL},
+        ["records", "field"], OBJ_ARR,
         "按 score 降序排列记录。", "只保留 score=10 的记录，应使用筛选技能。",
     ),
     skill(
         "sjson_csv", "convert_csv_to_json", "json_text",
         "转换结构化文本并返回 JSON。",
         "把带表头的 CSV 文本解析为对象数组；不处理已经是 JSON 的输入。",
-        {"csv_text": STR, "delimiter": STR}, ["csv_text"], ARR,
+        {"csv_text": STR, "delimiter": STR}, ["csv_text"], OBJ_ARR,
         "把 name,age CSV 转成 JSON 数组。", "排序 JSON 数组，应使用排序技能。",
     ),
     skill(
@@ -162,9 +164,9 @@ SKILLS = [
     skill(
         "sfile_append", "append_text_file", "file_operation",
         "在受控目录中写入一个文件。",
-        "只在已有文本文件末尾追加内容；不替换原内容，不负责创建目标。",
+        "只在已有文本文件末尾原样追加 content；不自动添加换行，不替换原内容，不负责创建目标。",
         {"path": STR, "content": STR}, ["path", "content"], STR,
-        "在日志末尾追加一行。", "重写整个日志，应使用覆盖技能。",
+        "追加新行时让 content 显式包含前导换行符。", "重写整个日志，应使用覆盖技能。",
     ),
     skill(
         "sfile_copy", "copy_file_preserve_source", "file_operation",
@@ -191,7 +193,7 @@ SKILLS = [
         "sdb_select", "select_sqlite_rows", "sqlite",
         "在 SQLite 中处理表记录并返回结果。",
         "执行参数化只读 SELECT，返回原始行；不写数据库、不做聚合专用计算。",
-        {"query": STR, "parameters": ARR}, ["query"], ARR,
+        {"query": STR, "parameters": ARR}, ["query"], ROW_ARR,
         "查询年龄不小于 18 的用户。", "新增用户，应使用插入技能。",
     ),
     skill(
@@ -220,14 +222,14 @@ SKILLS = [
         "sdb_aggregate", "aggregate_sqlite_query", "sqlite",
         "在 SQLite 中查询表记录并返回结果。",
         "只执行 COUNT、SUM、AVG、MIN、MAX 聚合查询；不返回逐行明细，不写数据库。",
-        {"query": STR, "parameters": ARR}, ["query"], ARR,
+        {"query": STR, "parameters": ARR}, ["query"], ROW_ARR,
         "统计成年用户数量。", "列出成年用户姓名，应使用普通查询技能。",
     ),
     skill(
         "sdb_join", "join_sqlite_tables", "sqlite",
         "在 SQLite 中查询多张表并返回结果。",
         "执行涉及至少两张表的只读 JOIN；单表查询或写操作不适用。",
-        {"query": STR, "parameters": ARR}, ["query"], ARR,
+        {"query": STR, "parameters": ARR}, ["query"], ROW_ARR,
         "连接 users 与 orders 返回用户名和金额。", "只查询 users，应使用普通查询技能。",
     ),
 ]
@@ -307,6 +309,19 @@ TASK_SPECS = [
 ]
 
 
+TASK_INPUTS = {
+    "tjson07": {
+        "data": {"user_name": "Ada", "age": 37, "city": "London"},
+        "fields": ["user_name", "age"],
+        "mapping": {"user_name": "name"},
+    },
+    "tfile03": {
+        "path": "log.txt",
+        "append_content": "\ndone",
+    },
+}
+
+
 SLICE_GRID = [
     (5, 1, 800), (10, 1, 800), (20, 1, 800),
     (5, 3, 800), (10, 3, 800), (20, 3, 800),
@@ -361,6 +376,7 @@ for index, spec in enumerate(TASK_SPECS):
     TASKS.append({
         "id": task_id,
         "instruction": instruction,
+        "inputs": TASK_INPUTS.get(task_id, {}),
         "expected_skills": list(dict.fromkeys(expected_sequence)),
         "expected_skill_sequence": expected_sequence,
         "ground_truth": None,

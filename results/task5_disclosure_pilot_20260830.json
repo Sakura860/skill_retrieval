@@ -1,0 +1,1569 @@
+{
+  "experiment_id": "20260830T124755Z",
+  "created_at": "2026-08-30T12:47:55.907480+00:00",
+  "protocol_path": "D:\\skill\\skill-agent\\configs\\task5_preregistered_20260830.json",
+  "protocol_sha256": "3b1610c6c4a8d95ffc1b4a0b86105c69227d88aa4751adf6666467ac12d09e15",
+  "protocol_snapshot": {
+    "protocol_id": "task5-preregistered-20260830-v01",
+    "status": "development_preregistered",
+    "created_at": "2026-08-30T20:45:00+08:00",
+    "dataset": {
+      "name": "benchmark_v02",
+      "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+      "tasks_sha256": "18850bf41a5ce0e2d5b90e15752a92d8f22822c02daf415ae1c3ae2ec9f7bd21",
+      "environment_fixtures_sha256": "6668fe257fb0877a3b2c834b23b915a67e6fd85521104fcaf7e7c3bced6315db",
+      "development_task_ids": [
+        "v2body01",
+        "v2body03",
+        "v2body04",
+        "v2body06",
+        "v2rank01",
+        "v2rank02",
+        "v2graph01",
+        "v2graph02",
+        "v2alt02",
+        "v2schema01"
+      ],
+      "confirmation_task_ids": [
+        "v2body02",
+        "v2body05",
+        "v2alt01",
+        "v2schema02"
+      ]
+    },
+    "controlled": {
+      "model": "deepseek-v4-pro",
+      "temperature": 0.0,
+      "thinking": "disabled",
+      "retriever": "BM25Retriever(text_level=brief)",
+      "candidate_source": "task_fixture",
+      "organizer": "HierarchicalOrganizer(detail_top_k=0)",
+      "environment": "isolated task fixture",
+      "reflection": false,
+      "max_argument_repairs": 1
+    },
+    "development_methods": [
+      "one_stage",
+      "always_brief",
+      "always_schema",
+      "always_full",
+      "adaptive"
+    ],
+    "decision_rules": {
+      "two_stage_vs_one_stage": {
+        "minimum_absolute_task_success_gain": 0.1,
+        "maximum_total_token_ratio": 1.15,
+        "maximum_p50_end_to_end_latency_ratio": 1.8,
+        "all_conditions_required": true
+      },
+      "adaptive_vs_always_full": {
+        "maximum_absolute_task_success_drop": 0.02,
+        "minimum_total_token_reduction": 0.1,
+        "minimum_p50_end_to_end_latency_reduction": 0.15,
+        "success_condition_required": true,
+        "cost_condition": "token_or_latency"
+      }
+    },
+    "confirmation_policy": {
+      "allowed_only_after_status": "frozen",
+      "maximum_runs": 1,
+      "development_use_forbidden": true,
+      "current_note": "The four-task confirmation split is protected but too small for final claims; expand it before freezing."
+    },
+    "published_baselines": {
+      "skillrouter_repository": "https://github.com/zhengyanzhao1997/SkillRouter",
+      "skillrouter_upstream_commit": "2f0c69fe6786bfee6312a1ab5d5f69abdc6bd245",
+      "skillrouter_encoder_model": "pipizhao/SkillRouter-Embedding-0.6B",
+      "skillrouter_reranker_model": "pipizhao/SkillRouter-Reranker-0.6B",
+      "fallback_allowed": false
+    }
+  },
+  "split": "dev",
+  "task_ids": [
+    "v2schema01",
+    "v2body01"
+  ],
+  "methods": {
+    "always_schema": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "schema",
+      "detail_top_k": 0
+    },
+    "always_full": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "full",
+      "detail_top_k": 0
+    },
+    "adaptive": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "adaptive",
+      "detail_top_k": 0
+    }
+  },
+  "runs": {
+    "always_schema": {
+      "per_task": [
+        {
+          "task_id": "v2body01",
+          "instruction": "仅当目标不存在时创建 UTF-8 文件 artifact.txt，不能覆盖已有文件。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "retrieved_scores": [
+            8.127369652987177,
+            8.127369652987177,
+            6.449959074648605,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            1.2505704947348457
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge",
+            "sjson_sort"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.25,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.43067655807339306,
+            "recall@10": 1.0,
+            "ndcg@10": 0.43067655807339306,
+            "recall@20": 1.0,
+            "ndcg@20": 0.43067655807339306
+          },
+          "selected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_sequence": [
+            "sfile_create"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "artifact.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "artifact.txt": {
+                "content": "alpha",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 353,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "schema",
+          "resolved_disclosure_level": "schema",
+          "requested_disclosure_levels": [
+            "full",
+            "full"
+          ],
+          "disclosure_reasons": [
+            "需要了解 create_text_file 是否具备存在性检查或覆盖行为，以决定是否满足“仅当不存在时创建”的条件。",
+            "需要知道参数格式、是否自动创建父目录、写入模式（覆盖/追加）以及错误处理，以确保正确创建且不覆盖已有文件。"
+          ],
+          "escalation_reasons": [],
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "检查目标文件是否存在",
+              "skill_id": "sfile_create",
+              "information_need": "full",
+              "need_reason": "需要了解 create_text_file 是否具备存在性检查或覆盖行为，以决定是否满足“仅当不存在时创建”的条件。"
+            },
+            {
+              "requirement": "创建文件并写入内容",
+              "skill_id": "sfile_create",
+              "information_need": "full",
+              "need_reason": "需要知道参数格式、是否自动创建父目录、写入模式（覆盖/追加）以及错误处理，以确保正确创建且不覆盖已有文件。"
+            }
+          ],
+          "selection_context_tokens": 250,
+          "planning_context_tokens": 103,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 709,
+            "completion_tokens": 232,
+            "total_tokens": 941
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.189600000065184,
+          "llm_time_ms": 5652.8629999997975,
+          "end_to_end_time_ms": 5658.565000000181,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 3239.6526999998514,
+              "prompt_tokens": 452,
+              "completion_tokens": 154,
+              "total_tokens": 606,
+              "message_count": 1,
+              "prompt_chars": 993,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2413.210299999946,
+              "prompt_tokens": 257,
+              "completion_tokens": 78,
+              "total_tokens": 335,
+              "message_count": 1,
+              "prompt_chars": 571,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "artifact.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "create_text_file",
+              "plan": [
+                {
+                  "skill_name": "create_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "创建文件 artifact.txt，内容为 alpha。该技能在文件不存在时创建，存在时不会覆盖，符合任务要求。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_create"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "检查目标文件是否存在",
+                  "skill_id": "sfile_create",
+                  "information_need": "full",
+                  "need_reason": "需要了解 create_text_file 是否具备存在性检查或覆盖行为，以决定是否满足“仅当不存在时创建”的条件。"
+                },
+                {
+                  "requirement": "创建文件并写入内容",
+                  "skill_id": "sfile_create",
+                  "information_need": "full",
+                  "need_reason": "需要知道参数格式、是否自动创建父目录、写入模式（覆盖/追加）以及错误处理，以确保正确创建且不覆盖已有文件。"
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full",
+                "full"
+              ],
+              "disclosure_reasons": [
+                "需要了解 create_text_file 是否具备存在性检查或覆盖行为，以决定是否满足“仅当不存在时创建”的条件。",
+                "需要知道参数格式、是否自动创建父目录、写入模式（覆盖/追加）以及错误处理，以确保正确创建且不覆盖已有文件。"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "schema",
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "artifact.txt",
+              "index": 1,
+              "skill_id": "sfile_create",
+              "skill_name": "create_text_file",
+              "arguments": {
+                "path": "artifact.txt",
+                "content": "alpha"
+              },
+              "success": true,
+              "duration_ms": 2.189600000065184
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [
+        {
+          "task_id": "v2schema01",
+          "error": "JSONDecodeError: Expecting value: line 6 column 17 (char 99)",
+          "attempts": 2
+        }
+      ],
+      "summary": {
+        "completed_tasks": 1,
+        "api_failures": 1,
+        "retrieval": {
+          "mrr": 0.25,
+          "ndcg@1": 0.0,
+          "ndcg@10": 0.43067655807339306,
+          "ndcg@20": 0.43067655807339306,
+          "ndcg@3": 0.0,
+          "ndcg@5": 0.43067655807339306,
+          "recall@1": 0.0,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 0.0,
+          "recall@5": 1.0
+        },
+        "agent": {
+          "skill_selection_f1": 1.0,
+          "sequence_accuracy": 1.0,
+          "task_success_rate": 1.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 353.0,
+          "total_tokens": 941,
+          "avg_total_tokens_per_task": 941.0,
+          "avg_skill_calls": 1.0,
+          "avg_planner_calls": 2.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 5652.8629999997975,
+          "llm_time_p50_ms": 5652.8629999997975,
+          "llm_time_p95_ms": 5652.8629999997975,
+          "avg_end_to_end_time_ms": 5658.565000000181,
+          "end_to_end_time_p50_ms": 5658.565000000181,
+          "end_to_end_time_p95_ms": 5658.565000000181
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "schema": 1
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    },
+    "always_full": {
+      "per_task": [
+        {
+          "task_id": "v2schema01",
+          "instruction": "合并 left 与 right，冲突时保留 left 的值。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            2.7787802844564187,
+            2.4730737450443323,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.8339779516832366,
+            1.7863278359000434,
+            1.7863278359000434,
+            1.7417109485726987
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.1,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.2890648263178879,
+            "recall@20": 1.0,
+            "ndcg@20": 0.2890648263178879
+          },
+          "selected_skill_ids": [
+            "sjson_merge"
+          ],
+          "expected_skill_ids": [
+            "sjson_merge"
+          ],
+          "expected_skill_sequence": [
+            "sjson_merge"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": {
+              "lang": "zh",
+              "region": "CN",
+              "theme": "light"
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "lang": "zh",
+              "region": "CN",
+              "theme": "light"
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 494,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "需要了解合并策略（冲突时保留 left）的具体语义、参数格式以及边界条件（如嵌套对象、键冲突处理），以确保正确执行合并操作。"
+          ],
+          "escalation_reasons": [],
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "合并 left 与 right，冲突时保留 left 的值",
+              "skill_id": "sjson_merge",
+              "information_need": "full",
+              "need_reason": "需要了解合并策略（冲突时保留 left）的具体语义、参数格式以及边界条件（如嵌套对象、键冲突处理），以确保正确执行合并操作。"
+            }
+          ],
+          "selection_context_tokens": 264,
+          "planning_context_tokens": 230,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge"
+          ],
+          "detailed_skill_ids": [
+            "sjson_merge"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 834,
+            "completion_tokens": 166,
+            "total_tokens": 1000
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.036600000157704926,
+          "llm_time_ms": 3993.3829999999944,
+          "end_to_end_time_ms": 3994.8260999999547,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2355.499499999951,
+              "prompt_tokens": 470,
+              "completion_tokens": 94,
+              "total_tokens": 564,
+              "message_count": 1,
+              "prompt_chars": 1107,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1637.8835000000436,
+              "prompt_tokens": 364,
+              "completion_tokens": 72,
+              "total_tokens": 436,
+              "message_count": 1,
+              "prompt_chars": 826,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"lang\": \"zh\", \"region\": \"CN\", \"theme\": \"light\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "merge_json_objects",
+              "plan": [
+                {
+                  "skill_name": "merge_json_objects",
+                  "arguments": {
+                    "left": {
+                      "lang": "zh",
+                      "theme": "light"
+                    },
+                    "right": {
+                      "region": "CN",
+                      "theme": "dark"
+                    },
+                    "conflict_policy": "left"
+                  },
+                  "reason": "合并两个对象，冲突时保留left的值"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sjson_merge"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "合并 left 与 right，冲突时保留 left 的值",
+                  "skill_id": "sjson_merge",
+                  "information_need": "full",
+                  "need_reason": "需要了解合并策略（冲突时保留 left）的具体语义、参数格式以及边界条件（如嵌套对象、键冲突处理），以确保正确执行合并操作。"
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "需要了解合并策略（冲突时保留 left）的具体语义、参数格式以及边界条件（如嵌套对象、键冲突处理），以确保正确执行合并操作。"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"lang\": \"zh\", \"region\": \"CN\", \"theme\": \"light\"}",
+              "index": 1,
+              "skill_id": "sjson_merge",
+              "skill_name": "merge_json_objects",
+              "arguments": {
+                "left": {
+                  "lang": "zh",
+                  "theme": "light"
+                },
+                "right": {
+                  "region": "CN",
+                  "theme": "dark"
+                },
+                "conflict_policy": "left"
+              },
+              "success": true,
+              "duration_ms": 0.036600000157704926
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2body01",
+          "instruction": "仅当目标不存在时创建 UTF-8 文件 artifact.txt，不能覆盖已有文件。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "retrieved_scores": [
+            8.127369652987177,
+            8.127369652987177,
+            6.449959074648605,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            1.2505704947348457
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge",
+            "sjson_sort"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.25,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.43067655807339306,
+            "recall@10": 1.0,
+            "ndcg@10": 0.43067655807339306,
+            "recall@20": 1.0,
+            "ndcg@20": 0.43067655807339306
+          },
+          "selected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_sequence": [
+            "sfile_create"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "artifact.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "artifact.txt": {
+                "content": "alpha",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 437,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full",
+            "full"
+          ],
+          "disclosure_reasons": [
+            "需要了解 create_text_file 是否具备存在性检查或覆盖保护行为，以及其边界条件（如文件已存在时是否报错或跳过），以确保不覆盖已有文件。",
+            "需要准确参数名（如路径、内容）、必填项以及行为语义（是否自动创建父目录、是否覆盖、编码等），以正确执行条件创建。"
+          ],
+          "escalation_reasons": [],
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "检查目标文件是否存在",
+              "skill_id": "sfile_create",
+              "information_need": "full",
+              "need_reason": "需要了解 create_text_file 是否具备存在性检查或覆盖保护行为，以及其边界条件（如文件已存在时是否报错或跳过），以确保不覆盖已有文件。"
+            },
+            {
+              "requirement": "仅当目标不存在时创建文件并写入内容",
+              "skill_id": "sfile_create",
+              "information_need": "full",
+              "need_reason": "需要准确参数名（如路径、内容）、必填项以及行为语义（是否自动创建父目录、是否覆盖、编码等），以正确执行条件创建。"
+            }
+          ],
+          "selection_context_tokens": 250,
+          "planning_context_tokens": 187,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 766,
+            "completion_tokens": 230,
+            "total_tokens": 996
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.0190000000184227,
+          "llm_time_ms": 4832.893800000193,
+          "end_to_end_time_ms": 4838.013799999999,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 3428.081200000179,
+              "prompt_tokens": 452,
+              "completion_tokens": 173,
+              "total_tokens": 625,
+              "message_count": 1,
+              "prompt_chars": 993,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1404.8126000000138,
+              "prompt_tokens": 314,
+              "completion_tokens": 57,
+              "total_tokens": 371,
+              "message_count": 1,
+              "prompt_chars": 676,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "artifact.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "create_text_file",
+              "plan": [
+                {
+                  "skill_name": "create_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "创建不存在的 artifact.txt，内容为 alpha；若已存在则技能会失败，符合要求"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_create"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "检查目标文件是否存在",
+                  "skill_id": "sfile_create",
+                  "information_need": "full",
+                  "need_reason": "需要了解 create_text_file 是否具备存在性检查或覆盖保护行为，以及其边界条件（如文件已存在时是否报错或跳过），以确保不覆盖已有文件。"
+                },
+                {
+                  "requirement": "仅当目标不存在时创建文件并写入内容",
+                  "skill_id": "sfile_create",
+                  "information_need": "full",
+                  "need_reason": "需要准确参数名（如路径、内容）、必填项以及行为语义（是否自动创建父目录、是否覆盖、编码等），以正确执行条件创建。"
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full",
+                "full"
+              ],
+              "disclosure_reasons": [
+                "需要了解 create_text_file 是否具备存在性检查或覆盖保护行为，以及其边界条件（如文件已存在时是否报错或跳过），以确保不覆盖已有文件。",
+                "需要准确参数名（如路径、内容）、必填项以及行为语义（是否自动创建父目录、是否覆盖、编码等），以正确执行条件创建。"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "artifact.txt",
+              "index": 1,
+              "skill_id": "sfile_create",
+              "skill_name": "create_text_file",
+              "arguments": {
+                "path": "artifact.txt",
+                "content": "alpha"
+              },
+              "success": true,
+              "duration_ms": 2.0190000000184227
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 2,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.175,
+          "ndcg@1": 0.0,
+          "ndcg@10": 0.3598706921956405,
+          "ndcg@20": 0.3598706921956405,
+          "ndcg@3": 0.0,
+          "ndcg@5": 0.21533827903669653,
+          "recall@1": 0.0,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 0.0,
+          "recall@5": 0.5
+        },
+        "agent": {
+          "skill_selection_f1": 1.0,
+          "sequence_accuracy": 1.0,
+          "task_success_rate": 1.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 465.5,
+          "total_tokens": 1996,
+          "avg_total_tokens_per_task": 998.0,
+          "avg_skill_calls": 1.0,
+          "avg_planner_calls": 2.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 4413.1384000000935,
+          "llm_time_p50_ms": 3993.3829999999944,
+          "llm_time_p95_ms": 4832.893800000193,
+          "avg_end_to_end_time_ms": 4416.419949999977,
+          "end_to_end_time_p50_ms": 3994.8260999999547,
+          "end_to_end_time_p95_ms": 4838.013799999999
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 2
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    },
+    "adaptive": {
+      "per_task": [
+        {
+          "task_id": "v2schema01",
+          "instruction": "合并 left 与 right，冲突时保留 left 的值。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            2.7787802844564187,
+            2.4730737450443323,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.8339779516832366,
+            1.7863278359000434,
+            1.7863278359000434,
+            1.7417109485726987
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "sjson_merge",
+            "sjson_csv",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.1,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.2890648263178879,
+            "recall@20": 1.0,
+            "ndcg@20": 0.2890648263178879
+          },
+          "selected_skill_ids": [
+            "sjson_merge"
+          ],
+          "expected_skill_ids": [
+            "sjson_merge"
+          ],
+          "expected_skill_sequence": [
+            "sjson_merge"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": {
+              "lang": "zh",
+              "region": "CN",
+              "theme": "light"
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "lang": "zh",
+              "region": "CN",
+              "theme": "light"
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 494,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "需要了解合并策略（冲突时保留 left）的具体实现方式，以及如何处理嵌套对象等边界情况。"
+          ],
+          "escalation_reasons": [],
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "合并 left 与 right，冲突时保留 left 的值",
+              "skill_id": "sjson_merge",
+              "information_need": "full",
+              "need_reason": "需要了解合并策略（冲突时保留 left）的具体实现方式，以及如何处理嵌套对象等边界情况。"
+            }
+          ],
+          "selection_context_tokens": 264,
+          "planning_context_tokens": 230,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_eq",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge"
+          ],
+          "detailed_skill_ids": [
+            "sjson_merge"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 834,
+            "completion_tokens": 159,
+            "total_tokens": 993
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.03609999998843705,
+          "llm_time_ms": 4232.682599999862,
+          "end_to_end_time_ms": 4234.113400000069,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2123.148499999843,
+              "prompt_tokens": 470,
+              "completion_tokens": 83,
+              "total_tokens": 553,
+              "message_count": 1,
+              "prompt_chars": 1107,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2109.534100000019,
+              "prompt_tokens": 364,
+              "completion_tokens": 76,
+              "total_tokens": 440,
+              "message_count": 1,
+              "prompt_chars": 826,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"lang\": \"zh\", \"region\": \"CN\", \"theme\": \"light\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "merge_json_objects",
+              "plan": [
+                {
+                  "skill_name": "merge_json_objects",
+                  "arguments": {
+                    "left": "$input.left",
+                    "right": "$input.right",
+                    "conflict_policy": "$input.conflict_policy"
+                  },
+                  "reason": "合并两个对象，冲突时保留左侧值"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sjson_merge"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "合并 left 与 right，冲突时保留 left 的值",
+                  "skill_id": "sjson_merge",
+                  "information_need": "full",
+                  "need_reason": "需要了解合并策略（冲突时保留 left）的具体实现方式，以及如何处理嵌套对象等边界情况。"
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "需要了解合并策略（冲突时保留 left）的具体实现方式，以及如何处理嵌套对象等边界情况。"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"lang\": \"zh\", \"region\": \"CN\", \"theme\": \"light\"}",
+              "index": 1,
+              "skill_id": "sjson_merge",
+              "skill_name": "merge_json_objects",
+              "arguments": {
+                "left": {
+                  "lang": "zh",
+                  "theme": "light"
+                },
+                "right": {
+                  "region": "CN",
+                  "theme": "dark"
+                },
+                "conflict_policy": "left"
+              },
+              "success": true,
+              "duration_ms": 0.03609999998843705
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2body01",
+          "instruction": "仅当目标不存在时创建 UTF-8 文件 artifact.txt，不能覆盖已有文件。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "retrieved_scores": [
+            8.127369652987177,
+            8.127369652987177,
+            6.449959074648605,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            5.772078242515833,
+            1.2505704947348457
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge",
+            "sjson_sort"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.25,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.43067655807339306,
+            "recall@10": 1.0,
+            "ndcg@10": 0.43067655807339306,
+            "recall@20": 1.0,
+            "ndcg@20": 0.43067655807339306
+          },
+          "selected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_ids": [
+            "sfile_create"
+          ],
+          "expected_skill_sequence": [
+            "sfile_create"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "artifact.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "artifact.txt": {
+                "content": "alpha",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 437,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full",
+            "schema"
+          ],
+          "disclosure_reasons": [
+            "需要了解 create_text_file 是否具备存在性检查行为，以及其边界条件（如文件已存在时是否报错或跳过），以决定是否满足“仅当目标不存在时创建”的要求。",
+            "需要准确的参数名和类型（如路径、内容）来正确调用创建文件操作。"
+          ],
+          "escalation_reasons": [],
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "检查目标文件是否存在",
+              "skill_id": "sfile_create",
+              "information_need": "full",
+              "need_reason": "需要了解 create_text_file 是否具备存在性检查行为，以及其边界条件（如文件已存在时是否报错或跳过），以决定是否满足“仅当目标不存在时创建”的要求。"
+            },
+            {
+              "requirement": "创建文件并写入内容",
+              "skill_id": "sfile_create",
+              "information_need": "schema",
+              "need_reason": "需要准确的参数名和类型（如路径、内容）来正确调用创建文件操作。"
+            }
+          ],
+          "selection_context_tokens": 250,
+          "planning_context_tokens": 187,
+          "candidate_count": 10,
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "scalc_unit",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_csv"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 766,
+            "completion_tokens": 218,
+            "total_tokens": 984
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.0841999998992833,
+          "llm_time_ms": 5170.768500000122,
+          "end_to_end_time_ms": 5175.586600000088,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 3440.419199999951,
+              "prompt_tokens": 452,
+              "completion_tokens": 157,
+              "total_tokens": 609,
+              "message_count": 1,
+              "prompt_chars": 993,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1730.3493000001708,
+              "prompt_tokens": 314,
+              "completion_tokens": 61,
+              "total_tokens": 375,
+              "message_count": 1,
+              "prompt_chars": 676,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "artifact.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "create_text_file",
+              "plan": [
+                {
+                  "skill_name": "create_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "创建不存在的 artifact.txt 文件，内容为 alpha；若文件已存在则技能会失败，符合任务要求"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_create"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "检查目标文件是否存在",
+                  "skill_id": "sfile_create",
+                  "information_need": "full",
+                  "need_reason": "需要了解 create_text_file 是否具备存在性检查行为，以及其边界条件（如文件已存在时是否报错或跳过），以决定是否满足“仅当目标不存在时创建”的要求。"
+                },
+                {
+                  "requirement": "创建文件并写入内容",
+                  "skill_id": "sfile_create",
+                  "information_need": "schema",
+                  "need_reason": "需要准确的参数名和类型（如路径、内容）来正确调用创建文件操作。"
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full",
+                "schema"
+              ],
+              "disclosure_reasons": [
+                "需要了解 create_text_file 是否具备存在性检查行为，以及其边界条件（如文件已存在时是否报错或跳过），以决定是否满足“仅当目标不存在时创建”的要求。",
+                "需要准确的参数名和类型（如路径、内容）来正确调用创建文件操作。"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "artifact.txt",
+              "index": 1,
+              "skill_id": "sfile_create",
+              "skill_name": "create_text_file",
+              "arguments": {
+                "path": "artifact.txt",
+                "content": "alpha"
+              },
+              "success": true,
+              "duration_ms": 2.0841999998992833
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {
+              "artifact.txt": {
+                "exists": true,
+                "content": "alpha"
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 2,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.175,
+          "ndcg@1": 0.0,
+          "ndcg@10": 0.3598706921956405,
+          "ndcg@20": 0.3598706921956405,
+          "ndcg@3": 0.0,
+          "ndcg@5": 0.21533827903669653,
+          "recall@1": 0.0,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 0.0,
+          "recall@5": 0.5
+        },
+        "agent": {
+          "skill_selection_f1": 1.0,
+          "sequence_accuracy": 1.0,
+          "task_success_rate": 1.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 465.5,
+          "total_tokens": 1977,
+          "avg_total_tokens_per_task": 988.5,
+          "avg_skill_calls": 1.0,
+          "avg_planner_calls": 2.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 4701.725549999992,
+          "llm_time_p50_ms": 4232.682599999862,
+          "llm_time_p95_ms": 5170.768500000122,
+          "avg_end_to_end_time_ms": 4704.850000000079,
+          "end_to_end_time_p50_ms": 4234.113400000069,
+          "end_to_end_time_p95_ms": 5175.586600000088
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 2
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    }
+  }
+}

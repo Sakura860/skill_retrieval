@@ -7,6 +7,7 @@ llm:
 
 retrieval:
   method: multilevel          # bm25 | embedding | multilevel | model
+  bm25_text_level: brief      # brief | detailed | all
   top_k: 5
   coarse_k: 20
   coarse_weight: 0.4
@@ -18,6 +19,9 @@ organization:
 
 agent:
   framework: plan-and-execute
+  planner_mode: one_stage      # one_stage | two_stage
+  max_argument_repairs: 1      # 0 | 1；仅 two_stage 使用
+  planner_disclosure_level: full  # brief | schema | full | adaptive | adaptive_signals
   max_steps: 10
   enable_reflection: true
 

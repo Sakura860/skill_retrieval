@@ -6,9 +6,9 @@
 
 ```text
 Task
-  → 多层检索（粗略描述召回 + 详细描述重排）
+  → 可控粒度检索（brief / detailed / all-field）
   → Skill 组织（扁平 / 分层披露 / 依赖图）
-  → 结构化规划（技能、参数、顺序）
+  → 一阶段规划，或 brief 选择后按需加载 Schema 的两阶段规划
   → 注册函数执行
   → 反思与任务级评测
 ```
@@ -90,6 +90,18 @@ Skill 同时提供粗粒度和细粒度信息：
 
 旧版数据中的 `description` 和 `metadata.depends_on` 仍可由 loader 转换。
 
+`BM25Retriever(text_level=...)` 支持三种可归因设置：`brief` 使用名称、类别、简介和 tags；`detailed` 增加详细功能边界；`all` 使用包含参数/返回 Schema、示例、依赖和 metadata 的完整 Skill body。
+
+已发表方法对照通过 `retrieval.published` 接入官方 SkillRouter 0.6B encoder 和 reranker。适配器固定上游 commit、官方模型 ID、query/document/prompt 格式和本项目字段映射，缺少 `torch/transformers` 或权重时显式失败，绝不回退到 hash。统一入口：
+
+```powershell
+python experiments/run_published_baselines.py --dataset benchmark_v02 --split dev `
+  --methods bm25_brief bm25_all skillrouter_embedding skillrouter_pipeline `
+  --output results/published_baselines.json
+```
+
+官方模型依赖单独列在 `requirements-published.txt`，避免污染 Mock/离线测试环境。当前已在 CPU/float32 下完成官方权重实测；最终可引用的是 v02 严格 top-20 结果，模型准备、索引与在线查询分别计时。汇总、有效性边界与证据 SHA 见 `results/published_baseline_and_confirmation_report_20260830.md`，不要使用报告中标为 superseded 的早期 pipeline 文件。
+
 ## 执行函数注册
 
 数据文件只描述 Skill，不保存可执行源码。执行函数必须由宿主程序显式注册：
@@ -102,8 +114,22 @@ agent = Agent(
     llm=llm,
     organizer=organizer,
     skill_handlers={"calculator": calculator},
+    planner_mode="two_stage",
+    max_argument_repairs=1,
 )
 ```
+
+`two_stage` 的第一次模型调用只从 brief 中选择 Skill，第二次按 `planner_disclosure_level` 加载已选 Skill 的 `brief`、`schema` 或 `full` 定义来生成顺序和参数。`adaptive` 是模型自报层级的失败对照；`adaptive_signals` 使用开发集失败归纳出的可审计策略：单 Skill 且具名输入覆盖必填参数时用 brief，多 Skill 数据流用 schema，命中已冻结的非 Schema 行为约束时用 full。逐任务结果记录判据、命中信号和任何升级原因。
+
+参数在执行前按 JSON Schema 校验；若缺少必填字段、类型/枚举/范围不符，可进行最多一次带错误路径的修复。adaptive 从 brief 失败时只升级到 schema；修复后仍不合法则不会进入 Executor。默认 `one_stage` 保留为对照基线。
+
+Task 可通过公开给 Planner、但不包含 verifier 答案的 `inputs` 保存精确业务输入。计划参数用 `$input.<字段>` 引用，适合 JSON 对象、数组及换行敏感文本；`$task` 仍表示整条自然语言指令，`$last_output` 表示动态上一步结果。
+
+## Typed Skill graph
+
+`TypedSkillGraph` 区分五类边：prerequisite 来自 `dependencies` 或显式边；dataflow 可由返回/输入 Schema 兼容性诊断；co-use 来自任务共现统计；alternative 和 conflict 来自 Skill metadata 或人工功能边界。只有 prerequisite 会自动扩张候选，避免把软相关或替代 Skill 错当成执行前置。
+
+`GraphOrganizer(catalog=..., max_additional_skills=N)` 会在受控上限内递归补齐 prerequisite，按依赖顺序披露，并记录 `added_skill_ids`、缺依赖、环和扩张上限诊断。补充 Skill 只有在实际出现在上下文后才允许执行。
 
 未注册函数、未知技能、缺少必填参数或执行异常都会记为失败。项目不再通过 `exec()` 运行数据中的任意代码。
 
@@ -121,8 +147,11 @@ agent = Agent(
 | 上下文 | **Skill Context Tokens** | 每个任务 Skill 上下文的平均估算 Token 数 |
 | 成本 | **Total Tokens** | 一次评测中 LLM 的 Prompt 与 Completion Token 总和 |
 | 效率 | **Avg. Execution Steps** | 每个任务平均“规划步骤 + Skill 执行步骤”数 |
+| 成本 | **Avg. Planner Calls** | 每个任务的平均规划模型调用数 |
+| 成本 | **Avg. Argument Repairs** | 每个任务的平均参数修复调用数 |
+| 延迟 | **LLM / End-to-end p50, p95** | 逐次记录 selection、planning、repair、reflection 的 wall-clock，并汇总任务端到端分位数 |
 
-`Skill Context Tokens` 使用本地中英文估算器，便于比较组织策略；`Total Tokens` 优先采用 API 返回的真实 usage。Mock 模式使用同一估算器。
+`Skill Context Tokens` 使用本地中英文估算器，便于比较组织策略；`Total Tokens` 优先采用 API 返回的真实 usage。Mock 模式使用同一估算器。LLM 调用轨迹只保存阶段、模型、token、字符数、耗时和错误类型，不保存 prompt 正文。
 
 任务有旧版 `ground_truth` 时会自动使用精确匹配验收。新任务通过私有的 `evaluation` 字段指定确定性 verifier；该字段不会进入 Planner 提示词：
 
@@ -191,6 +220,37 @@ python experiments/run_experiment.py
 ```
 
 脚本比较 BM25、Embedding、多层检索与三种组织策略。默认使用 DeepSeek，完整消融会产生多次 API 调用。每次实验会在 `results/` 下保存包含配置、聚合指标和逐任务证据的 JSON。离线测试请显式传入 `LLM(provider="mock")`。
+
+body-aware BM25 的确定性 dev/test 排名比较不会调用 LLM：
+
+```powershell
+python experiments/run_task5_retrieval.py --split dev
+```
+
+该脚本在相同 Skill 池、Task、BM25 参数和 split 上比较 `brief`、`detailed`、`all`，报告 Hit@1、Recall@K、MRR、NDCG@K、平均正确 Skill 排名和逐任务排名证据。
+
+Planner 的真实 DeepSeek 受控对比：
+
+```powershell
+python experiments/run_task5_planning.py --task-ids tjson07,tfile03
+```
+
+脚本比较 one-stage、two-stage/no-repair 和 two-stage/one-repair，固定 brief-BM25 候选、Task context budget、温度与隔离初始环境，并保存逐任务选择覆盖、参数校验、Token 和 verifier 证据。
+
+`benchmark_v02` 位于 `data/benchmark_v02/`，包含 14 条专用于 body、Schema repair 和 typed graph 的新任务。生成和审计：
+
+```powershell
+python data/benchmark_v02/build_dataset.py
+python tests/test_benchmark_v02.py
+```
+
+typed graph prerequisite completion 的独立 dev 诊断：
+
+```powershell
+python experiments/run_task5_graph.py
+```
+
+当前 Task 5 的受控 dev 主表与失败归因见 `results/task5_dev_analysis_20260824.md`，三轮稳定性见 `results/task5_disclosure_dev_preregistered_v07_summary.json` 和 `results/task5_end_to_end_dev_v01_summary.json`。真实 BM25 top-10 协议已冻结并完成唯一一次 confirmation；结果登记、原始 SHA 与浮点边界审计见 `results/published_baseline_and_confirmation_report_20260830.md`。该确认集已经消费，禁止再次运行或据其结果修改 `adaptive_signals`。
 
 导师反馈后的 Flat vs Hierarchical 定向数据位于 `data/benchmark_v01/`，包含 24 个 hard-negative Skill、34 条主任务和 10 条独立 Graph 诊断任务。数据假设、受控候选排名、dev/test 划分及当前使用边界见该目录的 `README.md`。任务 4 实验入口会直接消费每条任务固定的 BM25 候选顺序与预算：
 

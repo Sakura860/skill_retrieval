@@ -114,6 +114,8 @@ def test_curl_fallback_after_urllib_network_error():
     assert output == "ok"
     assert "Authorization: Bearer test-key" in run.call_args.kwargs["input"]
     assert "test-key" not in " ".join(run.call_args.args[0])
+    assert run.call_args.kwargs["encoding"] == "utf-8"
+    assert run.call_args.kwargs["errors"] == "replace"
     assert llm.usage["total_tokens"] == 4
 
 

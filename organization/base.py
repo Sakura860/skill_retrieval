@@ -16,6 +16,13 @@ class OrganizedContext:
     exposed_skill_ids: list[str] = field(default_factory=list)
     detailed_skill_ids: list[str] = field(default_factory=list)
     truncated_skill_ids: list[str] = field(default_factory=list)
+    added_skill_ids: list[str] = field(default_factory=list)
+    graph_issues: list[str] = field(default_factory=list)
+    resolved_skills: list[Skill] = field(
+        default_factory=list,
+        repr=False,
+        compare=False,
+    )
     context_budget_tokens: int | None = None
 
     @property

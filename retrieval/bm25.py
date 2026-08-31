@@ -11,6 +11,8 @@ from .tokenize import tokenize
 
 class BM25Retriever(BaseRetriever):
     def __init__(self, k1: float = 1.5, b: float = 0.75, text_level: str = "brief"):
+        if text_level not in {"brief", "detailed", "all", "body"}:
+            raise ValueError("text_level 必须是 brief、detailed 或 all")
         self.k1, self.b = k1, b
         self.text_level = text_level
         self._docs: list[Skill] = []

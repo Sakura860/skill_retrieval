@@ -1,0 +1,5376 @@
+{
+  "experiment_id": "20260830T143714Z",
+  "created_at": "2026-08-30T14:37:14.515296+00:00",
+  "protocol_path": "configs\\task5_end_to_end_preregistered_20260830.json",
+  "protocol_sha256": "9b218d49fc100745927f9d5631d5dcc56a0f2a1ba2b0a8f17b0c0414c2e15d9e",
+  "protocol_snapshot": {
+    "protocol_id": "task5-end-to-end-preregistered-20260830-v01",
+    "status": "frozen",
+    "created_at": "2026-08-30T22:40:00+08:00",
+    "dataset": {
+      "name": "benchmark_v02",
+      "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+      "tasks_sha256": "3dd6101e8feda1deb52ad5abece3aa14c37cf4abc2084645c01ac18226706fb3",
+      "environment_fixtures_sha256": "6668fe257fb0877a3b2c834b23b915a67e6fd85521104fcaf7e7c3bced6315db",
+      "development_task_ids": [
+        "v2body01",
+        "v2body03",
+        "v2body04",
+        "v2body06",
+        "v2rank01",
+        "v2rank02",
+        "v2graph01",
+        "v2graph02",
+        "v2alt02",
+        "v2schema01"
+      ],
+      "confirmation_task_ids": [
+        "v2body02",
+        "v2body05",
+        "v2alt01",
+        "v2schema02",
+        "v2confirm01",
+        "v2confirm02",
+        "v2confirm03",
+        "v2confirm04",
+        "v2confirm05",
+        "v2confirm06"
+      ]
+    },
+    "controlled": {
+      "model": "deepseek-v4-pro",
+      "temperature": 0.0,
+      "thinking": "disabled",
+      "retriever": "BM25Retriever(text_level=brief)",
+      "candidate_source": "retriever_top_k",
+      "retrieval_top_k": 10,
+      "organizer": "HierarchicalOrganizer(detail_top_k=0 for adaptive_signals; 3 for one_stage)",
+      "environment": "isolated task fixture",
+      "reflection": false,
+      "max_argument_repairs": 1
+    },
+    "development_methods": [
+      "one_stage",
+      "adaptive_signals"
+    ],
+    "decision_rules": {
+      "two_stage_vs_one_stage": {
+        "candidate_method": "adaptive_signals",
+        "minimum_absolute_task_success_gain": 0.1,
+        "maximum_total_token_ratio": 1.15,
+        "maximum_p50_end_to_end_latency_ratio": 1.8,
+        "all_conditions_required": true
+      },
+      "adaptive_vs_always_full": {
+        "maximum_absolute_task_success_drop": 0.02,
+        "minimum_total_token_reduction": 0.1,
+        "minimum_p50_end_to_end_latency_reduction": 0.15,
+        "success_condition_required": true,
+        "cost_condition": "token_or_latency"
+      }
+    },
+    "confirmation_policy": {
+      "allowed_only_after_status": "frozen",
+      "maximum_runs": 1,
+      "development_use_forbidden": true
+    },
+    "note": "End-to-end protocol with real BM25 top-10. No gold injection. Retrieval metrics and Agent outcomes share the same candidates."
+  },
+  "source_manifest": {
+    "core/llm.py": "0310dfd75311f68788e8ff4575a9234581f2bcaf6bcf49fdbdac1bb4dcd3ee94",
+    "core/schemas.py": "702c7e364e08d8475a263de8e2a022bbdca2e9f4ab9c8e430d08cd426e9c38cf",
+    "agent/agent.py": "d75fa93ac08ad0a504791ea3bd7b8d9872020df19d58a79a848745671a67deaf",
+    "agent/planner.py": "5d68b6bf87e29054a58a48ea1bf1eca776a8554e98a202c95b78dd1b9f1b17ae",
+    "agent/disclosure_policy.py": "8e5612826b2441fd85da37e23b6be2b0c442e12135cf216f09869774ca832e3b",
+    "agent/schema_validation.py": "6ea08b04a3af0b5bd3e5620833102b59181f919c187473c2f89acbc84782bb0e",
+    "evaluation/run_benchmark.py": "bc1ee4b4f97e95c622f99dea77b3bbf09b88e5645ad8fa8805d790740c4b2c5d",
+    "evaluation/task_metrics.py": "fedc1a34d91921ba781d21043b7bb20edd631c0cf6c2deea4c3b7584f71e9e5b",
+    "evaluation/verifiers.py": "ed2469b27799f4b608127c3070ece05c4ad4985e427b149ed990df956b97c7d9",
+    "execution/handlers.py": "ca8030c4e23fb2323723f12e215b56768c5329b7f5338f1fdbcbf402611af8a6",
+    "organization/hierarchical.py": "7f32cb6ce82a8d5d51423680fad423bebf35a836e39e52ac8316374cc070cddf",
+    "retrieval/bm25.py": "0fed46d5e76e769195f51692e43a42c4d3aee1c128e3c9691d2b16a2a1f19cd5",
+    "experiments/run_task5_disclosure.py": "471c55b48fb572f32ef764d72dbe9fb7fc37f514790b554ae31283c34b4e8277",
+    "configs/disclosure_policy_v01.json": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968"
+  },
+  "split": "confirmation",
+  "task_ids": [
+    "v2body02",
+    "v2body05",
+    "v2alt01",
+    "v2schema02",
+    "v2confirm01",
+    "v2confirm02",
+    "v2confirm03",
+    "v2confirm04",
+    "v2confirm05",
+    "v2confirm06"
+  ],
+  "methods": {
+    "one_stage": {
+      "planner_mode": "one_stage",
+      "planner_disclosure_level": "full",
+      "detail_top_k": 3
+    },
+    "adaptive_signals": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "adaptive_signals",
+      "detail_top_k": 0
+    }
+  },
+  "runs": {
+    "one_stage": {
+      "per_task": [
+        {
+          "task_id": "v2body02",
+          "instruction": "只覆盖已有 status.txt 的全部内容，不允许创建新文件或追加。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "retrieved_scores": [
+            7.386212482464046,
+            7.386212482464046,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            2.8642310510909907,
+            2.8642310510909907
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_agg"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.25,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.43067655807339306,
+            "recall@10": 1.0,
+            "ndcg@10": 0.43067655807339306,
+            "recall@20": 1.0,
+            "ndcg@20": 0.43067655807339306
+          },
+          "selected_skill_ids": [
+            "sfile_overwrite"
+          ],
+          "expected_skill_ids": [
+            "sfile_overwrite"
+          ],
+          "expected_skill_sequence": [
+            "sfile_overwrite"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "status.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "status.txt": {
+                "content": "approved",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "approved"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 794,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 794,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "detailed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 738,
+            "completion_tokens": 95,
+            "total_tokens": 833
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.5979999998307903,
+          "llm_time_ms": 2189.041399999951,
+          "end_to_end_time_ms": 2200.080899999193,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2189.041399999951,
+              "prompt_tokens": 738,
+              "completion_tokens": 95,
+              "total_tokens": 833,
+              "message_count": 1,
+              "prompt_chars": 1722,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "status.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "overwrite_text_file",
+              "plan": [
+                {
+                  "skill_name": "overwrite_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "任务要求覆盖已有 status.txt 的全部内容，不允许创建新文件或追加。overwrite_text_file 技能用于在受控目录中写入文件，且会覆盖已有文件内容，符合要求。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sdb_update",
+                "sdb_delete",
+                "sfile_create"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "status.txt",
+              "index": 1,
+              "skill_id": "sfile_overwrite",
+              "skill_name": "overwrite_text_file",
+              "arguments": {
+                "path": "status.txt",
+                "content": "approved"
+              },
+              "success": true,
+              "duration_ms": 1.5979999998307903
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "pending"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "approved"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2body05",
+          "instruction": "对 JSON 对象数组按 active 字段等值筛选，不排序。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_filter"
+          ],
+          "retrieved_scores": [
+            4.971329036030696,
+            3.0167755953105777,
+            3.0167755953105777,
+            2.882607801930558,
+            2.2439101874272644,
+            2.1856092792075876,
+            2.1856092792075876,
+            2.1856092792075876,
+            2.077647103389432,
+            1.9971723190968194
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.1,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.2890648263178879,
+            "recall@20": 1.0,
+            "ndcg@20": 0.2890648263178879
+          },
+          "selected_skill_ids": [
+            "sjson_filter"
+          ],
+          "expected_skill_ids": [
+            "sjson_filter"
+          ],
+          "expected_skill_sequence": [
+            "sjson_filter"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": [
+              {
+                "active": true,
+                "name": "Ada"
+              }
+            ]
+          },
+          "verifier_actual": {
+            "output": [
+              {
+                "active": true,
+                "name": "Ada"
+              }
+            ]
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 859,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 859,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_agg",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "sjson_filter"
+          ],
+          "detailed_skill_ids": [
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 787,
+            "completion_tokens": 74,
+            "total_tokens": 861
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.06329999996523838,
+          "llm_time_ms": 1899.7292999993078,
+          "end_to_end_time_ms": 1902.367200000299,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1899.7292999993078,
+              "prompt_tokens": 787,
+              "completion_tokens": 74,
+              "total_tokens": 861,
+              "message_count": 1,
+              "prompt_chars": 1946,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "[{\"active\": true, \"name\": \"Ada\"}]",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "filter_json_records",
+              "plan": [
+                {
+                  "skill_name": "filter_json_records",
+                  "arguments": {
+                    "records": "$input.records",
+                    "field": "$input.field",
+                    "equals": "$input.equals"
+                  },
+                  "reason": "按 active 字段等值筛选记录，不排序。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "scalc_agg",
+                "sjson_extract",
+                "sjson_rename"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "[{\"active\": true, \"name\": \"Ada\"}]",
+              "index": 1,
+              "skill_id": "sjson_filter",
+              "skill_name": "filter_json_records",
+              "arguments": {
+                "records": [
+                  {
+                    "active": true,
+                    "name": "Ada"
+                  },
+                  {
+                    "active": false,
+                    "name": "Bob"
+                  }
+                ],
+                "field": "active",
+                "equals": true
+              },
+              "success": true,
+              "duration_ms": 0.06329999996523838
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2alt01",
+          "instruction": "复制 source.txt 到 archive.txt 并保留源文件，不要移动。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter"
+          ],
+          "retrieved_scores": [
+            12.289039544088464,
+            6.684706834181394,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            1.8163803957890468,
+            0.5740127964584367,
+            0.5740127964584367,
+            0.5740127964584367
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@10": 1.0,
+            "ndcg@10": 1.0,
+            "recall@20": 1.0,
+            "ndcg@20": 1.0
+          },
+          "selected_skill_ids": [
+            "sfile_copy"
+          ],
+          "expected_skill_ids": [
+            "sfile_copy"
+          ],
+          "expected_skill_sequence": [
+            "sfile_copy"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "archive.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "archive.txt": {
+                "content": "payload",
+                "exists": true
+              },
+              "source.txt": {
+                "content": "payload",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "archive.txt": {
+                "exists": true,
+                "content": "payload"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 799,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 799,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter"
+          ],
+          "detailed_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 716,
+            "completion_tokens": 54,
+            "total_tokens": 770
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 3.774100000555336,
+          "llm_time_ms": 1940.5349000007845,
+          "end_to_end_time_ms": 1948.702200000298,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1940.5349000007845,
+              "prompt_tokens": 716,
+              "completion_tokens": 54,
+              "total_tokens": 770,
+              "message_count": 1,
+              "prompt_chars": 1731,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "archive.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "copy_file_preserve_source",
+              "plan": [
+                {
+                  "skill_name": "copy_file_preserve_source",
+                  "arguments": {
+                    "source": "source.txt",
+                    "destination": "archive.txt"
+                  },
+                  "reason": "复制源文件到目标文件，保留源文件，符合任务要求"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sfile_copy",
+                "sfile_move",
+                "sfile_create"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "archive.txt",
+              "index": 1,
+              "skill_id": "sfile_copy",
+              "skill_name": "copy_file_preserve_source",
+              "arguments": {
+                "source": "source.txt",
+                "destination": "archive.txt"
+              },
+              "success": true,
+              "duration_ms": 3.774100000555336
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "archive.txt": {
+                "exists": true,
+                "content": "payload"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2schema02",
+          "instruction": "把 value 从 from_unit 换算为 to_unit。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv"
+          ],
+          "retrieved_scores": [
+            5.0653742439481295,
+            1.305900356472724,
+            1.305900356472724,
+            1.2719706665709853,
+            1.2719706665709853,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2505704947348457
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "scalc_eq",
+            "sjson_merge",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@10": 1.0,
+            "ndcg@10": 1.0,
+            "recall@20": 1.0,
+            "ndcg@20": 1.0
+          },
+          "selected_skill_ids": [
+            "scalc_unit"
+          ],
+          "expected_skill_ids": [
+            "scalc_unit"
+          ],
+          "expected_skill_sequence": [
+            "scalc_unit"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "exact_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": 7500,
+          "verifier_actual": "7500",
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 886,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 886,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv"
+          ],
+          "detailed_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 782,
+            "completion_tokens": 72,
+            "total_tokens": 854
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.06180000036692945,
+          "llm_time_ms": 1921.9014000000243,
+          "end_to_end_time_ms": 1924.3966000003638,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1921.9014000000243,
+              "prompt_tokens": 782,
+              "completion_tokens": 72,
+              "total_tokens": 854,
+              "message_count": 1,
+              "prompt_chars": 1909,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "7500",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "convert_measurement_units",
+              "plan": [
+                {
+                  "skill_name": "convert_measurement_units",
+                  "arguments": {
+                    "from_unit": "公里",
+                    "to_unit": "米",
+                    "value": 7.5
+                  },
+                  "reason": "将7.5公里换算成米"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "scalc_unit",
+                "scalc_pct",
+                "scalc_agg"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "7500",
+              "index": 1,
+              "skill_id": "scalc_unit",
+              "skill_name": "convert_measurement_units",
+              "arguments": {
+                "from_unit": "公里",
+                "to_unit": "米",
+                "value": 7.5
+              },
+              "success": true,
+              "duration_ms": 0.06180000036692945
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm01",
+          "instruction": "保留 notes.txt 的原内容，并把 suffix 原样追加到文件末尾。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort"
+          ],
+          "retrieved_scores": [
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "sjson_merge",
+            "scalc_eq",
+            "scalc_pct",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sfile_append"
+          ],
+          "expected_skill_ids": [
+            "sfile_append"
+          ],
+          "expected_skill_sequence": [
+            "sfile_append"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "notes.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "notes.txt": {
+                "content": "head\ntail",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\ntail"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 799,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 799,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort"
+          ],
+          "detailed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 730,
+            "completion_tokens": 82,
+            "total_tokens": 812
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.722699999845645,
+          "llm_time_ms": 2171.544000000722,
+          "end_to_end_time_ms": 2182.5245999998515,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2171.544000000722,
+              "prompt_tokens": 730,
+              "completion_tokens": 82,
+              "total_tokens": 812,
+              "message_count": 1,
+              "prompt_chars": 1702,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "notes.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "append_text_file",
+              "plan": [
+                {
+                  "skill_name": "append_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "任务要求保留原内容并追加 suffix，append_text_file 正好在文件末尾原样追加内容，不覆盖原内容，符合要求。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sfile_create",
+                "sfile_overwrite",
+                "sfile_append"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "notes.txt",
+              "index": 1,
+              "skill_id": "sfile_append",
+              "skill_name": "append_text_file",
+              "arguments": {
+                "path": "notes.txt",
+                "content": "tail"
+              },
+              "success": true,
+              "duration_ms": 1.722699999845645
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\n"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\ntail"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm02",
+          "instruction": "把 JSON 对象的 first 键改名为 given_name，并保留所有未映射字段。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_unit",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "retrieved_scores": [
+            4.094971009975646,
+            3.839885902716622,
+            3.839885902716622,
+            3.839885902716622,
+            3.839885902716622,
+            3.660601868418071,
+            3.170912666600519,
+            2.802166354953535,
+            2.462070827488015,
+            2.462070827488015
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_unit",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_csv",
+            "scalc_pct",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sjson_rename"
+          ],
+          "expected_skill_ids": [
+            "sjson_rename"
+          ],
+          "expected_skill_sequence": [
+            "sjson_rename"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": {
+              "given_name": "Ada",
+              "role": "admin"
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "given_name": "Ada",
+              "role": "admin"
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 825,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 825,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_eq",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "detailed_skill_ids": [
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 780,
+            "completion_tokens": 74,
+            "total_tokens": 854
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.03990000004705507,
+          "llm_time_ms": 2149.6503999997003,
+          "end_to_end_time_ms": 2151.6130999998495,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2149.6503999997003,
+              "prompt_tokens": 780,
+              "completion_tokens": 74,
+              "total_tokens": 854,
+              "message_count": 1,
+              "prompt_chars": 1853,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"given_name\": \"Ada\", \"role\": \"admin\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "rename_json_keys",
+              "plan": [
+                {
+                  "skill_name": "rename_json_keys",
+                  "arguments": {
+                    "data": "$input.data",
+                    "mapping": "$input.mapping"
+                  },
+                  "reason": "将 data 对象中的 first 键重命名为 given_name，并保留所有未映射字段。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "scalc_eq",
+                "sjson_extract",
+                "sjson_rename"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"given_name\": \"Ada\", \"role\": \"admin\"}",
+              "index": 1,
+              "skill_id": "sjson_rename",
+              "skill_name": "rename_json_keys",
+              "arguments": {
+                "data": {
+                  "first": "Ada",
+                  "role": "admin"
+                },
+                "mapping": {
+                  "first": "given_name"
+                }
+              },
+              "success": true,
+              "duration_ms": 0.03990000004705507
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm03",
+          "instruction": "在 users 表上执行 SUM(active) 聚合，只返回聚合结果。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract"
+          ],
+          "retrieved_scores": [
+            6.627935550696514,
+            6.627935550696514,
+            6.627935550696514,
+            5.715124281577464,
+            5.715124281577464,
+            4.821738792605691,
+            4.464470856226011,
+            3.0296815424135466,
+            2.9251363797003345,
+            1.9479406112397997
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_merge",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.5,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.6309297535714575,
+            "recall@5": 1.0,
+            "ndcg@5": 0.6309297535714575,
+            "recall@10": 1.0,
+            "ndcg@10": 0.6309297535714575,
+            "recall@20": 1.0,
+            "ndcg@20": 0.6309297535714575
+          },
+          "selected_skill_ids": [
+            "sdb_aggregate"
+          ],
+          "expected_skill_ids": [
+            "sdb_aggregate"
+          ],
+          "expected_skill_sequence": [
+            "sdb_aggregate"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "sqlite_state",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": [
+            [
+              2
+            ]
+          ],
+          "verifier_actual": [
+            [
+              2
+            ]
+          ],
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 859,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 859,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract"
+          ],
+          "detailed_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 764,
+            "completion_tokens": 82,
+            "total_tokens": 846
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.476199999160599,
+          "llm_time_ms": 1927.201999999852,
+          "end_to_end_time_ms": 1932.9649999999674,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1927.201999999852,
+              "prompt_tokens": 764,
+              "completion_tokens": 82,
+              "total_tokens": 846,
+              "message_count": 1,
+              "prompt_chars": 1824,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "[[2]]",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "aggregate_sqlite_query",
+              "plan": [
+                {
+                  "skill_name": "aggregate_sqlite_query",
+                  "arguments": {
+                    "query": "SELECT SUM(active) FROM users"
+                  },
+                  "reason": "任务要求对 users 表执行 SUM(active) 聚合，只返回聚合结果，符合 aggregate_sqlite_query 的适用边界。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sdb_select",
+                "sdb_aggregate",
+                "sdb_join"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "[[2]]",
+              "index": 1,
+              "skill_id": "sdb_aggregate",
+              "skill_name": "aggregate_sqlite_query",
+              "arguments": {
+                "query": "SELECT SUM(active) FROM users"
+              },
+              "success": true,
+              "duration_ms": 1.476199999160599
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm03-f9fbvar7\\task.db",
+            "query_result": [
+              [
+                2
+              ]
+            ]
+          },
+          "final_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm03-f9fbvar7\\task.db",
+            "query_result": [
+              [
+                2
+              ]
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm04",
+          "instruction": "求一元一次方程 a*x+b=c 的 x。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "retrieved_scores": [
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.1991608848516906,
+            1.1671733885716082,
+            1.0806913857365046,
+            0.8303141044155992,
+            0.7734252360042025,
+            0.7734252360042025
+          ],
+          "raw_bm25_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_select"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.3333333333333333,
+            "recall@20": 1.0,
+            "ndcg@20": 0.3333333333333333
+          },
+          "selected_skill_ids": [
+            "scalc_eq"
+          ],
+          "expected_skill_ids": [
+            "scalc_eq"
+          ],
+          "expected_skill_sequence": [
+            "scalc_eq"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "exact_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": 5,
+          "verifier_actual": "5",
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 846,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 846,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "detailed_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 763,
+            "completion_tokens": 83,
+            "total_tokens": 846
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.031200000194075983,
+          "llm_time_ms": 1812.2159000004103,
+          "end_to_end_time_ms": 1814.4389999997657,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1812.2159000004103,
+              "prompt_tokens": 763,
+              "completion_tokens": 83,
+              "total_tokens": 846,
+              "message_count": 1,
+              "prompt_chars": 1846,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "5",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "solve_linear_equation",
+              "plan": [
+                {
+                  "skill_name": "solve_linear_equation",
+                  "arguments": {
+                    "a": "$input.a",
+                    "b": "$input.b",
+                    "c": "$input.c"
+                  },
+                  "reason": "直接使用求解一元一次方程的技能，输入系数a、b和常数c，得到x的值。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sjson_extract",
+                "sjson_rename",
+                "sjson_filter"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "5",
+              "index": 1,
+              "skill_id": "scalc_eq",
+              "skill_name": "solve_linear_equation",
+              "arguments": {
+                "a": 2,
+                "b": 3,
+                "c": 13
+              },
+              "success": true,
+              "duration_ms": 0.031200000194075983
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm05",
+          "instruction": "先从 data 只保留 first 和 last，再把 first 重命名为 given_name。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            2.656555497271461,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge",
+            "sjson_sort",
+            "sjson_csv",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.39780880120575696,
+            "recall@20": 1.0,
+            "ndcg@20": 0.39780880120575696
+          },
+          "selected_skill_ids": [
+            "sjson_extract"
+          ],
+          "expected_skill_ids": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "expected_skill_sequence": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "skill_selection_f1": 0.6666666666666666,
+          "sequence_correct": false,
+          "execution_success": false,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "error": "Expecting value: line 1 column 1 (char 0)"
+          },
+          "verifier_expected": {
+            "given_name": "Ada",
+            "last": "Lovelace"
+          },
+          "verifier_actual": "缺少参数: data",
+          "failure_reason": "execution_failed",
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 845,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 845,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge"
+          ],
+          "detailed_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 784,
+            "completion_tokens": 117,
+            "total_tokens": 901
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.014100000043981709,
+          "llm_time_ms": 2385.4359000006298,
+          "end_to_end_time_ms": 2387.7424000002065,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2385.4359000006298,
+              "prompt_tokens": 784,
+              "completion_tokens": 117,
+              "total_tokens": 901,
+              "message_count": 1,
+              "prompt_chars": 1904,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "缺少参数: data",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "extract_json_fields -> rename_json_keys",
+              "plan": [
+                {
+                  "skill_name": "extract_json_fields",
+                  "arguments": {
+                    "input": "$input.data",
+                    "fields": "$input.fields"
+                  },
+                  "reason": "从 data 中提取 first 和 last 字段"
+                },
+                {
+                  "skill_name": "rename_json_keys",
+                  "arguments": {
+                    "input": "$last_output",
+                    "mapping": "$input.mapping"
+                  },
+                  "reason": "将 first 重命名为 given_name"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "scalc_unit",
+                "scalc_int",
+                "scalc_dec"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "缺少参数: data",
+              "index": 1,
+              "skill_id": "sjson_extract",
+              "skill_name": "extract_json_fields",
+              "arguments": {
+                "input": {
+                  "age": 36,
+                  "first": "Ada",
+                  "last": "Lovelace"
+                },
+                "fields": [
+                  "first",
+                  "last"
+                ]
+              },
+              "success": false,
+              "duration_ms": 0.014100000043981709
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm06",
+          "instruction": "把 Bob 的 active 更新为 1，必须保留 Bob 和其他所有记录，不能删除。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            6.0509461624936565,
+            6.0509461624936565,
+            5.695665354818147,
+            5.695665354818147,
+            3.2335945273301316,
+            2.971329147305108,
+            2.971329147305108,
+            2.8642310510909907,
+            2.8642310510909907,
+            2.707237101453066
+          ],
+          "raw_bm25_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_eq",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_int"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sdb_update"
+          ],
+          "expected_skill_ids": [
+            "sdb_update"
+          ],
+          "expected_skill_sequence": [
+            "sdb_update"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "sqlite_state",
+          "verifier_details": {
+            "effects": [
+              "query_result"
+            ]
+          },
+          "verifier_expected": [
+            [
+              "Ada",
+              1
+            ],
+            [
+              "Bob",
+              1
+            ],
+            [
+              "Cara",
+              1
+            ]
+          ],
+          "verifier_actual": [
+            [
+              "Ada",
+              1
+            ],
+            [
+              "Bob",
+              1
+            ],
+            [
+              "Cara",
+              1
+            ]
+          ],
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 885,
+          "context_budget_tokens": 3200,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 885,
+          "planning_context_tokens": 0,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "detailed_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_update"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 814,
+            "completion_tokens": 78,
+            "total_tokens": 892
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 9.24600000053033,
+          "llm_time_ms": 1878.8367000006474,
+          "end_to_end_time_ms": 1892.8948000002492,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1878.8367000006474,
+              "prompt_tokens": 814,
+              "completion_tokens": 78,
+              "total_tokens": 892,
+              "message_count": 1,
+              "prompt_chars": 1974,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"updated\": 1}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "update_sqlite_rows",
+              "plan": [
+                {
+                  "skill_name": "update_sqlite_rows",
+                  "arguments": {
+                    "table": "$input.table",
+                    "where": "$input.where",
+                    "changes": "$input.changes"
+                  },
+                  "reason": "直接使用更新技能，按条件更新指定列，保留其他记录。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [
+                "sjson_filter",
+                "sjson_sort",
+                "sdb_update"
+              ],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"updated\": 1}",
+              "index": 1,
+              "skill_id": "sdb_update",
+              "skill_name": "update_sqlite_rows",
+              "arguments": {
+                "table": "users",
+                "where": {
+                  "name": "Bob"
+                },
+                "changes": {
+                  "active": 1
+                }
+              },
+              "success": true,
+              "duration_ms": 9.24600000053033
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm06-hl5yyd_a\\task.db",
+            "query_result": [
+              [
+                "Ada",
+                1
+              ],
+              [
+                "Bob",
+                0
+              ],
+              [
+                "Cara",
+                1
+              ]
+            ]
+          },
+          "final_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm06-hl5yyd_a\\task.db",
+            "query_result": [
+              [
+                "Ada",
+                1
+              ],
+              [
+                "Bob",
+                1
+              ],
+              [
+                "Cara",
+                1
+              ]
+            ]
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 10,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.4135714285714286,
+          "ndcg@1": 0.2,
+          "ndcg@10": 0.5581813272501829,
+          "ndcg@20": 0.5581813272501829,
+          "ndcg@3": 0.4130929753571458,
+          "ndcg@5": 0.4561606311644851,
+          "recall@1": 0.2,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 0.6,
+          "recall@5": 0.7
+        },
+        "agent": {
+          "skill_selection_f1": 0.9666666666666666,
+          "sequence_accuracy": 0.9,
+          "task_success_rate": 0.9
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 839.7,
+          "total_tokens": 8469,
+          "avg_total_tokens_per_task": 846.9,
+          "avg_skill_calls": 1.0,
+          "avg_planner_calls": 1.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 2027.609190000203,
+          "llm_time_p50_ms": 1927.201999999852,
+          "llm_time_p95_ms": 2385.4359000006298,
+          "avg_end_to_end_time_ms": 2033.7725800000044,
+          "end_to_end_time_p50_ms": 1932.9649999999674,
+          "end_to_end_time_p95_ms": 2387.7424000002065
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 10
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    },
+    "adaptive_signals": {
+      "per_task": [
+        {
+          "task_id": "v2body02",
+          "instruction": "只覆盖已有 status.txt 的全部内容，不允许创建新文件或追加。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "retrieved_scores": [
+            7.386212482464046,
+            7.386212482464046,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            2.8642310510909907,
+            2.8642310510909907
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sjson_csv",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_agg"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.25,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.43067655807339306,
+            "recall@10": 1.0,
+            "ndcg@10": 0.43067655807339306,
+            "recall@20": 1.0,
+            "ndcg@20": 0.43067655807339306
+          },
+          "selected_skill_ids": [
+            "sfile_overwrite"
+          ],
+          "expected_skill_ids": [
+            "sfile_overwrite"
+          ],
+          "expected_skill_sequence": [
+            "sfile_overwrite"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "status.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "status.txt": {
+                "content": "approved",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "approved"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 431,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "observed_non_schema_behavior_constraint"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "content",
+              "path"
+            ],
+            "task_input_keys": [
+              "content",
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": [
+              "不允许创建"
+            ]
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "覆盖 status.txt 的全部内容为 approved",
+              "skill_id": "sfile_overwrite",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 245,
+          "planning_context_tokens": 186,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_update",
+            "sdb_delete",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "detailed_skill_ids": [
+            "sfile_overwrite"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 698,
+            "completion_tokens": 87,
+            "total_tokens": 785
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.5988999994078767,
+          "llm_time_ms": 3054.255199999716,
+          "end_to_end_time_ms": 3058.942599999682,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1822.0054000003074,
+              "prompt_tokens": 385,
+              "completion_tokens": 40,
+              "total_tokens": 425,
+              "message_count": 1,
+              "prompt_chars": 851,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1232.2497999994084,
+              "prompt_tokens": 313,
+              "completion_tokens": 47,
+              "total_tokens": 360,
+              "message_count": 1,
+              "prompt_chars": 673,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "status.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "overwrite_text_file",
+              "plan": [
+                {
+                  "skill_name": "overwrite_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "覆盖已有 status.txt 的全部内容为 approved"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_overwrite"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "覆盖 status.txt 的全部内容为 approved",
+                  "skill_id": "sfile_overwrite",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "observed_non_schema_behavior_constraint"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "content",
+                  "path"
+                ],
+                "task_input_keys": [
+                  "content",
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": [
+                  "不允许创建"
+                ]
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "status.txt",
+              "index": 1,
+              "skill_id": "sfile_overwrite",
+              "skill_name": "overwrite_text_file",
+              "arguments": {
+                "path": "status.txt",
+                "content": "approved"
+              },
+              "success": true,
+              "duration_ms": 1.5988999994078767
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "pending"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "status.txt": {
+                "exists": true,
+                "content": "approved"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2body05",
+          "instruction": "对 JSON 对象数组按 active 字段等值筛选，不排序。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_filter"
+          ],
+          "retrieved_scores": [
+            4.971329036030696,
+            3.0167755953105777,
+            3.0167755953105777,
+            2.882607801930558,
+            2.2439101874272644,
+            2.1856092792075876,
+            2.1856092792075876,
+            2.1856092792075876,
+            2.077647103389432,
+            1.9971723190968194
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.1,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.2890648263178879,
+            "recall@20": 1.0,
+            "ndcg@20": 0.2890648263178879
+          },
+          "selected_skill_ids": [
+            "sjson_filter"
+          ],
+          "expected_skill_ids": [
+            "sjson_filter"
+          ],
+          "expected_skill_sequence": [
+            "sjson_filter"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": [
+              {
+                "active": true,
+                "name": "Ada"
+              }
+            ]
+          },
+          "verifier_actual": {
+            "output": [
+              {
+                "active": true,
+                "name": "Ada"
+              }
+            ]
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 287,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "equals",
+              "field",
+              "records"
+            ],
+            "task_input_keys": [
+              "equals",
+              "field",
+              "records"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "按 active 字段等值筛选记录",
+              "skill_id": "sjson_filter",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 269,
+          "planning_context_tokens": 18,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_agg",
+            "scalc_pct",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "sjson_filter"
+          ],
+          "detailed_skill_ids": [
+            "sjson_filter"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 638,
+            "completion_tokens": 111,
+            "total_tokens": 749
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.04129999979340937,
+          "llm_time_ms": 3158.8740999995935,
+          "end_to_end_time_ms": 3160.6449999999313,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1170.9437999998045,
+              "prompt_tokens": 408,
+              "completion_tokens": 30,
+              "total_tokens": 438,
+              "message_count": 1,
+              "prompt_chars": 968,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1987.930299999789,
+              "prompt_tokens": 230,
+              "completion_tokens": 81,
+              "total_tokens": 311,
+              "message_count": 1,
+              "prompt_chars": 475,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "[{\"active\": true, \"name\": \"Ada\"}]",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "filter_json_records",
+              "plan": [
+                {
+                  "skill_name": "filter_json_records",
+                  "arguments": {
+                    "records": "$input.records",
+                    "field": "$input.field",
+                    "equals": "$input.equals"
+                  },
+                  "reason": "使用 filter_json_records 技能按 active 字段等值筛选记录，不排序。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sjson_filter"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "按 active 字段等值筛选记录",
+                  "skill_id": "sjson_filter",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "equals",
+                  "field",
+                  "records"
+                ],
+                "task_input_keys": [
+                  "equals",
+                  "field",
+                  "records"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "[{\"active\": true, \"name\": \"Ada\"}]",
+              "index": 1,
+              "skill_id": "sjson_filter",
+              "skill_name": "filter_json_records",
+              "arguments": {
+                "records": [
+                  {
+                    "active": true,
+                    "name": "Ada"
+                  },
+                  {
+                    "active": false,
+                    "name": "Bob"
+                  }
+                ],
+                "field": "active",
+                "equals": true
+              },
+              "success": true,
+              "duration_ms": 0.04129999979340937
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2alt01",
+          "instruction": "复制 source.txt 到 archive.txt 并保留源文件，不要移动。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter"
+          ],
+          "retrieved_scores": [
+            12.289039544088464,
+            6.684706834181394,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            1.8163803957890468,
+            0.5740127964584367,
+            0.5740127964584367,
+            0.5740127964584367
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "scalc_eq"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@10": 1.0,
+            "ndcg@10": 1.0,
+            "recall@20": 1.0,
+            "ndcg@20": 1.0
+          },
+          "selected_skill_ids": [
+            "sfile_copy"
+          ],
+          "expected_skill_ids": [
+            "sfile_copy"
+          ],
+          "expected_skill_sequence": [
+            "sfile_copy"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "archive.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "archive.txt": {
+                "content": "payload",
+                "exists": true
+              },
+              "source.txt": {
+                "content": "payload",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "archive.txt": {
+                "exists": true,
+                "content": "payload"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 266,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "destination",
+              "source"
+            ],
+            "task_input_keys": [
+              "destination",
+              "source"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "复制 source.txt 到 archive.txt 并保留源文件",
+              "skill_id": "sfile_copy",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 245,
+          "planning_context_tokens": 21,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_copy",
+            "sfile_move",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_patch_json",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter"
+          ],
+          "detailed_skill_ids": [
+            "sfile_copy"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 588,
+            "completion_tokens": 110,
+            "total_tokens": 698
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 4.813999999896623,
+          "llm_time_ms": 2820.3475000000253,
+          "end_to_end_time_ms": 2829.3791000005513,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1403.8050999997722,
+              "prompt_tokens": 380,
+              "completion_tokens": 43,
+              "total_tokens": 423,
+              "message_count": 1,
+              "prompt_chars": 869,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1416.542400000253,
+              "prompt_tokens": 208,
+              "completion_tokens": 67,
+              "total_tokens": 275,
+              "message_count": 1,
+              "prompt_chars": 421,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "archive.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "copy_file_preserve_source",
+              "plan": [
+                {
+                  "skill_name": "copy_file_preserve_source",
+                  "arguments": {
+                    "source": "$input.source",
+                    "destination": "$input.destination"
+                  },
+                  "reason": "复制源文件到目标文件，保留源文件。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_copy"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "复制 source.txt 到 archive.txt 并保留源文件",
+                  "skill_id": "sfile_copy",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "destination",
+                  "source"
+                ],
+                "task_input_keys": [
+                  "destination",
+                  "source"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "archive.txt",
+              "index": 1,
+              "skill_id": "sfile_copy",
+              "skill_name": "copy_file_preserve_source",
+              "arguments": {
+                "source": "source.txt",
+                "destination": "archive.txt"
+              },
+              "success": true,
+              "duration_ms": 4.813999999896623
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "archive.txt": {
+                "exists": true,
+                "content": "payload"
+              },
+              "source.txt": {
+                "exists": true,
+                "content": "payload"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2schema02",
+          "instruction": "把 value 从 from_unit 换算为 to_unit。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv"
+          ],
+          "retrieved_scores": [
+            5.0653742439481295,
+            1.305900356472724,
+            1.305900356472724,
+            1.2719706665709853,
+            1.2719706665709853,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2505704947348457
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "scalc_eq",
+            "sjson_merge",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@10": 1.0,
+            "ndcg@10": 1.0,
+            "recall@20": 1.0,
+            "ndcg@20": 1.0
+          },
+          "selected_skill_ids": [
+            "scalc_unit"
+          ],
+          "expected_skill_ids": [
+            "scalc_unit"
+          ],
+          "expected_skill_sequence": [
+            "scalc_unit"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "exact_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": 7500,
+          "verifier_actual": "7500",
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 285,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "from_unit",
+              "to_unit",
+              "value"
+            ],
+            "task_input_keys": [
+              "from_unit",
+              "to_unit",
+              "value"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "将7.5公里换算为米",
+              "skill_id": "scalc_unit",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 262,
+          "planning_context_tokens": 23,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv"
+          ],
+          "detailed_skill_ids": [
+            "scalc_unit"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 591,
+            "completion_tokens": 101,
+            "total_tokens": 692
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.03710000055434648,
+          "llm_time_ms": 4803.3084000007875,
+          "end_to_end_time_ms": 4804.829100000461,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1744.7787000000972,
+              "prompt_tokens": 381,
+              "completion_tokens": 30,
+              "total_tokens": 411,
+              "message_count": 1,
+              "prompt_chars": 897,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 3058.5297000006904,
+              "prompt_tokens": 210,
+              "completion_tokens": 71,
+              "total_tokens": 281,
+              "message_count": 1,
+              "prompt_chars": 410,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "7500",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "convert_measurement_units",
+              "plan": [
+                {
+                  "skill_name": "convert_measurement_units",
+                  "arguments": {
+                    "value": 7.5,
+                    "from_unit": "公里",
+                    "to_unit": "米"
+                  },
+                  "reason": "将7.5公里转换为米"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "scalc_unit"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "将7.5公里换算为米",
+                  "skill_id": "scalc_unit",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "from_unit",
+                  "to_unit",
+                  "value"
+                ],
+                "task_input_keys": [
+                  "from_unit",
+                  "to_unit",
+                  "value"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "7500",
+              "index": 1,
+              "skill_id": "scalc_unit",
+              "skill_name": "convert_measurement_units",
+              "arguments": {
+                "value": 7.5,
+                "from_unit": "公里",
+                "to_unit": "米"
+              },
+              "success": true,
+              "duration_ms": 0.03710000055434648
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm01",
+          "instruction": "保留 notes.txt 的原内容，并把 suffix 原样追加到文件末尾。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort"
+          ],
+          "retrieved_scores": [
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            3.882540479227859,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803,
+            1.842713583619803
+          ],
+          "raw_bm25_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_csv",
+            "sjson_merge",
+            "scalc_eq",
+            "scalc_pct",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sfile_append"
+          ],
+          "expected_skill_ids": [
+            "sfile_append"
+          ],
+          "expected_skill_sequence": [
+            "sfile_append"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "file_state",
+          "verifier_details": {
+            "effects": [
+              "notes.txt"
+            ]
+          },
+          "verifier_expected": {
+            "files": {
+              "notes.txt": {
+                "content": "head\ntail",
+                "exists": true
+              }
+            }
+          },
+          "verifier_actual": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\ntail"
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 441,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "observed_non_schema_behavior_constraint"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "content",
+              "path"
+            ],
+            "task_input_keys": [
+              "content",
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": [
+              "原样"
+            ]
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "保留 notes.txt 的原内容",
+              "skill_id": "sfile_append",
+              "information_need": "brief",
+              "need_reason": ""
+            },
+            {
+              "requirement": "把 suffix 原样追加到文件末尾",
+              "skill_id": "sfile_append",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 245,
+          "planning_context_tokens": 196,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort"
+          ],
+          "detailed_skill_ids": [
+            "sfile_append"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 706,
+            "completion_tokens": 130,
+            "total_tokens": 836
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.6158999997060164,
+          "llm_time_ms": 3587.8026999998838,
+          "end_to_end_time_ms": 3592.407799999819,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1635.4567999997016,
+              "prompt_tokens": 382,
+              "completion_tokens": 69,
+              "total_tokens": 451,
+              "message_count": 1,
+              "prompt_chars": 857,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1952.3459000001822,
+              "prompt_tokens": 324,
+              "completion_tokens": 61,
+              "total_tokens": 385,
+              "message_count": 1,
+              "prompt_chars": 672,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "notes.txt",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "append_text_file",
+              "plan": [
+                {
+                  "skill_name": "append_text_file",
+                  "arguments": {
+                    "path": "$input.path",
+                    "content": "$input.content"
+                  },
+                  "reason": "将输入中的 content 原样追加到 path 指定的文件末尾，不添加换行，不覆盖原内容。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sfile_append"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "保留 notes.txt 的原内容",
+                  "skill_id": "sfile_append",
+                  "information_need": "brief",
+                  "need_reason": ""
+                },
+                {
+                  "requirement": "把 suffix 原样追加到文件末尾",
+                  "skill_id": "sfile_append",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "observed_non_schema_behavior_constraint"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "content",
+                  "path"
+                ],
+                "task_input_keys": [
+                  "content",
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": [
+                  "原样"
+                ]
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "notes.txt",
+              "index": 1,
+              "skill_id": "sfile_append",
+              "skill_name": "append_text_file",
+              "arguments": {
+                "path": "notes.txt",
+                "content": "tail"
+              },
+              "success": true,
+              "duration_ms": 1.6158999997060164
+            }
+          ],
+          "initial_state": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\n"
+              }
+            }
+          },
+          "final_state": {
+            "files": {
+              "notes.txt": {
+                "exists": true,
+                "content": "head\ntail"
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm02",
+          "instruction": "把 JSON 对象的 first 键改名为 given_name，并保留所有未映射字段。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_unit",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "retrieved_scores": [
+            4.094971009975646,
+            3.839885902716622,
+            3.839885902716622,
+            3.839885902716622,
+            3.839885902716622,
+            3.660601868418071,
+            3.170912666600519,
+            2.802166354953535,
+            2.462070827488015,
+            2.462070827488015
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_eq",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_unit",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_csv",
+            "scalc_pct",
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sjson_rename"
+          ],
+          "expected_skill_ids": [
+            "sjson_rename"
+          ],
+          "expected_skill_sequence": [
+            "sjson_rename"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": {
+              "given_name": "Ada",
+              "role": "admin"
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "given_name": "Ada",
+              "role": "admin"
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 355,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "schema",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [
+            "hidden_schema_validation_failed"
+          ],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "data",
+              "mapping"
+            ],
+            "task_input_keys": [
+              "data",
+              "mapping"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 3,
+          "repair_attempts": 1,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "将 JSON 对象的 first 键改名为 given_name",
+              "skill_id": "sjson_rename",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 253,
+          "planning_context_tokens": 102,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_eq",
+            "scalc_unit",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "sfile_patch_json",
+            "sdb_update",
+            "sdb_delete"
+          ],
+          "detailed_skill_ids": [
+            "sjson_rename"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 965,
+            "completion_tokens": 178,
+            "total_tokens": 1143
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.039200000173877925,
+          "llm_time_ms": 4829.870300000039,
+          "end_to_end_time_ms": 4831.647099999827,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1402.788899999905,
+              "prompt_tokens": 406,
+              "completion_tokens": 43,
+              "total_tokens": 449,
+              "message_count": 1,
+              "prompt_chars": 933,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1992.8554999996777,
+              "prompt_tokens": 220,
+              "completion_tokens": 68,
+              "total_tokens": 288,
+              "message_count": 1,
+              "prompt_chars": 449,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_repair",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1434.225900000456,
+              "prompt_tokens": 339,
+              "completion_tokens": 67,
+              "total_tokens": 406,
+              "message_count": 1,
+              "prompt_chars": 820,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"given_name\": \"Ada\", \"role\": \"admin\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "rename_json_keys",
+              "plan": [
+                {
+                  "skill_name": "rename_json_keys",
+                  "arguments": {
+                    "data": "$input.data",
+                    "mapping": "$input.mapping"
+                  },
+                  "reason": "重命名 first 键为 given_name，保留其他字段。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sjson_rename"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "将 JSON 对象的 first 键改名为 given_name",
+                  "skill_id": "sjson_rename",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [
+                "hidden_schema_validation_failed"
+              ],
+              "resolved_disclosure_level": "schema",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "data",
+                  "mapping"
+                ],
+                "task_input_keys": [
+                  "data",
+                  "mapping"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 1
+            },
+            {
+              "step": "action",
+              "content": "{\"given_name\": \"Ada\", \"role\": \"admin\"}",
+              "index": 1,
+              "skill_id": "sjson_rename",
+              "skill_name": "rename_json_keys",
+              "arguments": {
+                "data": {
+                  "first": "Ada",
+                  "role": "admin"
+                },
+                "mapping": {
+                  "first": "given_name"
+                }
+              },
+              "success": true,
+              "duration_ms": 0.039200000173877925
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm03",
+          "instruction": "在 users 表上执行 SUM(active) 聚合，只返回聚合结果。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract"
+          ],
+          "retrieved_scores": [
+            6.627935550696514,
+            6.627935550696514,
+            6.627935550696514,
+            5.715124281577464,
+            5.715124281577464,
+            4.821738792605691,
+            4.464470856226011,
+            3.0296815424135466,
+            2.9251363797003345,
+            1.9479406112397997
+          ],
+          "raw_bm25_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_insert",
+            "sdb_update",
+            "sdb_delete",
+            "sjson_merge",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.5,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.6309297535714575,
+            "recall@5": 1.0,
+            "ndcg@5": 0.6309297535714575,
+            "recall@10": 1.0,
+            "ndcg@10": 0.6309297535714575,
+            "recall@20": 1.0,
+            "ndcg@20": 0.6309297535714575
+          },
+          "selected_skill_ids": [
+            "sdb_aggregate"
+          ],
+          "expected_skill_ids": [
+            "sdb_aggregate"
+          ],
+          "expected_skill_sequence": [
+            "sdb_aggregate"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "sqlite_state",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": [
+            [
+              2
+            ]
+          ],
+          "verifier_actual": [
+            [
+              2
+            ]
+          ],
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 295,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "query"
+            ],
+            "task_input_keys": [
+              "query"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "在 users 表上执行 SUM(active) 聚合",
+              "skill_id": "sdb_aggregate",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 273,
+          "planning_context_tokens": 22,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sdb_select",
+            "sdb_aggregate",
+            "sdb_join",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_agg",
+            "scalc_eq",
+            "scalc_pct",
+            "sjson_csv",
+            "sjson_extract"
+          ],
+          "detailed_skill_ids": [
+            "sdb_aggregate"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 607,
+            "completion_tokens": 99,
+            "total_tokens": 706
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.2480000004870817,
+          "llm_time_ms": 2805.4771999995864,
+          "end_to_end_time_ms": 2809.23249999978,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1364.1386999997849,
+              "prompt_tokens": 396,
+              "completion_tokens": 36,
+              "total_tokens": 432,
+              "message_count": 1,
+              "prompt_chars": 893,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1441.3384999998016,
+              "prompt_tokens": 211,
+              "completion_tokens": 63,
+              "total_tokens": 274,
+              "message_count": 1,
+              "prompt_chars": 410,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "[[2]]",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "aggregate_sqlite_query",
+              "plan": [
+                {
+                  "skill_name": "aggregate_sqlite_query",
+                  "arguments": {
+                    "query": "SELECT SUM(active) FROM users"
+                  },
+                  "reason": "直接执行聚合查询，返回SUM(active)结果"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sdb_aggregate"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "在 users 表上执行 SUM(active) 聚合",
+                  "skill_id": "sdb_aggregate",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "query"
+                ],
+                "task_input_keys": [
+                  "query"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "[[2]]",
+              "index": 1,
+              "skill_id": "sdb_aggregate",
+              "skill_name": "aggregate_sqlite_query",
+              "arguments": {
+                "query": "SELECT SUM(active) FROM users"
+              },
+              "success": true,
+              "duration_ms": 1.2480000004870817
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm03-6ho3c7gq\\task.db",
+            "query_result": [
+              [
+                2
+              ]
+            ]
+          },
+          "final_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm03-6ho3c7gq\\task.db",
+            "query_result": [
+              [
+                2
+              ]
+            ]
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm04",
+          "instruction": "求一元一次方程 a*x+b=c 的 x。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "retrieved_scores": [
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.2687007871613663,
+            1.1991608848516906,
+            1.1671733885716082,
+            1.0806913857365046,
+            0.8303141044155992,
+            0.7734252360042025,
+            0.7734252360042025
+          ],
+          "raw_bm25_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_agg",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_unit",
+            "sjson_csv",
+            "sdb_select"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.3333333333333333,
+            "recall@20": 1.0,
+            "ndcg@20": 0.3333333333333333
+          },
+          "selected_skill_ids": [
+            "scalc_eq"
+          ],
+          "expected_skill_ids": [
+            "scalc_eq"
+          ],
+          "expected_skill_sequence": [
+            "scalc_eq"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "exact_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": 5,
+          "verifier_actual": "5",
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 277,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "a",
+              "b",
+              "c"
+            ],
+            "task_input_keys": [
+              "a",
+              "b",
+              "c"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "求解一元一次方程 a*x+b=c 中的 x",
+              "skill_id": "scalc_eq",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 253,
+          "planning_context_tokens": 24,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_merge",
+            "scalc_pct",
+            "scalc_eq",
+            "sdb_insert",
+            "sfile_create",
+            "sfile_overwrite"
+          ],
+          "detailed_skill_ids": [
+            "scalc_eq"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 592,
+            "completion_tokens": 112,
+            "total_tokens": 704
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 0.03219999962311704,
+          "llm_time_ms": 3691.02280000061,
+          "end_to_end_time_ms": 3692.4935999995796,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1863.9613000004829,
+              "prompt_tokens": 385,
+              "completion_tokens": 42,
+              "total_tokens": 427,
+              "message_count": 1,
+              "prompt_chars": 852,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1827.0615000001271,
+              "prompt_tokens": 207,
+              "completion_tokens": 70,
+              "total_tokens": 277,
+              "message_count": 1,
+              "prompt_chars": 372,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "5",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "solve_linear_equation",
+              "plan": [
+                {
+                  "skill_name": "solve_linear_equation",
+                  "arguments": {
+                    "a": "$input.a",
+                    "b": "$input.b",
+                    "c": "$input.c"
+                  },
+                  "reason": "直接使用给定系数求解一元一次方程"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "scalc_eq"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "求解一元一次方程 a*x+b=c 中的 x",
+                  "skill_id": "scalc_eq",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "task_input_keys": [
+                  "a",
+                  "b",
+                  "c"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "5",
+              "index": 1,
+              "skill_id": "scalc_eq",
+              "skill_name": "solve_linear_equation",
+              "arguments": {
+                "a": 2,
+                "b": 3,
+                "c": 13
+              },
+              "success": true,
+              "duration_ms": 0.03219999962311704
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm05",
+          "instruction": "先从 data 只保留 first 和 last，再把 first 重命名为 given_name。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            2.656555497271461,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge",
+            "sjson_sort",
+            "sjson_csv",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "sdb_select",
+            "sdb_insert"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@10": 1.0,
+            "ndcg@10": 0.39780880120575696,
+            "recall@20": 1.0,
+            "ndcg@20": 0.39780880120575696
+          },
+          "selected_skill_ids": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "expected_skill_ids": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "expected_skill_sequence": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "json_match",
+          "verifier_details": {
+            "effects": []
+          },
+          "verifier_expected": {
+            "output": {
+              "given_name": "Ada",
+              "last": "Lovelace"
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "given_name": "Ada",
+              "last": "Lovelace"
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 490,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "schema",
+          "requested_disclosure_levels": [
+            "schema"
+          ],
+          "disclosure_reasons": [
+            "multi_skill_dataflow_requires_schema"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 2,
+            "required_parameters": [
+              "data",
+              "fields",
+              "mapping"
+            ],
+            "task_input_keys": [
+              "data",
+              "fields",
+              "mapping"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "从 data 只保留 first 和 last",
+              "skill_id": "sjson_extract",
+              "information_need": "brief",
+              "need_reason": ""
+            },
+            {
+              "requirement": "把 first 重命名为 given_name",
+              "skill_id": "sjson_rename",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 269,
+          "planning_context_tokens": 221,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "scalc_unit",
+            "scalc_int",
+            "scalc_dec",
+            "scalc_pct",
+            "scalc_eq",
+            "scalc_agg",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_filter",
+            "sjson_merge"
+          ],
+          "detailed_skill_ids": [
+            "sjson_extract",
+            "sjson_rename"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 777,
+            "completion_tokens": 195,
+            "total_tokens": 972
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 0.0656000001981738,
+          "llm_time_ms": 3806.4478999995117,
+          "end_to_end_time_ms": 3808.2281000006333,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1617.1057999999903,
+              "prompt_tokens": 415,
+              "completion_tokens": 70,
+              "total_tokens": 485,
+              "message_count": 1,
+              "prompt_chars": 994,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2189.3420999995215,
+              "prompt_tokens": 362,
+              "completion_tokens": 125,
+              "total_tokens": 487,
+              "message_count": 1,
+              "prompt_chars": 901,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"given_name\": \"Ada\", \"last\": \"Lovelace\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "extract_json_fields -> rename_json_keys",
+              "plan": [
+                {
+                  "skill_name": "extract_json_fields",
+                  "arguments": {
+                    "data": "$input.data",
+                    "fields": [
+                      "first",
+                      "last"
+                    ]
+                  },
+                  "reason": "从原始数据中提取 first 和 last 字段"
+                },
+                {
+                  "skill_name": "rename_json_keys",
+                  "arguments": {
+                    "data": "$last_output",
+                    "mapping": {
+                      "first": "given_name"
+                    }
+                  },
+                  "reason": "将 first 字段重命名为 given_name"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sjson_extract",
+                "sjson_rename"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "从 data 只保留 first 和 last",
+                  "skill_id": "sjson_extract",
+                  "information_need": "brief",
+                  "need_reason": ""
+                },
+                {
+                  "requirement": "把 first 重命名为 given_name",
+                  "skill_id": "sjson_rename",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "schema"
+              ],
+              "disclosure_reasons": [
+                "multi_skill_dataflow_requires_schema"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "schema",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 2,
+                "required_parameters": [
+                  "data",
+                  "fields",
+                  "mapping"
+                ],
+                "task_input_keys": [
+                  "data",
+                  "fields",
+                  "mapping"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"first\": \"Ada\", \"last\": \"Lovelace\"}",
+              "index": 1,
+              "skill_id": "sjson_extract",
+              "skill_name": "extract_json_fields",
+              "arguments": {
+                "data": {
+                  "age": 36,
+                  "first": "Ada",
+                  "last": "Lovelace"
+                },
+                "fields": [
+                  "first",
+                  "last"
+                ]
+              },
+              "success": true,
+              "duration_ms": 0.04239999998389976
+            },
+            {
+              "step": "action",
+              "content": "{\"given_name\": \"Ada\", \"last\": \"Lovelace\"}",
+              "index": 2,
+              "skill_id": "sjson_rename",
+              "skill_name": "rename_json_keys",
+              "arguments": {
+                "data": "{\"first\": \"Ada\", \"last\": \"Lovelace\"}",
+                "mapping": {
+                  "first": "given_name"
+                }
+              },
+              "success": true,
+              "duration_ms": 0.02320000021427404
+            }
+          ],
+          "initial_state": {
+            "files": {}
+          },
+          "final_state": {
+            "files": {}
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "v2confirm06",
+          "instruction": "把 Bob 的 active 更新为 1，必须保留 Bob 和其他所有记录，不能删除。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge"
+          ],
+          "retrieved_scores": [
+            6.0509461624936565,
+            6.0509461624936565,
+            5.695665354818147,
+            5.695665354818147,
+            3.2335945273301316,
+            2.971329147305108,
+            2.971329147305108,
+            2.8642310510909907,
+            2.8642310510909907,
+            2.707237101453066
+          ],
+          "raw_bm25_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "scalc_unit",
+            "scalc_pct",
+            "scalc_eq",
+            "sfile_create",
+            "sfile_overwrite",
+            "sfile_append",
+            "sfile_copy",
+            "sfile_move",
+            "sfile_patch_json",
+            "scalc_int"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.3333333333333333,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 1.0,
+            "ndcg@3": 0.5,
+            "recall@5": 1.0,
+            "ndcg@5": 0.5,
+            "recall@10": 1.0,
+            "ndcg@10": 0.5,
+            "recall@20": 1.0,
+            "ndcg@20": 0.5
+          },
+          "selected_skill_ids": [
+            "sdb_update"
+          ],
+          "expected_skill_ids": [
+            "sdb_update"
+          ],
+          "expected_skill_sequence": [
+            "sdb_update"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "sqlite_state",
+          "verifier_details": {
+            "effects": [
+              "query_result"
+            ]
+          },
+          "verifier_expected": [
+            [
+              "Ada",
+              1
+            ],
+            [
+              "Bob",
+              1
+            ],
+            [
+              "Cara",
+              1
+            ]
+          ],
+          "verifier_actual": [
+            [
+              "Ada",
+              1
+            ],
+            [
+              "Bob",
+              1
+            ],
+            [
+              "Cara",
+              1
+            ]
+          ],
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 268,
+          "context_budget_tokens": 3200,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "changes",
+              "table",
+              "where"
+            ],
+            "task_input_keys": [
+              "changes",
+              "table",
+              "where"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "更新 users 表中 name 为 Bob 的记录的 active 字段为 1",
+              "skill_id": "sdb_update",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 250,
+          "planning_context_tokens": 18,
+          "candidate_count": 10,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "sjson_filter",
+            "sjson_sort",
+            "sjson_extract",
+            "sjson_rename",
+            "sjson_merge",
+            "sdb_update",
+            "sdb_delete",
+            "sdb_insert",
+            "sdb_select",
+            "sdb_aggregate"
+          ],
+          "detailed_skill_ids": [
+            "sdb_update"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 639,
+            "completion_tokens": 116,
+            "total_tokens": 755
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 8.917899999687506,
+          "llm_time_ms": 3192.7458000000115,
+          "end_to_end_time_ms": 3205.5484000002252,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1847.9574000002685,
+              "prompt_tokens": 415,
+              "completion_tokens": 48,
+              "total_tokens": 463,
+              "message_count": 1,
+              "prompt_chars": 933,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1344.788399999743,
+              "prompt_tokens": 224,
+              "completion_tokens": 68,
+              "total_tokens": 292,
+              "message_count": 1,
+              "prompt_chars": 438,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"updated\": 1}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "update_sqlite_rows",
+              "plan": [
+                {
+                  "skill_name": "update_sqlite_rows",
+                  "arguments": {
+                    "table": "$input.table",
+                    "where": "$input.where",
+                    "changes": "$input.changes"
+                  },
+                  "reason": "更新 users 表中 name 为 Bob 的记录的 active 字段为 1，保留其他记录"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "sdb_update"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "更新 users 表中 name 为 Bob 的记录的 active 字段为 1",
+                  "skill_id": "sdb_update",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "changes",
+                  "table",
+                  "where"
+                ],
+                "task_input_keys": [
+                  "changes",
+                  "table",
+                  "where"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"updated\": 1}",
+              "index": 1,
+              "skill_id": "sdb_update",
+              "skill_name": "update_sqlite_rows",
+              "arguments": {
+                "table": "users",
+                "where": {
+                  "name": "Bob"
+                },
+                "changes": {
+                  "active": 1
+                }
+              },
+              "success": true,
+              "duration_ms": 8.917899999687506
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm06-3pnqmwgy\\task.db",
+            "query_result": [
+              [
+                "Ada",
+                1
+              ],
+              [
+                "Bob",
+                0
+              ],
+              [
+                "Cara",
+                1
+              ]
+            ]
+          },
+          "final_state": {
+            "files": {},
+            "database_path": "C:\\Users\\86157\\AppData\\Local\\Temp\\skill-agent-v2confirm06-3pnqmwgy\\task.db",
+            "query_result": [
+              [
+                "Ada",
+                1
+              ],
+              [
+                "Bob",
+                1
+              ],
+              [
+                "Cara",
+                1
+              ]
+            ]
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 10,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.4135714285714286,
+          "ndcg@1": 0.2,
+          "ndcg@10": 0.5581813272501829,
+          "ndcg@20": 0.5581813272501829,
+          "ndcg@3": 0.4130929753571458,
+          "ndcg@5": 0.4561606311644851,
+          "recall@1": 0.2,
+          "recall@10": 1.0,
+          "recall@20": 1.0,
+          "recall@3": 0.6,
+          "recall@5": 0.7
+        },
+        "agent": {
+          "skill_selection_f1": 1.0,
+          "sequence_accuracy": 1.0,
+          "task_success_rate": 1.0
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 339.5,
+          "total_tokens": 8040,
+          "avg_total_tokens_per_task": 804.0,
+          "avg_skill_calls": 1.1,
+          "avg_planner_calls": 2.1,
+          "avg_argument_repairs": 0.1,
+          "avg_llm_time_ms": 3575.0151899999764,
+          "llm_time_p50_ms": 3192.7458000000115,
+          "llm_time_p95_ms": 4829.870300000039,
+          "avg_end_to_end_time_ms": 3579.335330000049,
+          "end_to_end_time_p50_ms": 3205.5484000002252,
+          "end_to_end_time_p95_ms": 4831.647099999827
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 2,
+            "brief": 6,
+            "schema": 2
+          },
+          "escalation_reason_counts": {
+            "hidden_schema_validation_failed": 1
+          }
+        }
+      }
+    }
+  },
+  "decision_report": {
+    "two_stage_vs_one_stage": {
+      "status": "fail",
+      "candidate_method": "adaptive_signals",
+      "checks": {
+        "task_success_gain": false,
+        "total_token_ratio": true,
+        "p50_latency_ratio": true
+      },
+      "observed": {
+        "task_success_gain": 0.09999999999999998,
+        "total_token_ratio": 0.9493446687920651,
+        "p50_latency_ratio": 1.6583582216958297
+      }
+    },
+    "adaptive_vs_always_full": {
+      "status": "incomplete"
+    }
+  }
+}

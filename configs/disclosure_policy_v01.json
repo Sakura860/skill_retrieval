@@ -1,0 +1,25 @@
+{
+  "policy_id": "signal-disclosure-dev-v01",
+  "derived_from": [
+    "task5_disclosure_dev_preregistered_v04_run1",
+    "task5_disclosure_dev_preregistered_v05_run1",
+    "task5_disclosure_dev_preregistered_v06_run1"
+  ],
+  "levels": {
+    "brief": "single selected skill and named task inputs cover every required parameter",
+    "schema": "multi-skill dataflow or incomplete required-parameter mapping",
+    "full": "task text contains a non-Schema behavioral constraint observed in dev failures"
+  },
+  "behavior_markers": [
+    "仅当",
+    "不能覆盖",
+    "不要覆盖",
+    "不得覆盖",
+    "不允许创建",
+    "不允许追加",
+    "原样",
+    "不自动"
+  ],
+  "private_labels_used_at_runtime": false,
+  "note": "Markers were fixed after dev failure analysis and must not be changed from confirmation results."
+}

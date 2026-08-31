@@ -1,0 +1,85 @@
+{
+  "created_at": "2026-08-30T22:35:00+08:00",
+  "updated_at": "2026-08-30T23:00:00+08:00",
+  "status": "completed_local_benchmark",
+  "scores_produced": true,
+  "machine": {
+    "python": "3.10",
+    "cuda_available": false,
+    "torch": "2.9.1+cpu",
+    "transformers": "5.16.1",
+    "numpy": "2.2.6",
+    "environment": "D:/skill/tmp/skillrouter-venv"
+  },
+  "official_baseline": {
+    "repository": "https://github.com/zhengyanzhao1997/SkillRouter",
+    "upstream_commit": "2f0c69fe6786bfee6312a1ab5d5f69abdc6bd245",
+    "encoder_model": "pipizhao/SkillRouter-Embedding-0.6B",
+    "reranker_model": "pipizhao/SkillRouter-Reranker-0.6B",
+    "fallback_allowed": false,
+    "retrieval_top_k": 20,
+    "prompt_format": "flat-full"
+  },
+  "protocol": {
+    "id": "published_baselines_v02",
+    "latency_windows": {
+      "model_prepare": "load tokenizer and model weights",
+      "index": "encode the fixed skill pool after model preparation",
+      "query": "online query encoding and optional top-20 reranking"
+    },
+    "dataset": "benchmark_v02",
+    "split": "dev",
+    "task_count": 10,
+    "skill_count": 24,
+    "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks_sha256": "3dd6101e8feda1deb52ad5abece3aa14c37cf4abc2084645c01ac18226706fb3"
+  },
+  "results": {
+    "controls_and_encoder": {
+      "path": "results/published_baselines_controls_encoder_dev_v02_20260830.json",
+      "sha256": "474dc29c3f01190021b035811e461730287e105156cc4dc42e799d3870fee56a",
+      "skillrouter_embedding": {
+        "mrr": 1.0,
+        "recall_at_10": 1.0,
+        "ndcg_at_10": 0.983155462958362,
+        "query_mean_ms": 268.928409999913,
+        "query_p50_ms": 264.71600000059
+      }
+    },
+    "strict_pipeline": {
+      "path": "results/published_baselines_skillrouter_pipeline_dev_v02_top20_20260830.json",
+      "sha256": "bc7e1e5952324874899c23fe4b260f52cca37ac1f708714b2751be777a91cccb",
+      "mrr": 1.0,
+      "recall_at_10": 1.0,
+      "ndcg_at_10": 0.991972078914819,
+      "model_prepare_ms": 14439.5963999996,
+      "index_ms": 13658.2355,
+      "query_mean_ms": 24143.80372,
+      "query_p50_ms": 24041.3455,
+      "query_p95_ms": 24893.9506
+    }
+  },
+  "comparison": {
+    "pipeline_vs_encoder_ndcg_at_10_absolute_gain": 0.008816615956456553,
+    "pipeline_vs_encoder_query_mean_ratio": 89.7762410883696,
+    "decision": "On this CPU and 24-skill development pool, keep the encoder as the published retrieval baseline and report the full pipeline as a high-cost accuracy ceiling; do not make the reranker the default route."
+  },
+  "public_benchmark": {
+    "status": "not_run_compute_constraint",
+    "source": "pipizhao/SkillRouter-Eval-Core",
+    "scored_tasks": 75,
+    "easy_pool_records": 78361,
+    "hard_pool_records": 79141,
+    "reason": "The strict 0.6B CPU encoder took 13.79 seconds to index 24 local skills after model preparation. A full 78k/79k two-tier benchmark is not a proportionate CPU run; schedule it on CUDA without changing the released protocol."
+  },
+  "superseded_results": [
+    {
+      "path": "results/published_baselines_skillrouter_pipeline_dev_20260830.json",
+      "reason": "v01 included lazy reranker download/load in first-query latency and reranked 24 rather than the declared top 20."
+    },
+    {
+      "path": "results/published_baselines_skillrouter_pipeline_dev_v02_20260830.json",
+      "reason": "v02 separated model preparation but still reranked 24 rather than the declared top 20."
+    }
+  ]
+}
