@@ -274,6 +274,72 @@ class SQLiteStateVerifier(TaskVerifier):
             return [list(row) for row in rows]
 
 
+class HTTPStateVerifier(TaskVerifier):
+    """Verify loopback HTTP output plus the exact request/response trace."""
+
+    verifier_type = "http_state"
+
+    def verify(
+        self,
+        context: VerificationContext,
+        config: TaskEvaluationConfig,
+    ) -> VerifierResult:
+        if not isinstance(config.expected_state, dict):
+            return self._failed("missing_expected_state")
+        final_state = context.final_state if isinstance(context.final_state, dict) else {}
+        actual_http = final_state.get("http")
+        if not isinstance(actual_http, dict):
+            return self._failed("missing_http_state", config.expected_state, actual_http)
+        if not _structured_equal(actual_http, config.expected_state, config.tolerance):
+            return self._failed(
+                "http_state_mismatch",
+                config.expected_state,
+                actual_http,
+            )
+
+        expected_output = config.expected_output
+        actual_output = context.agent_output
+        if expected_output is not None:
+            if isinstance(expected_output, (dict, list)):
+                try:
+                    actual_output = _as_json(actual_output)
+                except (TypeError, ValueError, json.JSONDecodeError) as exc:
+                    return self._failed(
+                        "invalid_json_output",
+                        expected_output,
+                        context.agent_output,
+                        error=str(exc),
+                    )
+                output_matches = _structured_equal(
+                    actual_output,
+                    expected_output,
+                    config.tolerance,
+                )
+            else:
+                output_matches = _exact_equal(
+                    actual_output,
+                    expected_output,
+                    config.tolerance,
+                )
+            if not output_matches:
+                return self._failed(
+                    "output_mismatch",
+                    expected_output,
+                    actual_output,
+                )
+
+        return VerifierResult(
+            passed=True,
+            verifier_type=self.verifier_type,
+            expected={
+                "output": expected_output,
+                "http": config.expected_state,
+            },
+            actual={"output": actual_output, "http": actual_http},
+            details={"request_count": len(actual_http.get("requests", []))},
+        )
+
+
 class TaskVerifierRegistry:
     """按 verifier_type 管理确定性验收器。"""
 
@@ -297,6 +363,7 @@ class TaskVerifierRegistry:
             StructuredJsonVerifier(),
             FileStateVerifier(),
             SQLiteStateVerifier(),
+            HTTPStateVerifier(),
         ])
 
 

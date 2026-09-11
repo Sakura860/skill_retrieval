@@ -31,6 +31,19 @@ def test_mock_call_telemetry_is_phase_aware_and_prompt_safe() -> None:
     assert all("messages" not in call and "prompt" not in call for call in llm.calls)
 
 
+def test_one_stage_joint_prompt_is_not_mislabeled_as_selection() -> None:
+    llm = LLM(provider="mock")
+    llm.generate_json([{
+        "role": "user",
+        "content": (
+            "可用技能：\n第一层：候选技能概览\n"
+            "选择完成任务所需的最少技能，并输出 arguments。"
+        ),
+    }])
+    assert llm.calls[-1]["phase"] == "one_stage_joint_planning"
+
+
 if __name__ == "__main__":
     test_mock_call_telemetry_is_phase_aware_and_prompt_safe()
+    test_one_stage_joint_prompt_is_not_mislabeled_as_selection()
     print("LLM telemetry tests passed")

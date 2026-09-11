@@ -1,0 +1,62 @@
+{
+  "protocol_id": "dual-encoder-dev-engineering-20260906-v01",
+  "status": "frozen",
+  "objective": "Verify deterministic dual-encoder training and portable checkpoint save/load without consuming test or confirmation data.",
+  "claim_boundary": "Engineering diagnostic on the same benchmark_v01 dev tasks used for training; not a held-out retrieval or generalization result.",
+  "data": {
+    "skills_path": "data/benchmark_v01/skills.jsonl",
+    "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks_path": "data/benchmark_v01/tasks.jsonl",
+    "tasks_sha256": "8ded4d5f0f3b987021b4abcc12c1f38596857c5033071e096dbed56fd34276f1",
+    "allowed_split": "dev",
+    "prohibited_splits": [
+      "test",
+      "confirmation"
+    ]
+  },
+  "model": {
+    "architecture": "skill-agent-dual-encoder",
+    "tokenization_version": "sha256-char-utf8-first128-v1",
+    "dim": 64,
+    "vocab_size": 4096,
+    "text_level": "detailed",
+    "initialization_seed": 20260906
+  },
+  "training": {
+    "epochs": 30,
+    "batch_size": 8,
+    "learning_rate": 0.01,
+    "temperature": 0.05,
+    "num_explicit_negatives": 8,
+    "shuffle_seed": 20260906,
+    "device": "cpu",
+    "independent_repetitions": 2
+  },
+  "evaluation": {
+    "top_k": 10,
+    "metrics": [
+      "mrr",
+      "recall@1",
+      "recall@5",
+      "recall@10",
+      "ndcg@1",
+      "ndcg@5",
+      "ndcg@10"
+    ],
+    "acceptance": {
+      "final_loss_below_initial_loss": true,
+      "post_train_mrr_above_pre_train_mrr": true,
+      "post_train_recall_at_5_min": 0.9,
+      "repeated_loss_history_exact": true,
+      "repeated_state_hash_exact": true,
+      "checkpoint_rankings_exact": true,
+      "checkpoint_scores_max_abs_delta": 0.0
+    }
+  },
+  "outputs": {
+    "checkpoint": "results/dual_encoder_dev_20260906.pt",
+    "result_json": "results/dual_encoder_training_dev_20260906.json",
+    "report_markdown": "results/dual_encoder_training_dev_20260906.md"
+  },
+  "external_api_calls_allowed": false
+}

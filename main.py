@@ -32,7 +32,16 @@ def build_retriever(config: dict):
     if method == "model":
         from retrieval.model import RetrievalModel
 
-        return RetrievalModel()
+        checkpoint = retrieval_config.get("model_checkpoint")
+        if checkpoint:
+            checkpoint_path = PROJECT_ROOT / checkpoint
+            return RetrievalModel.load_checkpoint(checkpoint_path, map_location="cpu")
+        return RetrievalModel(
+            dim=int(retrieval_config.get("model_dim", 384)),
+            vocab_size=int(retrieval_config.get("model_vocab_size", 10000)),
+            text_level=retrieval_config.get("model_text_level", "detailed"),
+            seed=int(retrieval_config.get("model_seed", 0)),
+        )
     raise ValueError(f"主入口暂不支持检索方法: {method}")
 
 

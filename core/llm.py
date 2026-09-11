@@ -327,6 +327,8 @@ class LLM:
         text = "\n".join(str(message.get("content", "")) for message in messages)
         if "Schema 校验错误" in text:
             return "argument_repair"
+        if "选择完成任务所需的最少技能" in text:
+            return "one_stage_joint_planning"
         if "候选技能概览" in text:
             return "skill_selection"
         if "已选技能定义" in text or "可用技能" in text:

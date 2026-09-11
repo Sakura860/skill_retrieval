@@ -4,12 +4,15 @@ from __future__ import annotations
 import json
 import sqlite3
 import tempfile
+import urllib.error
+import urllib.request
 from contextlib import closing
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
 from core.schemas import Task
+from .http_fixture import LocalHTTPFixture
 
 DEFAULT_PERMISSIONS = frozenset({
     "compute",
@@ -18,6 +21,9 @@ DEFAULT_PERMISSIONS = frozenset({
     "file:write",
     "sqlite:read",
     "sqlite:write",
+    "http:read",
+    "http:write",
+    "http:auth",
 })
 
 
@@ -53,6 +59,7 @@ class TaskEnvironment:
         self._temporary_directory: tempfile.TemporaryDirectory | None = None
         self.root: Path | None = None
         self.database_path: Path | None = None
+        self.http_fixture: LocalHTTPFixture | None = None
         self.initial_state: dict[str, Any] | None = None
 
     def __enter__(self) -> "TaskEnvironment":
@@ -72,6 +79,9 @@ class TaskEnvironment:
         self.close()
 
     def close(self) -> None:
+        if self.http_fixture is not None:
+            self.http_fixture.close()
+        self.http_fixture = None
         if self._temporary_directory is not None:
             self._temporary_directory.cleanup()
         self._temporary_directory = None
@@ -102,6 +112,46 @@ class TaskEnvironment:
             return sqlite3.connect(uri, uri=True)
         return sqlite3.connect(self.database_path)
 
+    def request_http_json(
+        self,
+        method: str,
+        path: str,
+        *,
+        json_body: Any = None,
+        headers: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
+        """Issue one request to this task's loopback fixture only."""
+        if self.http_fixture is None:
+            raise RuntimeError("当前 Task 没有初始化 HTTP fixture")
+        if not isinstance(path, str) or not path.startswith("/") or "://" in path:
+            raise PermissionError("HTTP Skill 只允许访问当前 Task 的本地相对 API 路径")
+        request_headers = {str(k): str(v) for k, v in (headers or {}).items()}
+        data = None
+        if json_body is not None:
+            data = json.dumps(json_body, ensure_ascii=False).encode("utf-8")
+            request_headers["Content-Type"] = "application/json; charset=utf-8"
+        request = urllib.request.Request(
+            self.http_fixture.base_url + path,
+            data=data,
+            headers=request_headers,
+            method=method.upper(),
+        )
+        try:
+            response = urllib.request.urlopen(request, timeout=5)
+        except urllib.error.HTTPError as exc:
+            response = exc
+        with response:
+            raw = response.read().decode("utf-8")
+            content_type = response.headers.get("Content-Type", "")
+            parsed = None
+            if raw and "application/json" in content_type:
+                parsed = json.loads(raw)
+            return {
+                "status": int(response.status),
+                "body": raw,
+                "json": parsed,
+            }
+
     def snapshot(self) -> dict[str, Any]:
         """捕获 verifier 所需的文件和 SQLite 最终状态。"""
         root = self._require_root()
@@ -120,6 +170,8 @@ class TaskEnvironment:
             files[relative] = entry
 
         state: dict[str, Any] = {"files": files}
+        if self.http_fixture is not None:
+            state["http"] = self.http_fixture.snapshot()
         if self.database_path is not None:
             state["database_path"] = str(self.database_path)
             query_result = self._verification_query_result()
@@ -144,6 +196,14 @@ class TaskEnvironment:
             if fixture is None:
                 raise KeyError(f"未找到 SQLite fixture: {fixture_id}")
             self._setup_sqlite(fixture)
+
+        http_fixture_id = environment.get("http_fixture_id")
+        if http_fixture_id:
+            fixture = self.fixtures.get(http_fixture_id)
+            if fixture is None:
+                raise KeyError(f"未找到 HTTP fixture: {http_fixture_id}")
+            self.http_fixture = LocalHTTPFixture(fixture)
+            self.http_fixture.start()
 
     def _setup_files(self, state: dict[str, Any]) -> None:
         if not isinstance(state, dict):

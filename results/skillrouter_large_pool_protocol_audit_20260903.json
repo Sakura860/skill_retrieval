@@ -1,0 +1,28 @@
+{
+  "audit_id": "skillrouter-large-pool-protocol-audit-20260903-v01",
+  "v01": {
+    "status": "preflight_failed",
+    "reason": "The protocol hashed Git-bundled metadata copies before downloading the pinned Hugging Face dataset revision.",
+    "experiment_result_created": false
+  },
+  "v02": {
+    "status": "superseded_after_completed_bm25_run",
+    "result_path": "results/skillrouter_large_pool_bm25_20260903.json",
+    "result_sha256": "18bbc8abbebcfccde318d8adaf2038668bae6a37350ac5c227c65bdec404c3d6",
+    "declaration_error": "minimum_required_size counted 554 relevance-map IDs, including degraded IDs absent from both released easy/hard pools; runtime followed the official evaluator and intersected relevance IDs with each pool, yielding 196."
+  },
+  "v03": {
+    "status": "adopted",
+    "result_path": "results/skillrouter_large_pool_bm25_v03_20260903.json",
+    "result_sha256": "23b19268f274e57936e2f9c807483eced8202323cfc7b8506e1bdd40ec53b54c",
+    "required_ids_present_per_tier": 196,
+    "enforcement_added": true
+  },
+  "equivalence_checks": {
+    "membership_sha256_equal_for_all_tiers_and_sizes": true,
+    "all_bm25_quality_metrics_equal_for_all_tiers_methods_and_sizes": true,
+    "timing_expected_to_vary": true
+  },
+  "raw_results_modified": false,
+  "rerun_reason": "Correct protocol declaration and enforce the released-pool intersection; not selected from metric outcomes."
+}

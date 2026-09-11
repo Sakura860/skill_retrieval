@@ -1,0 +1,14 @@
+{
+  "runs": [
+    {
+      "protocol_id": "http-disclosure-transfer-20260903-v01",
+      "protocol_sha256": "c4983f03c8ba3fd6f5121421dcf33610702e5cc0f86a03ffb93d26ca6b95f985",
+      "experiment_id": "20260903T030750Z",
+      "output_path": "D:\\skill\\skill-agent\\results\\http_transfer_confirmation_frozen_20260903.json",
+      "status": "completed",
+      "created_at": "2026-09-03T03:07:50.234729+00:00",
+      "completed_at": "2026-09-03T03:09:17.897740+00:00",
+      "result_sha256": "415dea8adc2ae6de312ffea6b64a4ff2465b1b6860cbaca067556dec4c47c71a"
+    }
+  ]
+}

@@ -133,7 +133,7 @@ Task 可通过公开给 Planner、但不包含 verifier 答案的 `inputs` 保�
 
 未注册函数、未知技能、缺少必填参数或执行异常都会记为失败。项目不再通过 `exec()` 运行数据中的任意代码。
 
-`benchmark_v01` 使用统一 `SkillRegistry` 注册 24 个确定性 handler。每条任务在独立 `TaskEnvironment` 中 setup，文件访问只能使用受控相对路径，SQLite 写操作使用参数化语句，读查询使用只读连接；Agent 返回运行前后状态快照后环境立即 teardown。`execution_success` 只表示调用有效，最终仍必须由 Task verifier 判定 `task_success`。
+`benchmark_v01` 使用统一 `SkillRegistry` 注册确定性 handler。每条任务在独立 `TaskEnvironment` 中 setup，文件访问只能使用受控相对路径，SQLite 写操作使用参数化语句，读查询使用只读连接；`benchmark_http_v01` 还会为每条任务启动独立的 loopback HTTP fixture，拒绝外部 URL，并记录方法、路径、请求体、相关 header、状态码和调用次数。Agent 返回运行前后状态快照后环境立即 teardown。`execution_success` 只表示调用有效，最终仍必须由 Task verifier 判定 `task_success`。
 
 ## 端到端指标
 
@@ -172,7 +172,7 @@ Task 可通过公开给 Planner、但不包含 verifier 答案的 `inputs` 保�
 }
 ```
 
-内置 verifier 包括 `exact_match`、`json_match`、`file_state` 和 `sqlite_state`，统一接收任务、初始状态、最终状态、Agent 输出和执行轨迹，并返回可解释的 `VerifierResult`。复杂外部环境仍可通过 verifier registry 扩展；旧版 `success_evaluator` 参数保留兼容。没有 ground truth 或 verifier 的任务标记为 `unscored`，不会因为 handler 正常返回就计入成功率。
+内置 verifier 包括 `exact_match`、`json_match`、`file_state`、`sqlite_state` 和 `http_state`，统一接收任务、初始状态、最终状态、Agent 输出和执行轨迹，并返回可解释的 `VerifierResult`。复杂外部环境仍可通过 verifier registry 扩展；旧版 `success_evaluator` 参数保留兼容。没有 ground truth 或 verifier 的任务标记为 `unscored`，不会因为 handler 正常返回就计入成功率。
 
 `run_benchmark()` 在同一次检索结果上计算检索指标并执行 Agent，返回可直接序列化的分层结果：
 
@@ -229,6 +229,22 @@ python experiments/run_task5_retrieval.py --split dev
 
 该脚本在相同 Skill 池、Task、BM25 参数和 split 上比较 `brief`、`detailed`、`all`，报告 Hit@1、Recall@K、MRR、NDCG@K、平均正确 Skill 排名和逐任务排名证据。
 
+自有双塔检索器的训练与 checkpoint 工程诊断需要 `requirements-ml.txt`。冻结协议只选择 `benchmark_v01` 的 18 条 dev Task，不选择或评估 test/confirmation：
+
+```powershell
+python experiments/run_dual_encoder_training.py
+```
+
+该入口固定初始化、batch shuffle、CPU 线程数、超参数和两次独立重复，验证损失下降、训练前后检索指标、权重哈希复现，以及 checkpoint 加载后的逐任务排名与分数一致性。训练会主动废弃旧 Skill 索引，加载模型后也必须重新调用 `index(skills)`，避免权重与缓存向量不一致。训练后的模型可由默认配置接入：
+
+```yaml
+retrieval:
+  method: model
+  model_checkpoint: results/dual_encoder_dev_20260906.pt
+```
+
+当前结果是同一 dev 数据上的训练集回代工程检查，不是 held-out 质量或泛化证据；完整指标和哈希见 `results/dual_encoder_training_dev_20260906.md`。
+
 Planner 的真实 DeepSeek 受控对比：
 
 ```powershell
@@ -237,7 +253,7 @@ python experiments/run_task5_planning.py --task-ids tjson07,tfile03
 
 脚本比较 one-stage、two-stage/no-repair 和 two-stage/one-repair，固定 brief-BM25 候选、Task context budget、温度与隔离初始环境，并保存逐任务选择覆盖、参数校验、Token 和 verifier 证据。
 
-`benchmark_v02` 位于 `data/benchmark_v02/`，包含 14 条专用于 body、Schema repair 和 typed graph 的新任务。生成和审计：
+`benchmark_v02` 位于 `data/benchmark_v02/`，包含 20 条专用于 body、Schema repair、typed graph 和一次性 confirmation 的任务（dev 10、confirmation 10）。生成和审计：
 
 ```powershell
 python data/benchmark_v02/build_dataset.py
@@ -251,6 +267,41 @@ python experiments/run_task5_graph.py
 ```
 
 当前 Task 5 的受控 dev 主表与失败归因见 `results/task5_dev_analysis_20260824.md`，三轮稳定性见 `results/task5_disclosure_dev_preregistered_v07_summary.json` 和 `results/task5_end_to_end_dev_v01_summary.json`。真实 BM25 top-10 协议已冻结并完成唯一一次 confirmation；结果登记、原始 SHA 与浮点边界审计见 `results/published_baseline_and_confirmation_report_20260830.md`。该确认集已经消费，禁止再次运行或据其结果修改 `adaptive_signals`。
+
+已有结果的 two-stage 延迟分解不会调用 LLM，也不会修改或重跑 confirmation：
+
+```powershell
+python experiments/analyze_task5_latency.py
+```
+
+该分析把每条任务拆为 `one_stage_joint_planning`、`skill_selection`、`argument_planning`、`argument_repair`、handler execution 和其他编排残差，并分别报告 mean/P50/P95、Token 与配对差值。当前结论与有效性边界见 `results/task5_latency_decomposition_20260903.md`。
+
+官方 SkillRouter Eval-Core 大池实验使用冻结协议 `skillrouter-large-pool-20260903-v03`。正式切片为每个 tier 的 1k、10k 和全量（easy 78,361 / hard 79,141），每个切片保留该 tier 中全部 196 个可用 graded Skill，并以固定 SHA-256 顺序补入 distractor：
+
+```powershell
+python experiments/run_skillrouter_scale.py
+```
+
+当前 CPU 环境已完成 brief/all-field BM25 的全部规模曲线；结论、成本和限制见 `results/skillrouter_large_pool_bm25_v03_20260903.md`。官方 0.6B encoder 的 easy-1k CPU smoke 在约 17 分钟、约 55.3 GB 私有内存时触发资源门槛，未生成质量指标；审计见 `results/skillrouter_encoder_easy1k_cpu_resource_audit_20260903.md`。正式 encoder 与严格 top-20 pipeline 的全量结果必须在 CUDA 环境按同一冻结协议运行，不得用 Hash、CPU 外推或缩小后的结果替代。
+
+未见任务族迁移实验位于 `benchmark_http_v01`。它不修改旧 `signal-disclosure-dev-v01`，而是在每任务隔离的真实 loopback HTTP 服务上比较 one-stage、always-full 和 adaptive-signals：
+
+```powershell
+python data/benchmark_http_v01/build_dataset.py
+python tests/test_benchmark_http.py
+python experiments/run_http_transfer.py --split dev
+```
+
+冻结协议 `http-disclosure-transfer-20260903-v01` 的唯一 confirmation 已消费并由独立 registry 锁定，禁止再次运行。结果为 adaptive-signals 4/6、always-full 5/6、one-stage 4/6，按预注册判据属于 `partial_transfer`；失败分别落在参数契约和 Skill 选择层。完整逐任务证据见 `results/http_transfer_confirmation_frozen_20260903.md`，不得据此修改旧 marker。
+
+Graph-of-Skills 外部结构对照固定论文 arXiv 2604.05333、官方仓库 commit `203f60a2c689da055ce1ac351eb3cb9912a3bca7` 和官方 `query.py` SHA-256。当前环境没有与官方 workspace 匹配的 OpenAI/Gemini/OpenRouter embedding 凭据，因此不冒充复现完整 hybrid GoS；可复现的是官方 reverse-aware PPR 结构组件配固定候选 seeds：
+
+```powershell
+python tests/test_gos_official_adapter.py
+python experiments/run_gos_structural_baseline.py
+```
+
+两条 dev 结构任务各重复 3 次：无补点 Task Success 0/6；typed prerequisite completion 与两种 GoS PPR 设置均为 6/6。typed 每任务只补 1 个正确前置且无无关扩张；GoS 同样找回前置，但固定 top-N 每任务另带入 1 个无关 Skill，上下文由 2,122.5 增至 2,338 tokens，LLM Token 由 10,408 增至 11,322。加入与 prerequisite 同向的 dataflow/workflow 边没有改变补点或成功率。详见 `results/gos_structural_baseline_dev_20260903.md`；该结果只有 2 个独立 dev 任务，不是 held-out 或完整 GoS 优越性结论。
 
 导师反馈后的 Flat vs Hierarchical 定向数据位于 `data/benchmark_v01/`，包含 24 个 hard-negative Skill、34 条主任务和 10 条独立 Graph 诊断任务。数据假设、受控候选排名、dev/test 划分及当前使用边界见该目录的 `README.md`。任务 4 实验入口会直接消费每条任务固定的 BM25 候选顺序与预算：
 

@@ -1,0 +1,2371 @@
+{
+  "protocol_id": "dual-encoder-dev-engineering-20260906-v01",
+  "protocol_sha256": "4bcbe86b46b0edf89ad82d891eb60ad1b37ac4c53ad24966840bee420f8e7f36",
+  "claim_boundary": "Engineering diagnostic on the same benchmark_v01 dev tasks used for training; not a held-out retrieval or generalization result.",
+  "data_manifest": {
+    "skills_path": "data/benchmark_v01/skills.jsonl",
+    "skills_sha256": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks_path": "data/benchmark_v01/tasks.jsonl",
+    "tasks_sha256": "8ded4d5f0f3b987021b4abcc12c1f38596857c5033071e096dbed56fd34276f1",
+    "loaded_split": "dev",
+    "prohibited_splits_selected": []
+  },
+  "source_manifest": {
+    "configs/default.yaml": "ec10540d218a5830768aa0e7952ed3bc267ee09e8720fb0ef3085b4a46b7eac1",
+    "data/dataset.py": "5082925faada07a3b046180f73f47f8b8bb6e12c50f2fc39e9fa8cda4f5ae5cd",
+    "main.py": "0f900a3e46547482b022eaf848a1234be66446b477ca22f7fec86dee517d44d3",
+    "retrieval/model.py": "e37120868bf7e35b5dd0993432c8f9f51c9eff5105677f9d9f89d658f47502c5",
+    "retrieval/train.py": "45556e91dd5406ee4bb3e129204a87bcead9450238026254168e3f4e319a450d",
+    "retrieval/evaluator.py": "6e8fe4422f274efe8fadf95fba9a7732106d77d3ff45b0f57c75629b49b77a85",
+    "experiments/run_dual_encoder_training.py": "15a63a0e95f02886edaeced7325b090c211ad85639e29d9bcc027e88675d1f2b"
+  },
+  "environment": {
+    "python": "3.10.10",
+    "torch": "2.9.1+cpu",
+    "device": "cpu",
+    "cuda_available": false,
+    "torch_num_threads": 1
+  },
+  "task_count": 18,
+  "skill_count": 24,
+  "sample_count": 20,
+  "model": {
+    "architecture": "skill-agent-dual-encoder",
+    "tokenization_version": "sha256-char-utf8-first128-v1",
+    "dim": 64,
+    "vocab_size": 4096,
+    "text_level": "detailed",
+    "initialization_seed": 20260906
+  },
+  "training": {
+    "epochs": 30,
+    "batch_size": 8,
+    "learning_rate": 0.01,
+    "temperature": 0.05,
+    "num_explicit_negatives": 8,
+    "shuffle_seed": 20260906,
+    "device": "cpu",
+    "independent_repetitions": 2
+  },
+  "repetitions": [
+    {
+      "repetition": 1,
+      "before": {
+        "metrics": {
+          "mrr": 0.12645502645502646,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@5": 0.3055555555555556,
+          "ndcg@5": 0.15366602689929593,
+          "recall@10": 0.4166666666666667,
+          "ndcg@10": 0.19228537783801533
+        },
+        "per_task": [
+          {
+            "task_id": "tcalc01",
+            "ranked_ids": [
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sfile_overwrite",
+              "sfile_append",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.22289744019508362,
+              0.19149285554885864,
+              0.1864965260028839,
+              0.14056184887886047,
+              0.13372169435024261,
+              0.09277807176113129,
+              0.09002941846847534,
+              0.08755749464035034,
+              0.08675631135702133,
+              0.07910200953483582
+            ],
+            "gold_ids": [
+              "scalc_int"
+            ]
+          },
+          {
+            "task_id": "tcalc02",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sdb_insert",
+              "scalc_pct",
+              "scalc_agg",
+              "sfile_append",
+              "scalc_eq",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              0.10272141546010971,
+              0.09678149223327637,
+              0.07129398733377457,
+              0.06329835951328278,
+              0.045833706855773926,
+              0.01371653750538826,
+              -0.005282748490571976,
+              -0.01202181912958622,
+              -0.019991885870695114,
+              -0.02995660901069641
+            ],
+            "gold_ids": [
+              "scalc_dec"
+            ]
+          },
+          {
+            "task_id": "tcalc04",
+            "ranked_ids": [
+              "sfile_copy",
+              "sdb_insert",
+              "sdb_delete",
+              "sfile_move",
+              "sdb_update",
+              "sfile_overwrite",
+              "sdb_select",
+              "sfile_append",
+              "sdb_aggregate",
+              "sfile_create"
+            ],
+            "scores": [
+              0.047006525099277496,
+              0.015797730535268784,
+              0.003956373780965805,
+              -0.013308506458997726,
+              -0.026732400059700012,
+              -0.03510277718305588,
+              -0.04519739747047424,
+              -0.05354426056146622,
+              -0.08599667251110077,
+              -0.08682849258184433
+            ],
+            "gold_ids": [
+              "scalc_eq"
+            ]
+          },
+          {
+            "task_id": "tcalc06",
+            "ranked_ids": [
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sfile_create",
+              "sfile_copy",
+              "sfile_move",
+              "scalc_unit",
+              "sfile_overwrite",
+              "sdb_aggregate"
+            ],
+            "scores": [
+              0.17057904601097107,
+              0.15794667601585388,
+              0.12166566401720047,
+              0.10494479537010193,
+              0.08103346824645996,
+              0.07939351350069046,
+              0.055890388786792755,
+              0.05478609725832939,
+              0.04483792930841446,
+              0.04369978979229927
+            ],
+            "gold_ids": [
+              "scalc_agg"
+            ]
+          },
+          {
+            "task_id": "tcalc07",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_update",
+              "sdb_insert",
+              "sfile_move",
+              "sdb_select",
+              "sfile_copy",
+              "sfile_overwrite",
+              "scalc_agg",
+              "sdb_join",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.03540017455816269,
+              0.03314688801765442,
+              0.030610771849751472,
+              -0.011409170925617218,
+              -0.029361624270677567,
+              -0.06605403870344162,
+              -0.08419870585203171,
+              -0.09317059814929962,
+              -0.09584645926952362,
+              -0.10147831588983536
+            ],
+            "gold_ids": [
+              "scalc_dec",
+              "scalc_pct"
+            ]
+          },
+          {
+            "task_id": "tjson01",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "sfile_patch_json",
+              "scalc_pct",
+              "sjson_filter",
+              "sjson_rename",
+              "sfile_create",
+              "sjson_sort",
+              "sdb_update",
+              "sfile_move"
+            ],
+            "scores": [
+              0.1424771547317505,
+              0.09607245773077011,
+              0.0486617349088192,
+              0.04169918969273567,
+              0.03763308748602867,
+              0.03187546879053116,
+              0.029204221442341805,
+              0.02291034534573555,
+              0.004635710269212723,
+              0.0009963493794202805
+            ],
+            "gold_ids": [
+              "sjson_extract"
+            ]
+          },
+          {
+            "task_id": "tjson03",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sfile_patch_json",
+              "sfile_create",
+              "sjson_extract",
+              "sdb_update",
+              "sfile_overwrite",
+              "sjson_filter",
+              "sfile_move",
+              "sjson_merge",
+              "sjson_rename"
+            ],
+            "scores": [
+              0.059574972838163376,
+              0.042653247714042664,
+              0.00018886104226112366,
+              -0.0011333264410495758,
+              -0.007338462397456169,
+              -0.017112350091338158,
+              -0.02329177036881447,
+              -0.035249147564172745,
+              -0.03660470247268677,
+              -0.03723601996898651
+            ],
+            "gold_ids": [
+              "sjson_filter"
+            ]
+          },
+          {
+            "task_id": "tjson04",
+            "ranked_ids": [
+              "sfile_patch_json",
+              "sdb_aggregate",
+              "sjson_extract",
+              "scalc_eq",
+              "scalc_pct",
+              "sfile_create",
+              "sdb_update",
+              "scalc_int",
+              "sjson_rename",
+              "sfile_move"
+            ],
+            "scores": [
+              0.09989913552999496,
+              0.0391104482114315,
+              0.0257263146340847,
+              0.022133328020572662,
+              0.002101738005876541,
+              -0.0059420447796583176,
+              -0.010832513682544231,
+              -0.011213114485144615,
+              -0.01489161141216755,
+              -0.019105996936559677
+            ],
+            "gold_ids": [
+              "sjson_merge"
+            ]
+          },
+          {
+            "task_id": "tjson06",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_delete",
+              "sdb_insert",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_create",
+              "sdb_update",
+              "sfile_move",
+              "sdb_join"
+            ],
+            "scores": [
+              0.18147626519203186,
+              0.08491074293851852,
+              0.06875444948673248,
+              0.04424978420138359,
+              0.032872915267944336,
+              0.020422592759132385,
+              0.008717425167560577,
+              -0.0020830631256103516,
+              -0.01624460518360138,
+              -0.03546769917011261
+            ],
+            "gold_ids": [
+              "sjson_csv"
+            ]
+          },
+          {
+            "task_id": "tjson07",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "scalc_pct",
+              "sdb_update",
+              "scalc_unit",
+              "sdb_delete",
+              "sfile_move",
+              "sjson_filter",
+              "sjson_rename",
+              "sdb_join"
+            ],
+            "scores": [
+              0.18681600689888,
+              0.06373004615306854,
+              0.054485712200403214,
+              0.035409390926361084,
+              0.02793322503566742,
+              0.026162438094615936,
+              0.022247444838285446,
+              0.014173716306686401,
+              0.01297779381275177,
+              0.010504346340894699
+            ],
+            "gold_ids": [
+              "sjson_extract",
+              "sjson_rename"
+            ]
+          },
+          {
+            "task_id": "tfile01",
+            "ranked_ids": [
+              "sfile_move",
+              "scalc_int",
+              "sfile_copy",
+              "scalc_unit",
+              "sfile_patch_json",
+              "sjson_csv",
+              "scalc_dec",
+              "scalc_eq",
+              "sdb_insert",
+              "scalc_pct"
+            ],
+            "scores": [
+              -0.15943610668182373,
+              -0.15991106629371643,
+              -0.16041220724582672,
+              -0.16154193878173828,
+              -0.1763824224472046,
+              -0.17753766477108002,
+              -0.18133366107940674,
+              -0.18655627965927124,
+              -0.19287817180156708,
+              -0.20106026530265808
+            ],
+            "gold_ids": [
+              "sfile_create"
+            ]
+          },
+          {
+            "task_id": "tfile03",
+            "ranked_ids": [
+              "scalc_eq",
+              "scalc_agg",
+              "sjson_csv",
+              "scalc_int",
+              "sfile_copy",
+              "scalc_dec",
+              "sdb_insert",
+              "sfile_create",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              -0.012123641557991505,
+              -0.03624078631401062,
+              -0.03768947720527649,
+              -0.05758052319288254,
+              -0.062175340950489044,
+              -0.06896979361772537,
+              -0.06940587610006332,
+              -0.08337654173374176,
+              -0.09541191905736923,
+              -0.106097012758255
+            ],
+            "gold_ids": [
+              "sfile_append"
+            ]
+          },
+          {
+            "task_id": "tfile04",
+            "ranked_ids": [
+              "sdb_insert",
+              "scalc_int",
+              "sfile_copy",
+              "sfile_overwrite",
+              "scalc_eq",
+              "sfile_patch_json",
+              "scalc_dec",
+              "sfile_move",
+              "scalc_agg",
+              "scalc_unit"
+            ],
+            "scores": [
+              -0.020245730876922607,
+              -0.02318982034921646,
+              -0.03851424157619476,
+              -0.04270092397928238,
+              -0.047282494604587555,
+              -0.05061321705579758,
+              -0.05624670907855034,
+              -0.06242818385362625,
+              -0.0656215101480484,
+              -0.06922079622745514
+            ],
+            "gold_ids": [
+              "sfile_copy"
+            ]
+          },
+          {
+            "task_id": "tfile06",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "sdb_join",
+              "scalc_int",
+              "sdb_insert",
+              "scalc_eq",
+              "sjson_filter",
+              "scalc_unit",
+              "sjson_csv",
+              "sjson_rename"
+            ],
+            "scores": [
+              0.22634771466255188,
+              0.15885654091835022,
+              0.14860835671424866,
+              0.14028069376945496,
+              0.14018988609313965,
+              0.12263756990432739,
+              0.11677265167236328,
+              0.1124708503484726,
+              0.11076660454273224,
+              0.1099686324596405
+            ],
+            "gold_ids": [
+              "sfile_patch_json"
+            ]
+          },
+          {
+            "task_id": "tdb01",
+            "ranked_ids": [
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sdb_aggregate",
+              "sfile_create",
+              "sfile_overwrite",
+              "scalc_unit",
+              "sfile_move",
+              "sfile_copy"
+            ],
+            "scores": [
+              0.23628705739974976,
+              0.21180583536624908,
+              0.20332294702529907,
+              0.19803103804588318,
+              0.17164316773414612,
+              0.16648370027542114,
+              0.1602073758840561,
+              0.15789943933486938,
+              0.14961284399032593,
+              0.14654870331287384
+            ],
+            "gold_ids": [
+              "sdb_select"
+            ]
+          },
+          {
+            "task_id": "tdb03",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_insert",
+              "sdb_delete",
+              "sfile_copy",
+              "sdb_update",
+              "sdb_select",
+              "sfile_move",
+              "sfile_overwrite",
+              "sdb_join",
+              "sfile_patch_json"
+            ],
+            "scores": [
+              0.07582704722881317,
+              0.05030525475740433,
+              -0.0024145692586898804,
+              -0.004546627402305603,
+              -0.00553092360496521,
+              -0.01578795537352562,
+              -0.017722927033901215,
+              -0.045236848294734955,
+              -0.07018818706274033,
+              -0.0813920646905899
+            ],
+            "gold_ids": [
+              "sdb_update"
+            ]
+          },
+          {
+            "task_id": "tdb05",
+            "ranked_ids": [
+              "sdb_insert",
+              "sfile_copy",
+              "sfile_move",
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_delete",
+              "sdb_update",
+              "sfile_overwrite",
+              "sfile_create",
+              "sdb_join"
+            ],
+            "scores": [
+              0.19379107654094696,
+              0.18207694590091705,
+              0.17151546478271484,
+              0.16897103190422058,
+              0.15638473629951477,
+              0.15349531173706055,
+              0.14238077402114868,
+              0.12728789448738098,
+              0.10991682857275009,
+              0.08527939021587372
+            ],
+            "gold_ids": [
+              "sdb_aggregate"
+            ]
+          },
+          {
+            "task_id": "tdb06",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_update",
+              "sfile_create",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              0.1332753598690033,
+              0.11272010952234268,
+              0.10905784368515015,
+              0.08085044473409653,
+              0.07496317476034164,
+              0.05879955366253853,
+              0.04293324798345566,
+              0.03369501233100891,
+              0.021206587553024292,
+              0.012569252401590347
+            ],
+            "gold_ids": [
+              "sdb_join"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "metrics": {
+          "mrr": 1.0,
+          "recall@1": 0.9444444444444444,
+          "ndcg@1": 1.0,
+          "recall@5": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "ndcg@10": 1.0
+        },
+        "per_task": [
+          {
+            "task_id": "tcalc01",
+            "ranked_ids": [
+              "scalc_int",
+              "scalc_dec",
+              "scalc_eq",
+              "scalc_pct",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_delete",
+              "scalc_agg",
+              "sdb_join"
+            ],
+            "scores": [
+              0.5299750566482544,
+              0.30517134070396423,
+              0.2026853710412979,
+              0.19172008335590363,
+              0.14489570260047913,
+              0.14090953767299652,
+              0.1261831820011139,
+              0.12392920255661011,
+              0.11466501653194427,
+              0.08926358819007874
+            ],
+            "gold_ids": [
+              "scalc_int"
+            ]
+          },
+          {
+            "task_id": "tcalc02",
+            "ranked_ids": [
+              "scalc_dec",
+              "scalc_int",
+              "scalc_pct",
+              "scalc_eq",
+              "scalc_agg",
+              "sdb_delete",
+              "sfile_patch_json",
+              "sfile_append",
+              "sdb_update",
+              "sdb_insert"
+            ],
+            "scores": [
+              0.5139539837837219,
+              0.289084792137146,
+              0.22036488354206085,
+              0.18042969703674316,
+              0.10086433589458466,
+              0.06873097270727158,
+              0.06200094148516655,
+              0.0443715825676918,
+              0.03140506520867348,
+              0.030351921916007996
+            ],
+            "gold_ids": [
+              "scalc_dec"
+            ]
+          },
+          {
+            "task_id": "tcalc04",
+            "ranked_ids": [
+              "scalc_eq",
+              "scalc_dec",
+              "sdb_delete",
+              "scalc_int",
+              "sfile_append",
+              "sdb_join",
+              "scalc_pct",
+              "sdb_insert",
+              "scalc_agg",
+              "sdb_update"
+            ],
+            "scores": [
+              0.38859066367149353,
+              0.1066877618432045,
+              0.09400982409715652,
+              0.08821846544742584,
+              0.06486998498439789,
+              0.06302550435066223,
+              0.05907326191663742,
+              0.05379483848810196,
+              0.0525137260556221,
+              0.04935324564576149
+            ],
+            "gold_ids": [
+              "scalc_eq"
+            ]
+          },
+          {
+            "task_id": "tcalc06",
+            "ranked_ids": [
+              "scalc_agg",
+              "scalc_int",
+              "scalc_eq",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "scalc_dec",
+              "scalc_unit",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.47750023007392883,
+              0.16299760341644287,
+              0.13009226322174072,
+              0.12406306713819504,
+              0.11910515278577805,
+              0.11555227637290955,
+              0.11446290463209152,
+              0.0878332257270813,
+              0.08751604706048965,
+              0.06010521948337555
+            ],
+            "gold_ids": [
+              "scalc_agg"
+            ]
+          },
+          {
+            "task_id": "tcalc07",
+            "ranked_ids": [
+              "scalc_pct",
+              "scalc_dec",
+              "scalc_int",
+              "scalc_eq",
+              "sfile_move",
+              "sdb_delete",
+              "scalc_agg",
+              "scalc_unit",
+              "sdb_update",
+              "sfile_copy"
+            ],
+            "scores": [
+              0.3749832212924957,
+              0.3348065912723541,
+              0.07552087306976318,
+              0.04362304136157036,
+              0.00228680856525898,
+              -0.03555142134428024,
+              -0.05026453733444214,
+              -0.05588158220052719,
+              -0.06683854758739471,
+              -0.07690410315990448
+            ],
+            "gold_ids": [
+              "scalc_dec",
+              "scalc_pct"
+            ]
+          },
+          {
+            "task_id": "tjson01",
+            "ranked_ids": [
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_sort",
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_csv",
+              "sfile_patch_json",
+              "sfile_append",
+              "sdb_aggregate",
+              "sdb_join"
+            ],
+            "scores": [
+              0.556700587272644,
+              0.38480982184410095,
+              0.3552403151988983,
+              0.30042409896850586,
+              0.2917879521846771,
+              0.20120805501937866,
+              0.0977291688323021,
+              0.0016544237732887268,
+              -0.04703810065984726,
+              -0.0502810925245285
+            ],
+            "gold_ids": [
+              "sjson_extract"
+            ]
+          },
+          {
+            "task_id": "tjson03",
+            "ranked_ids": [
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_sort",
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_csv",
+              "sfile_patch_json",
+              "sdb_update",
+              "sfile_overwrite",
+              "sdb_delete"
+            ],
+            "scores": [
+              0.5177005529403687,
+              0.3687063157558441,
+              0.3456334173679352,
+              0.27398616075515747,
+              0.22924841940402985,
+              0.21642577648162842,
+              0.1118118166923523,
+              0.10566094517707825,
+              0.03115054965019226,
+              0.018450958654284477
+            ],
+            "gold_ids": [
+              "sjson_filter"
+            ]
+          },
+          {
+            "task_id": "tjson04",
+            "ranked_ids": [
+              "sjson_merge",
+              "sjson_filter",
+              "sjson_extract",
+              "sfile_patch_json",
+              "sjson_rename",
+              "sjson_csv",
+              "sjson_sort",
+              "sfile_append",
+              "scalc_eq",
+              "sfile_move"
+            ],
+            "scores": [
+              0.4786323606967926,
+              0.3336079716682434,
+              0.21387344598770142,
+              0.20558395981788635,
+              0.14836028218269348,
+              0.13234534859657288,
+              0.10828524827957153,
+              -0.05179443955421448,
+              -0.06524741649627686,
+              -0.07523203641176224
+            ],
+            "gold_ids": [
+              "sjson_merge"
+            ]
+          },
+          {
+            "task_id": "tjson06",
+            "ranked_ids": [
+              "sjson_csv",
+              "sjson_sort",
+              "sfile_overwrite",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sjson_extract",
+              "sdb_delete",
+              "sjson_rename",
+              "sdb_update",
+              "sdb_join"
+            ],
+            "scores": [
+              0.43702372908592224,
+              0.11421865224838257,
+              0.10612475126981735,
+              0.10295979678630829,
+              0.09269349277019501,
+              0.09140811115503311,
+              0.08754852414131165,
+              0.07237289845943451,
+              0.05035686492919922,
+              0.048192884773015976
+            ],
+            "gold_ids": [
+              "sjson_csv"
+            ]
+          },
+          {
+            "task_id": "tjson07",
+            "ranked_ids": [
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_sort",
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_csv",
+              "sdb_aggregate",
+              "sfile_patch_json",
+              "sdb_update",
+              "sdb_join"
+            ],
+            "scores": [
+              0.5030343532562256,
+              0.49836042523384094,
+              0.32838335633277893,
+              0.21871213614940643,
+              0.21470463275909424,
+              0.1398191750049591,
+              0.1122317761182785,
+              0.10984914749860764,
+              0.08679521828889847,
+              0.07608684152364731
+            ],
+            "gold_ids": [
+              "sjson_extract",
+              "sjson_rename"
+            ]
+          },
+          {
+            "task_id": "tfile01",
+            "ranked_ids": [
+              "sfile_create",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_move",
+              "sfile_append",
+              "sfile_patch_json",
+              "sdb_insert",
+              "sdb_update",
+              "sdb_delete",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.3814072608947754,
+              0.3181566298007965,
+              0.23623064160346985,
+              0.2260897308588028,
+              0.1611739844083786,
+              0.12359201163053513,
+              0.07527799904346466,
+              0.00729953870177269,
+              -0.02188386395573616,
+              -0.038481488823890686
+            ],
+            "gold_ids": [
+              "sfile_create"
+            ]
+          },
+          {
+            "task_id": "tfile03",
+            "ranked_ids": [
+              "sfile_append",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_copy",
+              "sfile_patch_json",
+              "sfile_move",
+              "scalc_eq",
+              "sjson_csv",
+              "sdb_insert",
+              "scalc_dec"
+            ],
+            "scores": [
+              0.4973733425140381,
+              0.297006219625473,
+              0.2778579592704773,
+              0.19739410281181335,
+              0.1887361705303192,
+              0.1717914491891861,
+              0.08562742173671722,
+              0.06818124651908875,
+              0.04837515205144882,
+              0.0016747061163187027
+            ],
+            "gold_ids": [
+              "sfile_append"
+            ]
+          },
+          {
+            "task_id": "tfile04",
+            "ranked_ids": [
+              "sfile_copy",
+              "sfile_overwrite",
+              "sfile_move",
+              "sfile_create",
+              "sfile_patch_json",
+              "sdb_update",
+              "sdb_insert",
+              "sfile_append",
+              "sdb_delete",
+              "sjson_filter"
+            ],
+            "scores": [
+              0.42313849925994873,
+              0.3668476939201355,
+              0.29066595435142517,
+              0.2669859230518341,
+              0.20694200694561005,
+              0.18360011279582977,
+              0.1766098290681839,
+              0.13913747668266296,
+              0.13313522934913635,
+              -0.024617400020360947
+            ],
+            "gold_ids": [
+              "sfile_copy"
+            ]
+          },
+          {
+            "task_id": "tfile06",
+            "ranked_ids": [
+              "sfile_patch_json",
+              "sdb_insert",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_append",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sdb_delete",
+              "sfile_move"
+            ],
+            "scores": [
+              0.49673229455947876,
+              0.30740389227867126,
+              0.2833782732486725,
+              0.2466948926448822,
+              0.22541630268096924,
+              0.20030155777931213,
+              0.19936755299568176,
+              0.19147849082946777,
+              0.1729947030544281,
+              0.1703890860080719
+            ],
+            "gold_ids": [
+              "sfile_patch_json"
+            ]
+          },
+          {
+            "task_id": "tdb01",
+            "ranked_ids": [
+              "sdb_select",
+              "sdb_join",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sdb_insert",
+              "sdb_update",
+              "sjson_rename",
+              "sfile_overwrite",
+              "sjson_merge",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.6221047043800354,
+              0.44286006689071655,
+              0.4295687973499298,
+              0.4190016984939575,
+              0.3901571035385132,
+              0.3492372930049896,
+              0.11461395025253296,
+              0.10940849035978317,
+              0.08818266540765762,
+              0.08683809638023376
+            ],
+            "gold_ids": [
+              "sdb_select"
+            ]
+          },
+          {
+            "task_id": "tdb03",
+            "ranked_ids": [
+              "sdb_update",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_patch_json",
+              "sdb_join",
+              "sfile_move",
+              "sdb_select"
+            ],
+            "scores": [
+              0.39826250076293945,
+              0.3752622604370117,
+              0.3396642208099365,
+              0.17415672540664673,
+              0.1588437855243683,
+              0.148118793964386,
+              0.1294367015361786,
+              0.12039303034543991,
+              0.11376523971557617,
+              0.11215723305940628
+            ],
+            "gold_ids": [
+              "sdb_update"
+            ]
+          },
+          {
+            "task_id": "tdb05",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sfile_move",
+              "sfile_overwrite",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.5493974685668945,
+              0.36795035004615784,
+              0.34973302483558655,
+              0.3232882618904114,
+              0.30234861373901367,
+              0.28044816851615906,
+              0.12482842057943344,
+              0.12214025855064392,
+              0.12203327566385269,
+              0.10555301606655121
+            ],
+            "gold_ids": [
+              "sdb_aggregate"
+            ]
+          },
+          {
+            "task_id": "tdb06",
+            "ranked_ids": [
+              "sdb_join",
+              "sdb_delete",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_update",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_patch_json",
+              "scalc_eq"
+            ],
+            "scores": [
+              0.513606607913971,
+              0.3603980243206024,
+              0.3288699984550476,
+              0.32309794425964355,
+              0.24507859349250793,
+              0.24218930304050446,
+              0.11450657248497009,
+              0.08078424632549286,
+              0.06982027739286423,
+              0.06388387084007263
+            ],
+            "gold_ids": [
+              "sdb_join"
+            ]
+          }
+        ]
+      },
+      "loss_history": [
+        4.003416379292806,
+        2.690757433573405,
+        1.8769421180089314,
+        1.2900749047597249,
+        1.0244050820668538,
+        0.7506673336029053,
+        0.6919117569923401,
+        0.5301060875256857,
+        0.4732661048571269,
+        0.2999947915474574,
+        0.3519375224908193,
+        0.27492279807726544,
+        0.21707453827063242,
+        0.1540548031528791,
+        0.1886546810468038,
+        0.07694525147477786,
+        0.061325461914141975,
+        0.13209654887517294,
+        0.17057914783557257,
+        0.046592140570282936,
+        0.05331533898909887,
+        0.11771693142751853,
+        0.14811625393728414,
+        0.08065357431769371,
+        0.030940064539511997,
+        0.0813878516977032,
+        0.012321706240375837,
+        0.10267364637305339,
+        0.021496026155849297,
+        0.07803215583165486
+      ],
+      "state_sha256": "55430cd28111132e0e6faf550d39c5376905f38b548272214035371f85f9e4d0",
+      "training_seconds": 5.863434599999891
+    },
+    {
+      "repetition": 2,
+      "before": {
+        "metrics": {
+          "mrr": 0.12645502645502646,
+          "recall@1": 0.0,
+          "ndcg@1": 0.0,
+          "recall@5": 0.3055555555555556,
+          "ndcg@5": 0.15366602689929593,
+          "recall@10": 0.4166666666666667,
+          "ndcg@10": 0.19228537783801533
+        },
+        "per_task": [
+          {
+            "task_id": "tcalc01",
+            "ranked_ids": [
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sfile_overwrite",
+              "sfile_append",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.22289744019508362,
+              0.19149285554885864,
+              0.1864965260028839,
+              0.14056184887886047,
+              0.13372169435024261,
+              0.09277807176113129,
+              0.09002941846847534,
+              0.08755749464035034,
+              0.08675631135702133,
+              0.07910200953483582
+            ],
+            "gold_ids": [
+              "scalc_int"
+            ]
+          },
+          {
+            "task_id": "tcalc02",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sdb_insert",
+              "scalc_pct",
+              "scalc_agg",
+              "sfile_append",
+              "scalc_eq",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              0.10272141546010971,
+              0.09678149223327637,
+              0.07129398733377457,
+              0.06329835951328278,
+              0.045833706855773926,
+              0.01371653750538826,
+              -0.005282748490571976,
+              -0.01202181912958622,
+              -0.019991885870695114,
+              -0.02995660901069641
+            ],
+            "gold_ids": [
+              "scalc_dec"
+            ]
+          },
+          {
+            "task_id": "tcalc04",
+            "ranked_ids": [
+              "sfile_copy",
+              "sdb_insert",
+              "sdb_delete",
+              "sfile_move",
+              "sdb_update",
+              "sfile_overwrite",
+              "sdb_select",
+              "sfile_append",
+              "sdb_aggregate",
+              "sfile_create"
+            ],
+            "scores": [
+              0.047006525099277496,
+              0.015797730535268784,
+              0.003956373780965805,
+              -0.013308506458997726,
+              -0.026732400059700012,
+              -0.03510277718305588,
+              -0.04519739747047424,
+              -0.05354426056146622,
+              -0.08599667251110077,
+              -0.08682849258184433
+            ],
+            "gold_ids": [
+              "scalc_eq"
+            ]
+          },
+          {
+            "task_id": "tcalc06",
+            "ranked_ids": [
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sfile_create",
+              "sfile_copy",
+              "sfile_move",
+              "scalc_unit",
+              "sfile_overwrite",
+              "sdb_aggregate"
+            ],
+            "scores": [
+              0.17057904601097107,
+              0.15794667601585388,
+              0.12166566401720047,
+              0.10494479537010193,
+              0.08103346824645996,
+              0.07939351350069046,
+              0.055890388786792755,
+              0.05478609725832939,
+              0.04483792930841446,
+              0.04369978979229927
+            ],
+            "gold_ids": [
+              "scalc_agg"
+            ]
+          },
+          {
+            "task_id": "tcalc07",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_update",
+              "sdb_insert",
+              "sfile_move",
+              "sdb_select",
+              "sfile_copy",
+              "sfile_overwrite",
+              "scalc_agg",
+              "sdb_join",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.03540017455816269,
+              0.03314688801765442,
+              0.030610771849751472,
+              -0.011409170925617218,
+              -0.029361624270677567,
+              -0.06605403870344162,
+              -0.08419870585203171,
+              -0.09317059814929962,
+              -0.09584645926952362,
+              -0.10147831588983536
+            ],
+            "gold_ids": [
+              "scalc_dec",
+              "scalc_pct"
+            ]
+          },
+          {
+            "task_id": "tjson01",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "sfile_patch_json",
+              "scalc_pct",
+              "sjson_filter",
+              "sjson_rename",
+              "sfile_create",
+              "sjson_sort",
+              "sdb_update",
+              "sfile_move"
+            ],
+            "scores": [
+              0.1424771547317505,
+              0.09607245773077011,
+              0.0486617349088192,
+              0.04169918969273567,
+              0.03763308748602867,
+              0.03187546879053116,
+              0.029204221442341805,
+              0.02291034534573555,
+              0.004635710269212723,
+              0.0009963493794202805
+            ],
+            "gold_ids": [
+              "sjson_extract"
+            ]
+          },
+          {
+            "task_id": "tjson03",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sfile_patch_json",
+              "sfile_create",
+              "sjson_extract",
+              "sdb_update",
+              "sfile_overwrite",
+              "sjson_filter",
+              "sfile_move",
+              "sjson_merge",
+              "sjson_rename"
+            ],
+            "scores": [
+              0.059574972838163376,
+              0.042653247714042664,
+              0.00018886104226112366,
+              -0.0011333264410495758,
+              -0.007338462397456169,
+              -0.017112350091338158,
+              -0.02329177036881447,
+              -0.035249147564172745,
+              -0.03660470247268677,
+              -0.03723601996898651
+            ],
+            "gold_ids": [
+              "sjson_filter"
+            ]
+          },
+          {
+            "task_id": "tjson04",
+            "ranked_ids": [
+              "sfile_patch_json",
+              "sdb_aggregate",
+              "sjson_extract",
+              "scalc_eq",
+              "scalc_pct",
+              "sfile_create",
+              "sdb_update",
+              "scalc_int",
+              "sjson_rename",
+              "sfile_move"
+            ],
+            "scores": [
+              0.09989913552999496,
+              0.0391104482114315,
+              0.0257263146340847,
+              0.022133328020572662,
+              0.002101738005876541,
+              -0.0059420447796583176,
+              -0.010832513682544231,
+              -0.011213114485144615,
+              -0.01489161141216755,
+              -0.019105996936559677
+            ],
+            "gold_ids": [
+              "sjson_merge"
+            ]
+          },
+          {
+            "task_id": "tjson06",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_delete",
+              "sdb_insert",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_create",
+              "sdb_update",
+              "sfile_move",
+              "sdb_join"
+            ],
+            "scores": [
+              0.18147626519203186,
+              0.08491074293851852,
+              0.06875444948673248,
+              0.04424978420138359,
+              0.032872915267944336,
+              0.020422592759132385,
+              0.008717425167560577,
+              -0.0020830631256103516,
+              -0.01624460518360138,
+              -0.03546769917011261
+            ],
+            "gold_ids": [
+              "sjson_csv"
+            ]
+          },
+          {
+            "task_id": "tjson07",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "scalc_pct",
+              "sdb_update",
+              "scalc_unit",
+              "sdb_delete",
+              "sfile_move",
+              "sjson_filter",
+              "sjson_rename",
+              "sdb_join"
+            ],
+            "scores": [
+              0.18681600689888,
+              0.06373004615306854,
+              0.054485712200403214,
+              0.035409390926361084,
+              0.02793322503566742,
+              0.026162438094615936,
+              0.022247444838285446,
+              0.014173716306686401,
+              0.01297779381275177,
+              0.010504346340894699
+            ],
+            "gold_ids": [
+              "sjson_extract",
+              "sjson_rename"
+            ]
+          },
+          {
+            "task_id": "tfile01",
+            "ranked_ids": [
+              "sfile_move",
+              "scalc_int",
+              "sfile_copy",
+              "scalc_unit",
+              "sfile_patch_json",
+              "sjson_csv",
+              "scalc_dec",
+              "scalc_eq",
+              "sdb_insert",
+              "scalc_pct"
+            ],
+            "scores": [
+              -0.15943610668182373,
+              -0.15991106629371643,
+              -0.16041220724582672,
+              -0.16154193878173828,
+              -0.1763824224472046,
+              -0.17753766477108002,
+              -0.18133366107940674,
+              -0.18655627965927124,
+              -0.19287817180156708,
+              -0.20106026530265808
+            ],
+            "gold_ids": [
+              "sfile_create"
+            ]
+          },
+          {
+            "task_id": "tfile03",
+            "ranked_ids": [
+              "scalc_eq",
+              "scalc_agg",
+              "sjson_csv",
+              "scalc_int",
+              "sfile_copy",
+              "scalc_dec",
+              "sdb_insert",
+              "sfile_create",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              -0.012123641557991505,
+              -0.03624078631401062,
+              -0.03768947720527649,
+              -0.05758052319288254,
+              -0.062175340950489044,
+              -0.06896979361772537,
+              -0.06940587610006332,
+              -0.08337654173374176,
+              -0.09541191905736923,
+              -0.106097012758255
+            ],
+            "gold_ids": [
+              "sfile_append"
+            ]
+          },
+          {
+            "task_id": "tfile04",
+            "ranked_ids": [
+              "sdb_insert",
+              "scalc_int",
+              "sfile_copy",
+              "sfile_overwrite",
+              "scalc_eq",
+              "sfile_patch_json",
+              "scalc_dec",
+              "sfile_move",
+              "scalc_agg",
+              "scalc_unit"
+            ],
+            "scores": [
+              -0.020245730876922607,
+              -0.02318982034921646,
+              -0.03851424157619476,
+              -0.04270092397928238,
+              -0.047282494604587555,
+              -0.05061321705579758,
+              -0.05624670907855034,
+              -0.06242818385362625,
+              -0.0656215101480484,
+              -0.06922079622745514
+            ],
+            "gold_ids": [
+              "sfile_copy"
+            ]
+          },
+          {
+            "task_id": "tfile06",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sjson_extract",
+              "sdb_join",
+              "scalc_int",
+              "sdb_insert",
+              "scalc_eq",
+              "sjson_filter",
+              "scalc_unit",
+              "sjson_csv",
+              "sjson_rename"
+            ],
+            "scores": [
+              0.22634771466255188,
+              0.15885654091835022,
+              0.14860835671424866,
+              0.14028069376945496,
+              0.14018988609313965,
+              0.12263756990432739,
+              0.11677265167236328,
+              0.1124708503484726,
+              0.11076660454273224,
+              0.1099686324596405
+            ],
+            "gold_ids": [
+              "sfile_patch_json"
+            ]
+          },
+          {
+            "task_id": "tdb01",
+            "ranked_ids": [
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_select",
+              "sdb_aggregate",
+              "sfile_create",
+              "sfile_overwrite",
+              "scalc_unit",
+              "sfile_move",
+              "sfile_copy"
+            ],
+            "scores": [
+              0.23628705739974976,
+              0.21180583536624908,
+              0.20332294702529907,
+              0.19803103804588318,
+              0.17164316773414612,
+              0.16648370027542114,
+              0.1602073758840561,
+              0.15789943933486938,
+              0.14961284399032593,
+              0.14654870331287384
+            ],
+            "gold_ids": [
+              "sdb_select"
+            ]
+          },
+          {
+            "task_id": "tdb03",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_insert",
+              "sdb_delete",
+              "sfile_copy",
+              "sdb_update",
+              "sdb_select",
+              "sfile_move",
+              "sfile_overwrite",
+              "sdb_join",
+              "sfile_patch_json"
+            ],
+            "scores": [
+              0.07582704722881317,
+              0.05030525475740433,
+              -0.0024145692586898804,
+              -0.004546627402305603,
+              -0.00553092360496521,
+              -0.01578795537352562,
+              -0.017722927033901215,
+              -0.045236848294734955,
+              -0.07018818706274033,
+              -0.0813920646905899
+            ],
+            "gold_ids": [
+              "sdb_update"
+            ]
+          },
+          {
+            "task_id": "tdb05",
+            "ranked_ids": [
+              "sdb_insert",
+              "sfile_copy",
+              "sfile_move",
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_delete",
+              "sdb_update",
+              "sfile_overwrite",
+              "sfile_create",
+              "sdb_join"
+            ],
+            "scores": [
+              0.19379107654094696,
+              0.18207694590091705,
+              0.17151546478271484,
+              0.16897103190422058,
+              0.15638473629951477,
+              0.15349531173706055,
+              0.14238077402114868,
+              0.12728789448738098,
+              0.10991682857275009,
+              0.08527939021587372
+            ],
+            "gold_ids": [
+              "sdb_aggregate"
+            ]
+          },
+          {
+            "task_id": "tdb06",
+            "ranked_ids": [
+              "sdb_delete",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_update",
+              "sfile_create",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_move",
+              "scalc_unit"
+            ],
+            "scores": [
+              0.1332753598690033,
+              0.11272010952234268,
+              0.10905784368515015,
+              0.08085044473409653,
+              0.07496317476034164,
+              0.05879955366253853,
+              0.04293324798345566,
+              0.03369501233100891,
+              0.021206587553024292,
+              0.012569252401590347
+            ],
+            "gold_ids": [
+              "sdb_join"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "metrics": {
+          "mrr": 1.0,
+          "recall@1": 0.9444444444444444,
+          "ndcg@1": 1.0,
+          "recall@5": 1.0,
+          "ndcg@5": 1.0,
+          "recall@10": 1.0,
+          "ndcg@10": 1.0
+        },
+        "per_task": [
+          {
+            "task_id": "tcalc01",
+            "ranked_ids": [
+              "scalc_int",
+              "scalc_dec",
+              "scalc_eq",
+              "scalc_pct",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_delete",
+              "scalc_agg",
+              "sdb_join"
+            ],
+            "scores": [
+              0.5299750566482544,
+              0.30517134070396423,
+              0.2026853710412979,
+              0.19172008335590363,
+              0.14489570260047913,
+              0.14090953767299652,
+              0.1261831820011139,
+              0.12392920255661011,
+              0.11466501653194427,
+              0.08926358819007874
+            ],
+            "gold_ids": [
+              "scalc_int"
+            ]
+          },
+          {
+            "task_id": "tcalc02",
+            "ranked_ids": [
+              "scalc_dec",
+              "scalc_int",
+              "scalc_pct",
+              "scalc_eq",
+              "scalc_agg",
+              "sdb_delete",
+              "sfile_patch_json",
+              "sfile_append",
+              "sdb_update",
+              "sdb_insert"
+            ],
+            "scores": [
+              0.5139539837837219,
+              0.289084792137146,
+              0.22036488354206085,
+              0.18042969703674316,
+              0.10086433589458466,
+              0.06873097270727158,
+              0.06200094148516655,
+              0.0443715825676918,
+              0.03140506520867348,
+              0.030351921916007996
+            ],
+            "gold_ids": [
+              "scalc_dec"
+            ]
+          },
+          {
+            "task_id": "tcalc04",
+            "ranked_ids": [
+              "scalc_eq",
+              "scalc_dec",
+              "sdb_delete",
+              "scalc_int",
+              "sfile_append",
+              "sdb_join",
+              "scalc_pct",
+              "sdb_insert",
+              "scalc_agg",
+              "sdb_update"
+            ],
+            "scores": [
+              0.38859066367149353,
+              0.1066877618432045,
+              0.09400982409715652,
+              0.08821846544742584,
+              0.06486998498439789,
+              0.06302550435066223,
+              0.05907326191663742,
+              0.05379483848810196,
+              0.0525137260556221,
+              0.04935324564576149
+            ],
+            "gold_ids": [
+              "scalc_eq"
+            ]
+          },
+          {
+            "task_id": "tcalc06",
+            "ranked_ids": [
+              "scalc_agg",
+              "scalc_int",
+              "scalc_eq",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "scalc_dec",
+              "scalc_unit",
+              "scalc_pct"
+            ],
+            "scores": [
+              0.47750023007392883,
+              0.16299760341644287,
+              0.13009226322174072,
+              0.12406306713819504,
+              0.11910515278577805,
+              0.11555227637290955,
+              0.11446290463209152,
+              0.0878332257270813,
+              0.08751604706048965,
+              0.06010521948337555
+            ],
+            "gold_ids": [
+              "scalc_agg"
+            ]
+          },
+          {
+            "task_id": "tcalc07",
+            "ranked_ids": [
+              "scalc_pct",
+              "scalc_dec",
+              "scalc_int",
+              "scalc_eq",
+              "sfile_move",
+              "sdb_delete",
+              "scalc_agg",
+              "scalc_unit",
+              "sdb_update",
+              "sfile_copy"
+            ],
+            "scores": [
+              0.3749832212924957,
+              0.3348065912723541,
+              0.07552087306976318,
+              0.04362304136157036,
+              0.00228680856525898,
+              -0.03555142134428024,
+              -0.05026453733444214,
+              -0.05588158220052719,
+              -0.06683854758739471,
+              -0.07690410315990448
+            ],
+            "gold_ids": [
+              "scalc_dec",
+              "scalc_pct"
+            ]
+          },
+          {
+            "task_id": "tjson01",
+            "ranked_ids": [
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_sort",
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_csv",
+              "sfile_patch_json",
+              "sfile_append",
+              "sdb_aggregate",
+              "sdb_join"
+            ],
+            "scores": [
+              0.556700587272644,
+              0.38480982184410095,
+              0.3552403151988983,
+              0.30042409896850586,
+              0.2917879521846771,
+              0.20120805501937866,
+              0.0977291688323021,
+              0.0016544237732887268,
+              -0.04703810065984726,
+              -0.0502810925245285
+            ],
+            "gold_ids": [
+              "sjson_extract"
+            ]
+          },
+          {
+            "task_id": "tjson03",
+            "ranked_ids": [
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_sort",
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_csv",
+              "sfile_patch_json",
+              "sdb_update",
+              "sfile_overwrite",
+              "sdb_delete"
+            ],
+            "scores": [
+              0.5177005529403687,
+              0.3687063157558441,
+              0.3456334173679352,
+              0.27398616075515747,
+              0.22924841940402985,
+              0.21642577648162842,
+              0.1118118166923523,
+              0.10566094517707825,
+              0.03115054965019226,
+              0.018450958654284477
+            ],
+            "gold_ids": [
+              "sjson_filter"
+            ]
+          },
+          {
+            "task_id": "tjson04",
+            "ranked_ids": [
+              "sjson_merge",
+              "sjson_filter",
+              "sjson_extract",
+              "sfile_patch_json",
+              "sjson_rename",
+              "sjson_csv",
+              "sjson_sort",
+              "sfile_append",
+              "scalc_eq",
+              "sfile_move"
+            ],
+            "scores": [
+              0.4786323606967926,
+              0.3336079716682434,
+              0.21387344598770142,
+              0.20558395981788635,
+              0.14836028218269348,
+              0.13234534859657288,
+              0.10828524827957153,
+              -0.05179443955421448,
+              -0.06524741649627686,
+              -0.07523203641176224
+            ],
+            "gold_ids": [
+              "sjson_merge"
+            ]
+          },
+          {
+            "task_id": "tjson06",
+            "ranked_ids": [
+              "sjson_csv",
+              "sjson_sort",
+              "sfile_overwrite",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sjson_extract",
+              "sdb_delete",
+              "sjson_rename",
+              "sdb_update",
+              "sdb_join"
+            ],
+            "scores": [
+              0.43702372908592224,
+              0.11421865224838257,
+              0.10612475126981735,
+              0.10295979678630829,
+              0.09269349277019501,
+              0.09140811115503311,
+              0.08754852414131165,
+              0.07237289845943451,
+              0.05035686492919922,
+              0.048192884773015976
+            ],
+            "gold_ids": [
+              "sjson_csv"
+            ]
+          },
+          {
+            "task_id": "tjson07",
+            "ranked_ids": [
+              "sjson_extract",
+              "sjson_rename",
+              "sjson_sort",
+              "sjson_filter",
+              "sjson_merge",
+              "sjson_csv",
+              "sdb_aggregate",
+              "sfile_patch_json",
+              "sdb_update",
+              "sdb_join"
+            ],
+            "scores": [
+              0.5030343532562256,
+              0.49836042523384094,
+              0.32838335633277893,
+              0.21871213614940643,
+              0.21470463275909424,
+              0.1398191750049591,
+              0.1122317761182785,
+              0.10984914749860764,
+              0.08679521828889847,
+              0.07608684152364731
+            ],
+            "gold_ids": [
+              "sjson_extract",
+              "sjson_rename"
+            ]
+          },
+          {
+            "task_id": "tfile01",
+            "ranked_ids": [
+              "sfile_create",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_move",
+              "sfile_append",
+              "sfile_patch_json",
+              "sdb_insert",
+              "sdb_update",
+              "sdb_delete",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.3814072608947754,
+              0.3181566298007965,
+              0.23623064160346985,
+              0.2260897308588028,
+              0.1611739844083786,
+              0.12359201163053513,
+              0.07527799904346466,
+              0.00729953870177269,
+              -0.02188386395573616,
+              -0.038481488823890686
+            ],
+            "gold_ids": [
+              "sfile_create"
+            ]
+          },
+          {
+            "task_id": "tfile03",
+            "ranked_ids": [
+              "sfile_append",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_copy",
+              "sfile_patch_json",
+              "sfile_move",
+              "scalc_eq",
+              "sjson_csv",
+              "sdb_insert",
+              "scalc_dec"
+            ],
+            "scores": [
+              0.4973733425140381,
+              0.297006219625473,
+              0.2778579592704773,
+              0.19739410281181335,
+              0.1887361705303192,
+              0.1717914491891861,
+              0.08562742173671722,
+              0.06818124651908875,
+              0.04837515205144882,
+              0.0016747061163187027
+            ],
+            "gold_ids": [
+              "sfile_append"
+            ]
+          },
+          {
+            "task_id": "tfile04",
+            "ranked_ids": [
+              "sfile_copy",
+              "sfile_overwrite",
+              "sfile_move",
+              "sfile_create",
+              "sfile_patch_json",
+              "sdb_update",
+              "sdb_insert",
+              "sfile_append",
+              "sdb_delete",
+              "sjson_filter"
+            ],
+            "scores": [
+              0.42313849925994873,
+              0.3668476939201355,
+              0.29066595435142517,
+              0.2669859230518341,
+              0.20694200694561005,
+              0.18360011279582977,
+              0.1766098290681839,
+              0.13913747668266296,
+              0.13313522934913635,
+              -0.024617400020360947
+            ],
+            "gold_ids": [
+              "sfile_copy"
+            ]
+          },
+          {
+            "task_id": "tfile06",
+            "ranked_ids": [
+              "sfile_patch_json",
+              "sdb_insert",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_append",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sdb_delete",
+              "sfile_move"
+            ],
+            "scores": [
+              0.49673229455947876,
+              0.30740389227867126,
+              0.2833782732486725,
+              0.2466948926448822,
+              0.22541630268096924,
+              0.20030155777931213,
+              0.19936755299568176,
+              0.19147849082946777,
+              0.1729947030544281,
+              0.1703890860080719
+            ],
+            "gold_ids": [
+              "sfile_patch_json"
+            ]
+          },
+          {
+            "task_id": "tdb01",
+            "ranked_ids": [
+              "sdb_select",
+              "sdb_join",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sdb_insert",
+              "sdb_update",
+              "sjson_rename",
+              "sfile_overwrite",
+              "sjson_merge",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.6221047043800354,
+              0.44286006689071655,
+              0.4295687973499298,
+              0.4190016984939575,
+              0.3901571035385132,
+              0.3492372930049896,
+              0.11461395025253296,
+              0.10940849035978317,
+              0.08818266540765762,
+              0.08683809638023376
+            ],
+            "gold_ids": [
+              "sdb_select"
+            ]
+          },
+          {
+            "task_id": "tdb03",
+            "ranked_ids": [
+              "sdb_update",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_aggregate",
+              "sfile_overwrite",
+              "sfile_copy",
+              "sfile_patch_json",
+              "sdb_join",
+              "sfile_move",
+              "sdb_select"
+            ],
+            "scores": [
+              0.39826250076293945,
+              0.3752622604370117,
+              0.3396642208099365,
+              0.17415672540664673,
+              0.1588437855243683,
+              0.148118793964386,
+              0.1294367015361786,
+              0.12039303034543991,
+              0.11376523971557617,
+              0.11215723305940628
+            ],
+            "gold_ids": [
+              "sdb_update"
+            ]
+          },
+          {
+            "task_id": "tdb05",
+            "ranked_ids": [
+              "sdb_aggregate",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_delete",
+              "sdb_update",
+              "sdb_join",
+              "sfile_copy",
+              "sfile_move",
+              "sfile_overwrite",
+              "sjson_csv"
+            ],
+            "scores": [
+              0.5493974685668945,
+              0.36795035004615784,
+              0.34973302483558655,
+              0.3232882618904114,
+              0.30234861373901367,
+              0.28044816851615906,
+              0.12482842057943344,
+              0.12214025855064392,
+              0.12203327566385269,
+              0.10555301606655121
+            ],
+            "gold_ids": [
+              "sdb_aggregate"
+            ]
+          },
+          {
+            "task_id": "tdb06",
+            "ranked_ids": [
+              "sdb_join",
+              "sdb_delete",
+              "sdb_select",
+              "sdb_insert",
+              "sdb_aggregate",
+              "sdb_update",
+              "sfile_overwrite",
+              "sfile_create",
+              "sfile_patch_json",
+              "scalc_eq"
+            ],
+            "scores": [
+              0.513606607913971,
+              0.3603980243206024,
+              0.3288699984550476,
+              0.32309794425964355,
+              0.24507859349250793,
+              0.24218930304050446,
+              0.11450657248497009,
+              0.08078424632549286,
+              0.06982027739286423,
+              0.06388387084007263
+            ],
+            "gold_ids": [
+              "sdb_join"
+            ]
+          }
+        ]
+      },
+      "loss_history": [
+        4.003416379292806,
+        2.690757433573405,
+        1.8769421180089314,
+        1.2900749047597249,
+        1.0244050820668538,
+        0.7506673336029053,
+        0.6919117569923401,
+        0.5301060875256857,
+        0.4732661048571269,
+        0.2999947915474574,
+        0.3519375224908193,
+        0.27492279807726544,
+        0.21707453827063242,
+        0.1540548031528791,
+        0.1886546810468038,
+        0.07694525147477786,
+        0.061325461914141975,
+        0.13209654887517294,
+        0.17057914783557257,
+        0.046592140570282936,
+        0.05331533898909887,
+        0.11771693142751853,
+        0.14811625393728414,
+        0.08065357431769371,
+        0.030940064539511997,
+        0.0813878516977032,
+        0.012321706240375837,
+        0.10267364637305339,
+        0.021496026155849297,
+        0.07803215583165486
+      ],
+      "state_sha256": "55430cd28111132e0e6faf550d39c5376905f38b548272214035371f85f9e4d0",
+      "training_seconds": 3.4776922999999442
+    }
+  ],
+  "checkpoint": {
+    "path": "results/dual_encoder_dev_20260906.pt",
+    "sha256": "303cc209f3db9ca76493170f3d6a2d9b7a73486ac618688891514e59ebfc6cf2",
+    "size_bytes": 2100021,
+    "metadata": {
+      "protocol_id": "dual-encoder-dev-engineering-20260906-v01",
+      "protocol_sha256": "4bcbe86b46b0edf89ad82d891eb60ad1b37ac4c53ad24966840bee420f8e7f36",
+      "scope": "benchmark_v01-dev-resubstitution"
+    },
+    "roundtrip": {
+      "rankings_exact": true,
+      "max_score_abs_delta": 0.0,
+      "metrics_exact": true
+    }
+  },
+  "acceptance_checks": {
+    "final_loss_below_initial_loss": true,
+    "post_train_mrr_above_pre_train_mrr": true,
+    "post_train_recall_at_5_min": true,
+    "repeated_loss_history_exact": true,
+    "repeated_state_hash_exact": true,
+    "checkpoint_rankings_exact": true,
+    "checkpoint_scores_max_abs_delta": true
+  },
+  "accepted": true
+}

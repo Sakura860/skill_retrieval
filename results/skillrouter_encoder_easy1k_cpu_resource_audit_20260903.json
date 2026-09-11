@@ -1,0 +1,24 @@
+{
+  "audit_id": "skillrouter-encoder-easy1k-cpu-resource-audit-20260903-v01",
+  "protocol_id": "skillrouter-large-pool-20260903-v03",
+  "status": "terminated_resource_gate",
+  "formal_full_pool_result": false,
+  "method": "official SkillRouter 0.6B encoder",
+  "tier": "easy",
+  "frozen_pool_size": 1000,
+  "started_at": "2026-09-03T10:33:15+08:00",
+  "terminated_at_approximately": "2026-09-03T10:50:50+08:00",
+  "elapsed_seconds_approximately": 1055,
+  "last_observed_process": {
+    "cpu_seconds": 7307.578125,
+    "working_set_bytes": 19360481280,
+    "private_memory_bytes": 55265001472,
+    "responding": true
+  },
+  "completed_metrics": false,
+  "result_file_written": false,
+  "termination_reason": "The process remained responsive but had not completed after about 17 minutes and private memory reached approximately 55.3 GB, causing heavy paging on a host with about 29.7 GB physical RAM.",
+  "interpretation": "The official encoder adapter loaded the published weights successfully, but even the frozen easy-1k CPU smoke exceeded the local resource gate. This is evidence about environment feasibility only and is not a retrieval-quality result.",
+  "next_formal_action": "Run the frozen official 78k/79k encoder and strict top-20 pipeline only on CUDA hardware, preserving protocol v03 and recording GPU, VRAM, software versions, and peak memory.",
+  "prohibited_substitute": "Do not extrapolate this partial CPU attempt and do not replace the official models with a hash encoder."
+}

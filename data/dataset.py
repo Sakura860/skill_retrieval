@@ -11,6 +11,8 @@ class RetrievalSample:
     query: str
     pos_skill_text: str
     neg_skill_texts: list[str]
+    task_id: str = ""
+    pos_skill_id: str = ""
 
 
 class RetrievalDataset:
@@ -32,6 +34,8 @@ class RetrievalDataset:
                     query=task.instruction,
                     pos_skill_text=p.to_text("detailed"),
                     neg_skill_texts=[n.to_text("detailed") for n in negs],
+                    task_id=task.id,
+                    pos_skill_id=p.id,
                 ))
 
     def __len__(self) -> int:

@@ -1,0 +1,79 @@
+{
+  "protocol_id": "gos-structural-dev-diagnostic-20260903-v01",
+  "status": "frozen_dev_diagnostic",
+  "frozen_at": "2026-09-03T17:24:00+08:00",
+  "research_question": "Under fixed retrieved candidates and task-authored graph edges, how does the official Graph-of-Skills reverse-aware PPR structural core compare with exact typed prerequisite completion?",
+  "scope": {
+    "dataset": "benchmark_v02",
+    "task_ids": ["v2graph01", "v2graph02"],
+    "split": "dev_only",
+    "independent_tasks": 2,
+    "model_repetitions": 3,
+    "held_out_claim": false,
+    "old_task5_confirmation_used": false
+  },
+  "dataset_hashes": {
+    "skills.jsonl": "2f629fdf46d4347dc7ad48283fa8e922df91c1c2c9b64d82dc54be611e6e4abf",
+    "tasks.jsonl": "3dd6101e8feda1deb52ad5abece3aa14c37cf4abc2084645c01ac18226706fb3",
+    "environment_fixtures.json": "6668fe257fb0877a3b2c834b23b915a67e6fd85521104fcaf7e7c3bced6315db"
+  },
+  "official_graph_of_skills": {
+    "paper_title": "Graph of Skills: Dependency-Aware Structural Retrieval for Massive Agent Skills",
+    "paper_url": "https://arxiv.org/abs/2604.05333",
+    "repository": "https://github.com/davidliuk/graph-of-skills",
+    "upstream_commit": "203f60a2c689da055ce1ac351eb3cb9912a3bca7",
+    "runtime_path": "evaluation/skillsbench/graphskills_assets/query.py",
+    "runtime_sha256": "0b47d795f662e2954ac70f949942d9345dca1f2a011f1dbe1fae22900909eccb",
+    "used_component": "official build_rank_distribution + build_transition + personalized_pagerank",
+    "seed_mode": "fixed external candidate ranking",
+    "reverse_mode": "full",
+    "ppr_damping": 0.2,
+    "ppr_max_iter": 50,
+    "ppr_tolerance": 1e-6,
+    "full_hybrid_pipeline_run": false,
+    "full_hybrid_blocker": "No OpenAI, Gemini, or OpenRouter embedding credential is configured; official docs require the query embedding model to match the indexed workspace.",
+    "label_requirement": "Results must be called the official reverse-PPR structural component with fixed seeds, never a reproduction of the full hybrid GoS pipeline."
+  },
+  "controlled": {
+    "candidate_source": "task.metadata.candidate_skill_ids",
+    "same_candidates_per_task_and_method": true,
+    "same_task_graph_edges_per_method": true,
+    "max_additional_skills": 2,
+    "context_budget_tokens": 3200,
+    "model": "deepseek-v4-pro",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "planner_mode": "one_stage",
+    "max_argument_repairs": 0,
+    "reflection": false,
+    "methods": [
+      "no_completion",
+      "typed_prerequisite_completion",
+      "gos_reverse_ppr_prerequisite",
+      "gos_reverse_ppr_prerequisite_plus_dataflow"
+    ]
+  },
+  "edge_mapping": {
+    "prerequisite": "dependency",
+    "dataflow": "workflow",
+    "co_use": "not_present_in_selected_tasks",
+    "alternative": "excluded_from_automatic_expansion",
+    "conflict": "excluded_from_automatic_expansion"
+  },
+  "metrics": [
+    "missing_prerequisite_recall",
+    "correct_added_skills",
+    "irrelevant_added_skills",
+    "candidate_growth",
+    "skill_context_tokens",
+    "total_tokens",
+    "task_success_rate",
+    "end_to_end_latency"
+  ],
+  "interpretation_boundary": [
+    "This is a two-task dev diagnostic with three model repetitions, not a held-out generalization result.",
+    "Model repetitions measure execution stability and are not independent tasks.",
+    "The full hybrid semantic-lexical GoS pipeline is not run and must not be inferred from the fixed-seed structural component.",
+    "Prerequisite and dataflow mappings are reported separately; co_use, alternative, and conflict receive no success claim."
+  ]
+}

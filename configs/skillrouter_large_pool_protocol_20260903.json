@@ -1,0 +1,105 @@
+{
+  "protocol_id": "skillrouter-large-pool-20260903-v03",
+  "status": "frozen",
+  "created_at": "2026-09-03T00:00:00+08:00",
+  "supersedes": "skillrouter-large-pool-20260903-v02",
+  "revision_reason": "v01 preflight failed before indexing because it hashed Git-bundled metadata copies. v02 completed BM25, then audit found that 554 relevance-map IDs include degraded IDs absent from both released pools; the official evaluator intersects relevance with each pool, leaving 196 present IDs. v03 corrects only this declaration and adds an enforcement check. Slice seed, membership algorithm, methods, and metrics are unchanged; the v02 result remains preserved as superseded evidence.",
+  "scope": "retrieval quality and system-cost scaling only; no LLM Planner or end-to-end Agent calls",
+  "hypotheses": {
+    "quality": "The 24-skill MRR/Recall ceiling will weaken as the candidate pool grows; measure each method's ranking degradation rather than claiming parity from the local ceiling.",
+    "cost": "BM25, the official 0.6B encoder, and strict top-20 reranking have materially different preparation, indexing, memory, and online-query scaling curves."
+  },
+  "dataset": {
+    "repository": "pipizhao/SkillRouter-Eval-Core",
+    "revision": "20a03920e7f08d76b67af367350d25ef4468198e",
+    "manifest_sha256": "d472ca7ad3455179f984ac20be835575519f2aa28bfc4aaac0ccfc5123101615",
+    "tasks_sha256": "760b9d5b345b929ded9eb14e8ef2fd61422a1fb63b6607facaed4fc3baf2634e",
+    "relevance_sha256": "7a908f387b8f1c795897b0984f417a055774d99a60d7496ee4f5e06d6b5ad0fe",
+    "task_mode": "core",
+    "expected_task_count": 75,
+    "tiers": {
+      "easy": 78361,
+      "hard": 79141
+    }
+  },
+  "scale_slices": {
+    "official_pool_sizes": [1000, 10000, "full"],
+    "local_24_skill_result_role": "context-only reference from published_baselines_v02; not a point on the official-dataset scaling curve",
+    "relevance_ids_in_metadata": 554,
+    "required_ids_present_per_tier": 196,
+    "construction": "For each tier intersect graded relevance IDs with that released pool, include every resulting ID, then fill distractors in ascending SHA-256(seed|tier|skill_id) order. Index order is required IDs followed by distractors, while score ties use the same relevance-blind SHA-256 key.",
+    "seed": "skillrouter-scale-20260903-v01",
+    "nested": true
+  },
+  "methods": {
+    "bm25_brief": {
+      "fields": "name + description[:500]",
+      "query": "raw instruction_text",
+      "k1": 1.5,
+      "b": 0.75,
+      "tokenizer": "retrieval.tokenize.tokenize",
+      "implementation": "compact full inverted index; exact BM25 scores for active slice"
+    },
+    "bm25_all_fields": {
+      "fields": "name + description[:500] + body[:8000]",
+      "query": "raw instruction_text",
+      "k1": 1.5,
+      "b": 0.75,
+      "tokenizer": "retrieval.tokenize.tokenize",
+      "implementation": "compact full inverted index; exact BM25 scores for active slice"
+    },
+    "skillrouter_encoder": {
+      "repository": "https://github.com/zhengyanzhao1997/SkillRouter",
+      "upstream_commit": "2f0c69fe6786bfee6312a1ab5d5f69abdc6bd245",
+      "model": "pipizhao/SkillRouter-Embedding-0.6B",
+      "query_format": "official QUERY_INSTRUCTION + instruction_text[:2000]",
+      "skill_format": "official name | description[:500] | body[:8000]",
+      "fallback_allowed": false
+    },
+    "skillrouter_pipeline": {
+      "encoder_model": "pipizhao/SkillRouter-Embedding-0.6B",
+      "reranker_model": "pipizhao/SkillRouter-Reranker-0.6B",
+      "retrieval_top_k": 20,
+      "prompt_format": "flat-full",
+      "fallback_allowed": false
+    }
+  },
+  "metrics": [
+    "nDCG@1",
+    "nDCG@3",
+    "nDCG@10",
+    "Hit@1",
+    "Precision@3",
+    "MRR@10",
+    "Recall@10",
+    "Recall@20",
+    "Recall@50",
+    "FullCoverage@3",
+    "FullCoverage@5",
+    "FullCoverage@10"
+  ],
+  "cost_measurement": {
+    "separate": ["data_load", "model_prepare", "pool_index", "online_query"],
+    "query_statistics": ["mean", "p50", "p95", "throughput_qps"],
+    "memory": "Python traced current/peak index allocation for BM25; device and peak accelerator memory for official models",
+    "exclude_from_online_query": ["weight_download", "model_load", "tokenizer_load", "pool_index"]
+  },
+  "hardware_gate": {
+    "official_full_pool_requires_cuda": true,
+    "current_environment": {
+      "cpu": "AMD Ryzen 7 7735HS with Radeon Graphics; 8 cores / 16 logical processors",
+      "physical_memory_bytes": 29734412288,
+      "gpu": "AMD Radeon(TM) Graphics",
+      "torch": "2.9.1+cpu",
+      "transformers": "5.16.1",
+      "cuda_available": false
+    },
+    "no_cuda_outcome": "Record official encoder/pipeline as not run due to the frozen hardware gate; do not substitute CPU projections or Hash embeddings as formal results."
+  },
+  "reporting": {
+    "no_sota_parity_claim_from_ceiling": true,
+    "report_failures_and_missing_runs": true,
+    "do_not_mix_local_and_official_dataset_metrics": true,
+    "protocol_changes_require_new_id": true
+  }
+}

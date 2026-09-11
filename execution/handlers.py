@@ -469,6 +469,122 @@ def join_sqlite_tables(
     return _json_output(_read_query(environment, query, parameters))
 
 
+def _accepted_http_response(
+    response: dict[str, Any],
+    accepted_statuses: list[int] | None = None,
+    on_unaccepted: str = "raise",
+) -> Any:
+    statuses = accepted_statuses if accepted_statuses is not None else [200, 201, 202, 204]
+    if not statuses or any(
+        isinstance(status, bool) or not isinstance(status, int)
+        for status in statuses
+    ):
+        raise TypeError("accepted_statuses 必须是非空整数数组")
+    if response["status"] not in statuses:
+        if on_unaccepted == "return_body":
+            return response["body"]
+        if on_unaccepted != "raise":
+            raise ValueError("on_unaccepted 必须是 raise 或 return_body")
+        raise RuntimeError(f"HTTP 状态未被接受: {response['status']}")
+    if on_unaccepted not in {"raise", "return_body"}:
+        raise ValueError("on_unaccepted 必须是 raise 或 return_body")
+    return response["json"] if response["json"] is not None else response["body"]
+
+
+def http_get_json(
+    environment: TaskEnvironment,
+    path: str,
+    accepted_statuses: list[int] | None = None,
+    on_unaccepted: str = "raise",
+) -> str:
+    response = environment.request_http_json("GET", path)
+    value = _accepted_http_response(response, accepted_statuses, on_unaccepted)
+    return _json_output(value) if isinstance(value, (dict, list)) else str(value)
+
+
+def http_get_text(
+    environment: TaskEnvironment,
+    path: str,
+    accepted_statuses: list[int] | None = None,
+) -> str:
+    response = environment.request_http_json("GET", path)
+    return str(_accepted_http_response(response, accepted_statuses))
+
+
+def http_head_status(environment: TaskEnvironment, path: str) -> int:
+    response = environment.request_http_json("HEAD", path)
+    return int(response["status"])
+
+
+def http_issue_token(environment: TaskEnvironment, scope: str) -> str:
+    response = environment.request_http_json(
+        "POST",
+        "/oauth/token",
+        json_body={"scope": scope},
+    )
+    payload = _accepted_http_response(response, [200])
+    if not isinstance(payload, dict) or not isinstance(payload.get("access_token"), str):
+        raise ValueError("token 响应缺少 access_token")
+    return payload["access_token"]
+
+
+def http_get_bearer_json(
+    environment: TaskEnvironment,
+    path: str,
+    token: str,
+) -> str:
+    response = environment.request_http_json(
+        "GET",
+        path,
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    return _json_output(_accepted_http_response(response, [200]))
+
+
+def http_post_json(
+    environment: TaskEnvironment,
+    path: str,
+    payload: dict[str, Any],
+    idempotency_key: str,
+    accepted_statuses: list[int] | None = None,
+    on_unaccepted: str = "raise",
+) -> str:
+    response = environment.request_http_json(
+        "POST",
+        path,
+        json_body=payload,
+        headers={"Idempotency-Key": idempotency_key},
+    )
+    value = _accepted_http_response(response, accepted_statuses, on_unaccepted)
+    if response["status"] in (accepted_statuses or [200, 201, 202, 204]):
+        return _json_output({"status": response["status"], "data": value})
+    return str(value)
+
+
+def http_put_json(
+    environment: TaskEnvironment,
+    path: str,
+    payload: dict[str, Any],
+) -> str:
+    response = environment.request_http_json("PUT", path, json_body=payload)
+    return _json_output(_accepted_http_response(response))
+
+
+def http_patch_json(
+    environment: TaskEnvironment,
+    path: str,
+    patch: dict[str, Any],
+) -> str:
+    response = environment.request_http_json("PATCH", path, json_body=patch)
+    return _json_output(_accepted_http_response(response))
+
+
+def http_delete_resource(environment: TaskEnvironment, path: str) -> int:
+    response = environment.request_http_json("DELETE", path)
+    _accepted_http_response(response, [200, 202, 204])
+    return int(response["status"])
+
+
 def create_default_skill_registry() -> SkillRegistry:
     registry = SkillRegistry()
     for name, handler in {
@@ -509,6 +625,19 @@ def create_default_skill_registry() -> SkillRegistry:
         ("delete_sqlite_rows", delete_sqlite_rows, {"sqlite:write"}),
         ("aggregate_sqlite_query", aggregate_sqlite_query, {"sqlite:read"}),
         ("join_sqlite_tables", join_sqlite_tables, {"sqlite:read"}),
+    ]:
+        registry.register(name, handler, permissions)
+
+    for name, handler, permissions in [
+        ("http_get_json", http_get_json, {"http:read"}),
+        ("http_get_text", http_get_text, {"http:read"}),
+        ("http_head_status", http_head_status, {"http:read"}),
+        ("http_issue_token", http_issue_token, {"http:auth", "http:write"}),
+        ("http_get_bearer_json", http_get_bearer_json, {"http:auth", "http:read"}),
+        ("http_post_json", http_post_json, {"http:write"}),
+        ("http_put_json", http_put_json, {"http:write"}),
+        ("http_patch_json", http_patch_json, {"http:write"}),
+        ("http_delete_resource", http_delete_resource, {"http:write"}),
     ]:
         registry.register(name, handler, permissions)
     return registry

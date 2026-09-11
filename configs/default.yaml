@@ -12,6 +12,11 @@ retrieval:
   coarse_k: 20
   coarse_weight: 0.4
   embedding_model: all-MiniLM-L6-v2
+  model_checkpoint: null       # method=model 时可指向训练后的 .pt
+  model_dim: 384               # 无 checkpoint 时的双塔维度
+  model_vocab_size: 10000
+  model_text_level: detailed
+  model_seed: 0
 
 organization:
   strategy: hierarchical     # flat | hierarchical | graph

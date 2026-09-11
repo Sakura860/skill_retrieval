@@ -1,0 +1,220 @@
+{
+  "fixture-thttpc01": {
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/shipments/SHP-88",
+        "response_json": {
+          "carrier": "北辰",
+          "id": "SHP-88",
+          "state": "in_transit"
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpc02": {
+    "routes": [
+      {
+        "method": "HEAD",
+        "path": "/ready/search",
+        "response_json": {
+          "ready": true
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpc03": {
+    "routes": [
+      {
+        "expected_json": {
+          "scope": "invoices:read"
+        },
+        "method": "POST",
+        "path": "/oauth/token",
+        "response_json": {
+          "access_token": "tok-confirm-invoice"
+        },
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/invoices/INV-9",
+        "required_headers": {
+          "authorization": "Bearer tok-confirm-invoice"
+        },
+        "response_json": {
+          "amount": 880,
+          "id": "INV-9",
+          "paid": false
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpc04": {
+    "routes": [
+      {
+        "expected_json": {
+          "source": "ledger"
+        },
+        "method": "POST",
+        "path": "/imports",
+        "required_headers": {
+          "idempotency-key": "import-confirm-9"
+        },
+        "response_json": {
+          "error": "accepted_later",
+          "request_id": "q-confirm"
+        },
+        "status": 202
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpc05": {
+    "routes": [
+      {
+        "expected_json": {
+          "timezone": "Asia/Shanghai"
+        },
+        "method": "PATCH",
+        "path": "/settings/team-a",
+        "response_json": {
+          "team": "team-a",
+          "timezone": "Asia/Shanghai",
+          "unchanged": 4
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpc06": {
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/status/dependency",
+        "response_json": {
+          "error": "maintenance",
+          "window": "02:00-02:15"
+        },
+        "status": 503
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd01": {
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/catalog/SKU-7",
+        "response_json": {
+          "name": "蓝牙键盘",
+          "sku": "SKU-7",
+          "stock": 12
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd02": {
+    "routes": [
+      {
+        "method": "HEAD",
+        "path": "/health/worker",
+        "response_json": {
+          "ok": true
+        },
+        "status": 204
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd03": {
+    "routes": [
+      {
+        "expected_json": {
+          "scope": "reports:read"
+        },
+        "method": "POST",
+        "path": "/oauth/token",
+        "response_json": {
+          "access_token": "tok-dev-report"
+        },
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/reports/daily",
+        "required_headers": {
+          "authorization": "Bearer tok-dev-report"
+        },
+        "response_json": {
+          "date": "2026-09-03",
+          "total": 41
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd04": {
+    "routes": [
+      {
+        "expected_json": {
+          "kind": "export"
+        },
+        "method": "POST",
+        "path": "/jobs",
+        "required_headers": {
+          "idempotency-key": "job-dev-41"
+        },
+        "response_json": {
+          "error": "queued",
+          "request_id": "q-dev"
+        },
+        "status": 202
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd05": {
+    "routes": [
+      {
+        "expected_json": {
+          "level": 3,
+          "name": "林青"
+        },
+        "method": "PUT",
+        "path": "/profiles/u7",
+        "response_json": {
+          "id": "u7",
+          "level": 3,
+          "name": "林青"
+        },
+        "status": 200
+      }
+    ],
+    "type": "local_http_api"
+  },
+  "fixture-thttpd06": {
+    "routes": [
+      {
+        "method": "GET",
+        "path": "/limits/current",
+        "response_json": {
+          "error": "rate_limited",
+          "retry_after": 30
+        },
+        "status": 429
+      }
+    ],
+    "type": "local_http_api"
+  }
+}

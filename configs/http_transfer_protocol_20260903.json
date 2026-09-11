@@ -1,0 +1,102 @@
+{
+  "protocol_id": "http-disclosure-transfer-20260903-v01",
+  "status": "frozen",
+  "frozen_at": "2026-09-03T11:07:00+08:00",
+  "research_question": "Does the unchanged signal-disclosure-dev-v01 policy transfer from its five source families to an unseen local HTTP/API family?",
+  "dataset": {
+    "name": "benchmark_http_v01",
+    "skills_sha256": "129950fa49e9abcc6900fdcd689bfa4a168b14cd8615a1da66e6e0ddb5821c12",
+    "tasks_sha256": "e2bba79ffb7a20c69d247aea9b74bbd1ca5378ff56af62ff3ed62215c0e92a6f",
+    "environment_fixtures_sha256": "5cfcfa8aa045c00392b2636ec6716bc7da097fc9d1395dcd0b0ccad9374dca3d",
+    "development_task_ids": [
+      "thttpd01",
+      "thttpd02",
+      "thttpd03",
+      "thttpd04",
+      "thttpd05",
+      "thttpd06"
+    ],
+    "confirmation_task_ids": [
+      "thttpc01",
+      "thttpc02",
+      "thttpc03",
+      "thttpc04",
+      "thttpc05",
+      "thttpc06"
+    ],
+    "template_isolation": "Entity names, paths, values, and template IDs are disjoint across development and confirmation."
+  },
+  "frozen_policy": {
+    "path": "configs/disclosure_policy_v01.json",
+    "policy_id": "signal-disclosure-dev-v01",
+    "sha256": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968",
+    "may_change_from_http_results": false
+  },
+  "controlled": {
+    "model": "deepseek-v4-pro",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "candidate_source": "retriever_top_k",
+    "retriever": "BM25Retriever(text_level=brief)",
+    "retrieval_top_k": 9,
+    "organizer": "HierarchicalOrganizer(detail_top_k=0)",
+    "context_budget_tokens": 2600,
+    "max_argument_repairs": 1,
+    "reflection": false,
+    "methods": ["one_stage", "always_full", "adaptive_signals"],
+    "disclosure_policy_changes": false
+  },
+  "coverage_requirements": {
+    "per_split": {
+      "single_skill_named_inputs": 3,
+      "multi_skill_dataflow": 1,
+      "non_schema_behavior": 2
+    },
+    "behavior_verification": [
+      "accepted status semantics",
+      "raw error body",
+      "exact request count/no retry"
+    ]
+  },
+  "decision_rules": {
+    "classification_order": ["cross_domain_transfer", "partial_transfer", "domain_dependent"],
+    "cross_domain_transfer": {
+      "minimum_adaptive_success_count": 5,
+      "maximum_success_count_drop_vs_always_full": 1,
+      "maximum_api_errors": 0,
+      "required_observed_levels": ["brief", "schema", "full"]
+    },
+    "partial_transfer": {
+      "minimum_adaptive_success_count": 3,
+      "maximum_api_errors": 0
+    },
+    "domain_dependent": {
+      "maximum_adaptive_success_count": 2
+    },
+    "cost_is_descriptive_not_a_classification_gate": true
+  },
+  "confirmation_policy": {
+    "maximum_runs": 1,
+    "persistent_registry": "results/http_transfer_confirmation_registry.json",
+    "interrupted_run_consumes_slot": true,
+    "resume_requires_same_protocol_hash_and_output": true,
+    "confirmation_may_not_change_policy_or_thresholds": true
+  },
+  "development_evidence": {
+    "result_path": "results/http_transfer_dev_v01_20260903.json",
+    "result_sha256": "28ba6ce5d159ebac25235c76c4f667ff11e4fe65f194fd3808e9de30990bb358",
+    "one_stage_success_count": 4,
+    "always_full_success_count": 5,
+    "adaptive_signals_success_count": 5,
+    "adaptive_disclosure_counts": {"brief": 3, "schema": 1, "full": 2},
+    "adaptive_total_tokens": 4737,
+    "always_full_total_tokens": 5212,
+    "shared_failure": "thttpd06 selected HEAD instead of a body-returning GET; classified as selection-layer, not disclosure-layer.",
+    "policy_or_marker_changes_after_dev": false
+  },
+  "validity_boundary": [
+    "Six confirmation tasks are an independent engineering check, not a population-level generalization estimate.",
+    "The service is real loopback HTTP but deterministic; public-network authentication, rate limiting, and distributed failures remain out of scope.",
+    "Failure is reported by retrieval, selection, argument contract, behavior semantics, execution, or verification layer without switching task family."
+  ]
+}

@@ -1,0 +1,5265 @@
+{
+  "experiment_id": "20260903T030750Z",
+  "created_at": "2026-09-03T03:07:50.235728+00:00",
+  "protocol_path": "D:\\skill\\skill-agent\\configs\\http_transfer_protocol_20260903.json",
+  "protocol_sha256": "c4983f03c8ba3fd6f5121421dcf33610702e5cc0f86a03ffb93d26ca6b95f985",
+  "protocol_snapshot": {
+    "protocol_id": "http-disclosure-transfer-20260903-v01",
+    "status": "frozen",
+    "frozen_at": "2026-09-03T11:07:00+08:00",
+    "research_question": "Does the unchanged signal-disclosure-dev-v01 policy transfer from its five source families to an unseen local HTTP/API family?",
+    "dataset": {
+      "name": "benchmark_http_v01",
+      "skills_sha256": "129950fa49e9abcc6900fdcd689bfa4a168b14cd8615a1da66e6e0ddb5821c12",
+      "tasks_sha256": "e2bba79ffb7a20c69d247aea9b74bbd1ca5378ff56af62ff3ed62215c0e92a6f",
+      "environment_fixtures_sha256": "5cfcfa8aa045c00392b2636ec6716bc7da097fc9d1395dcd0b0ccad9374dca3d",
+      "development_task_ids": [
+        "thttpd01",
+        "thttpd02",
+        "thttpd03",
+        "thttpd04",
+        "thttpd05",
+        "thttpd06"
+      ],
+      "confirmation_task_ids": [
+        "thttpc01",
+        "thttpc02",
+        "thttpc03",
+        "thttpc04",
+        "thttpc05",
+        "thttpc06"
+      ],
+      "template_isolation": "Entity names, paths, values, and template IDs are disjoint across development and confirmation."
+    },
+    "frozen_policy": {
+      "path": "configs/disclosure_policy_v01.json",
+      "policy_id": "signal-disclosure-dev-v01",
+      "sha256": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968",
+      "may_change_from_http_results": false
+    },
+    "controlled": {
+      "model": "deepseek-v4-pro",
+      "temperature": 0.0,
+      "thinking": "disabled",
+      "candidate_source": "retriever_top_k",
+      "retriever": "BM25Retriever(text_level=brief)",
+      "retrieval_top_k": 9,
+      "organizer": "HierarchicalOrganizer(detail_top_k=0)",
+      "context_budget_tokens": 2600,
+      "max_argument_repairs": 1,
+      "reflection": false,
+      "methods": [
+        "one_stage",
+        "always_full",
+        "adaptive_signals"
+      ],
+      "disclosure_policy_changes": false
+    },
+    "coverage_requirements": {
+      "per_split": {
+        "single_skill_named_inputs": 3,
+        "multi_skill_dataflow": 1,
+        "non_schema_behavior": 2
+      },
+      "behavior_verification": [
+        "accepted status semantics",
+        "raw error body",
+        "exact request count/no retry"
+      ]
+    },
+    "decision_rules": {
+      "classification_order": [
+        "cross_domain_transfer",
+        "partial_transfer",
+        "domain_dependent"
+      ],
+      "cross_domain_transfer": {
+        "minimum_adaptive_success_count": 5,
+        "maximum_success_count_drop_vs_always_full": 1,
+        "maximum_api_errors": 0,
+        "required_observed_levels": [
+          "brief",
+          "schema",
+          "full"
+        ]
+      },
+      "partial_transfer": {
+        "minimum_adaptive_success_count": 3,
+        "maximum_api_errors": 0
+      },
+      "domain_dependent": {
+        "maximum_adaptive_success_count": 2
+      },
+      "cost_is_descriptive_not_a_classification_gate": true
+    },
+    "confirmation_policy": {
+      "maximum_runs": 1,
+      "persistent_registry": "results/http_transfer_confirmation_registry.json",
+      "interrupted_run_consumes_slot": true,
+      "resume_requires_same_protocol_hash_and_output": true,
+      "confirmation_may_not_change_policy_or_thresholds": true
+    },
+    "development_evidence": {
+      "result_path": "results/http_transfer_dev_v01_20260903.json",
+      "result_sha256": "28ba6ce5d159ebac25235c76c4f667ff11e4fe65f194fd3808e9de30990bb358",
+      "one_stage_success_count": 4,
+      "always_full_success_count": 5,
+      "adaptive_signals_success_count": 5,
+      "adaptive_disclosure_counts": {
+        "brief": 3,
+        "schema": 1,
+        "full": 2
+      },
+      "adaptive_total_tokens": 4737,
+      "always_full_total_tokens": 5212,
+      "shared_failure": "thttpd06 selected HEAD instead of a body-returning GET; classified as selection-layer, not disclosure-layer.",
+      "policy_or_marker_changes_after_dev": false
+    },
+    "validity_boundary": [
+      "Six confirmation tasks are an independent engineering check, not a population-level generalization estimate.",
+      "The service is real loopback HTTP but deterministic; public-network authentication, rate limiting, and distributed failures remain out of scope.",
+      "Failure is reported by retrieval, selection, argument contract, behavior semantics, execution, or verification layer without switching task family."
+    ]
+  },
+  "source_manifest": {
+    "core/llm.py": "e6e2cac37ec05bb41d818060a8fb20b62df88398f5b3fc4631385b8b15c061e1",
+    "core/schemas.py": "702c7e364e08d8475a263de8e2a022bbdca2e9f4ab9c8e430d08cd426e9c38cf",
+    "agent/agent.py": "d75fa93ac08ad0a504791ea3bd7b8d9872020df19d58a79a848745671a67deaf",
+    "agent/planner.py": "5d68b6bf87e29054a58a48ea1bf1eca776a8554e98a202c95b78dd1b9f1b17ae",
+    "agent/disclosure_policy.py": "8e5612826b2441fd85da37e23b6be2b0c442e12135cf216f09869774ca832e3b",
+    "agent/schema_validation.py": "6ea08b04a3af0b5bd3e5620833102b59181f919c187473c2f89acbc84782bb0e",
+    "evaluation/run_benchmark.py": "bc1ee4b4f97e95c622f99dea77b3bbf09b88e5645ad8fa8805d790740c4b2c5d",
+    "evaluation/task_metrics.py": "fedc1a34d91921ba781d21043b7bb20edd631c0cf6c2deea4c3b7584f71e9e5b",
+    "evaluation/verifiers.py": "5a142e7ae156140f502e0e72e4deff06ae564024f28f8934b0509faffed3d522",
+    "execution/environment.py": "55fdd181dec53cc778bea0fba3394dfb58c5d0edb1af1387ef7454a0aba0a48f",
+    "execution/http_fixture.py": "00a7abbb71e0ec0a3c0c036514df06649faf1be9b6c40b1dc15bd871e1b6ce14",
+    "execution/handlers.py": "e003e925e700fa41c25ba6264776ab81407e7b03cbdc2b519bd4ad7eea4af916",
+    "execution/registry.py": "c90d7ee84e84f98de990e0ae90ce4b1e9354dc29d5abb98803a5599a7bf28b1e",
+    "organization/hierarchical.py": "7f32cb6ce82a8d5d51423680fad423bebf35a836e39e52ac8316374cc070cddf",
+    "retrieval/bm25.py": "0fed46d5e76e769195f51692e43a42c4d3aee1c128e3c9691d2b16a2a1f19cd5",
+    "experiments/run_http_transfer.py": "5c7119568bf005d8b171a09b6ab7a74a7338aca559993ad4a4f1023bf33f5210",
+    "configs/disclosure_policy_v01.json": "d738748c7409dbf9944115ada5d5815d718468a584b1ade493fe68ccac826968",
+    "data/benchmark_http_v01/build_dataset.py": "b83941c18be3a6981b450bf6cc1a7f7f7d96dfd1f84f26efb7c5521ccf41cf1b"
+  },
+  "split": "confirmation",
+  "task_ids": [
+    "thttpc01",
+    "thttpc02",
+    "thttpc03",
+    "thttpc04",
+    "thttpc05",
+    "thttpc06"
+  ],
+  "methods": {
+    "one_stage": {
+      "planner_mode": "one_stage",
+      "planner_disclosure_level": "full"
+    },
+    "always_full": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "full"
+    },
+    "adaptive_signals": {
+      "planner_mode": "two_stage",
+      "planner_disclosure_level": "adaptive_signals"
+    }
+  },
+  "runs": {
+    "one_stage": {
+      "per_task": [
+        {
+          "task_id": "thttpc01",
+          "instruction": "获取任务输入 path 对应的运单 API JSON，并完整返回。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            8.074413798453154,
+            5.756387622665296,
+            5.345940969992859,
+            2.9364536120028015,
+            2.2709089971820973,
+            2.010888964560666,
+            1.2226832999547161,
+            1.0732027530391572,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.2,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.38685280723454163,
+            "recall@9": 1.0,
+            "ndcg@9": 0.38685280723454163
+          },
+          "selected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp07",
+            "shttp09",
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 351,
+            "completion_tokens": 53,
+            "total_tokens": 404
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 15.267499999936263,
+          "llm_time_ms": 1404.273699999976,
+          "end_to_end_time_ms": 1421.4861999998902,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1404.273699999976,
+              "prompt_tokens": 351,
+              "completion_tokens": 53,
+              "total_tokens": 404,
+              "message_count": 1,
+              "prompt_chars": 777,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_get_json",
+              "plan": [
+                {
+                  "skill_name": "http_get_json",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "读取指定运单路径的 JSON 资源"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+              "index": 1,
+              "skill_id": "shttp01",
+              "skill_name": "http_get_json",
+              "arguments": {
+                "path": "/shipments/SHP-88"
+              },
+              "success": true,
+              "duration_ms": 15.267499999936263
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc02",
+          "instruction": "对任务输入 path 做 HEAD 探测，只返回 HTTP 状态码。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            15.361461488336655,
+            11.733918017000377,
+            3.878338761199535,
+            1.8249222967842706,
+            0.056980648599241714,
+            0.05511620402782641,
+            0.05511620402782641,
+            0.051730867515027215,
+            0.04544975452061435
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_sequence": [
+            "shttp03"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": 200,
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": "200",
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp06",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 349,
+            "completion_tokens": 60,
+            "total_tokens": 409
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.0223000001351465,
+          "llm_time_ms": 1904.9669000005451,
+          "end_to_end_time_ms": 1908.4299999994982,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1904.9669000005451,
+              "prompt_tokens": 349,
+              "completion_tokens": 60,
+              "total_tokens": 409,
+              "message_count": 1,
+              "prompt_chars": 774,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "200",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_head_status",
+              "plan": [
+                {
+                  "skill_name": "http_head_status",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "对任务输入的路径执行 HEAD 探测，直接返回 HTTP 状态码。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "200",
+              "index": 1,
+              "skill_id": "shttp03",
+              "skill_name": "http_head_status",
+              "arguments": {
+                "path": "/ready/search"
+              },
+              "success": true,
+              "duration_ms": 2.0223000001351465
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "HEAD /ready/search": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc03",
+          "instruction": "使用输入 scope 先签发令牌，然后将该输出作为 token 读取输入 path 的受保护账单 JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieved_scores": [
+            16.240161108820434,
+            14.676301225499826,
+            4.368435392799292,
+            4.282768578543244,
+            3.1763338591467103,
+            1.9133039468422537,
+            0.8985712230597263,
+            0.8592443182547349,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 0.5,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_sequence": [
+            "shttp04",
+            "shttp05"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 2
+          },
+          "verifier_expected": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "response_status": 200
+                },
+                {
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /invoices/INV-9": 1,
+                "POST /oauth/token": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp09",
+            "shttp01",
+            "shttp02",
+            "shttp03"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 370,
+            "completion_tokens": 111,
+            "total_tokens": 481
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 3.266599999733444,
+          "llm_time_ms": 3577.99310000064,
+          "end_to_end_time_ms": 3583.002399999714,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 3577.99310000064,
+              "prompt_tokens": 370,
+              "completion_tokens": 111,
+              "total_tokens": 481,
+              "message_count": 1,
+              "prompt_chars": 822,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_issue_token -> http_get_bearer_json",
+              "plan": [
+                {
+                  "skill_name": "http_issue_token",
+                  "arguments": {
+                    "scope": "$input.scope"
+                  },
+                  "reason": "使用任务输入的 scope 签发访问令牌"
+                },
+                {
+                  "skill_name": "http_get_bearer_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "token": "$last_output"
+                  },
+                  "reason": "使用上一步签发的令牌读取受保护账单 JSON"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "tok-confirm-invoice",
+              "index": 1,
+              "skill_id": "shttp04",
+              "skill_name": "http_issue_token",
+              "arguments": {
+                "scope": "invoices:read"
+              },
+              "success": true,
+              "duration_ms": 2.031699999861303
+            },
+            {
+              "step": "action",
+              "content": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+              "index": 2,
+              "skill_id": "shttp05",
+              "skill_name": "http_get_bearer_json",
+              "arguments": {
+                "path": "/invoices/INV-9",
+                "token": "tok-confirm-invoice"
+              },
+              "success": true,
+              "duration_ms": 1.234899999872141
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /oauth/token": 0,
+                "GET /invoices/INV-9": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc04",
+          "instruction": "向 path 提交 payload。仅当返回 201 时认定提交成功；否则原样返回响应正文，绝不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.154052368889428,
+            7.15619042608899,
+            4.455237825262915,
+            4.194361706819612,
+            2.2107213796823437,
+            0.6423940303009293,
+            0.5599459232429405,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_sequence": [
+            "shttp06"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {},
+          "verifier_expected": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+          "verifier_actual": "{\"data\": {\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}, \"status\": 202}",
+          "failure_reason": "output_mismatch",
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp08",
+            "shttp02",
+            "shttp03",
+            "shttp01",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 385,
+            "completion_tokens": 87,
+            "total_tokens": 472
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.0187000000078115,
+          "llm_time_ms": 2375.890499999514,
+          "end_to_end_time_ms": 2379.635199999939,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2375.890499999514,
+              "prompt_tokens": 385,
+              "completion_tokens": 87,
+              "total_tokens": 472,
+              "message_count": 1,
+              "prompt_chars": 860,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"data\": {\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}, \"status\": 202}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_post_json",
+              "plan": [
+                {
+                  "skill_name": "http_post_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "payload": "$input.payload",
+                    "idempotency_key": "$input.idempotency_key"
+                  },
+                  "reason": "向指定路径提交 JSON 负载，并携带幂等键，以创建导入资源。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"data\": {\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}, \"status\": 202}",
+              "index": 1,
+              "skill_id": "shttp06",
+              "skill_name": "http_post_json",
+              "arguments": {
+                "path": "/imports",
+                "payload": {
+                  "source": "ledger"
+                },
+                "idempotency_key": "import-confirm-9"
+              },
+              "success": true,
+              "duration_ms": 2.0187000000078115
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /imports": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/imports",
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc05",
+          "instruction": "把任务输入 patch 作为局部更新提交到 path，并返回 API JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieved_scores": [
+            17.142922793419118,
+            7.188742029706228,
+            7.154508191605167,
+            6.6443716039995175,
+            2.7437738409216994,
+            1.6809923916710343,
+            1.1428432120209249,
+            0.8446635099077185,
+            0.16390534690581282
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp08"
+          ],
+          "expected_skill_ids": [
+            "shttp08"
+          ],
+          "expected_skill_sequence": [
+            "shttp08"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": {
+              "team": "team-a",
+              "timezone": "Asia/Shanghai",
+              "unchanged": 4
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "team": "team-a",
+              "timezone": "Asia/Shanghai",
+              "unchanged": 4
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 364,
+            "completion_tokens": 72,
+            "total_tokens": 436
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 18.297700000402983,
+          "llm_time_ms": 1930.1271000003908,
+          "end_to_end_time_ms": 1949.8710000007122,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1930.1271000003908,
+              "prompt_tokens": 364,
+              "completion_tokens": 72,
+              "total_tokens": 436,
+              "message_count": 1,
+              "prompt_chars": 823,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"team\": \"team-a\", \"timezone\": \"Asia/Shanghai\", \"unchanged\": 4}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_patch_json",
+              "plan": [
+                {
+                  "skill_name": "http_patch_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "patch": "$input.patch"
+                  },
+                  "reason": "使用 PATCH 对指定路径进行 JSON 局部更新，提交任务提供的 patch。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"team\": \"team-a\", \"timezone\": \"Asia/Shanghai\", \"unchanged\": 4}",
+              "index": 1,
+              "skill_id": "shttp08",
+              "skill_name": "http_patch_json",
+              "arguments": {
+                "path": "/settings/team-a",
+                "patch": {
+                  "timezone": "Asia/Shanghai"
+                }
+              },
+              "success": true,
+              "duration_ms": 18.297700000402983
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc06",
+          "instruction": "访问任务输入 path 恰好一次；如果状态不是 200，保持错误正文原样返回，不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.388723413639225,
+            7.79058380403995,
+            6.553253394047303,
+            5.042977175013103,
+            2.1074709374802443,
+            1.7768799858438185,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@9": 1.0,
+            "ndcg@9": 0.3333333333333333
+          },
+          "selected_skill_ids": [
+            "shttp02"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 0.0,
+          "sequence_correct": false,
+          "execution_success": false,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {},
+          "verifier_expected": "{\"error\": \"maintenance\", \"window\": \"02:00-02:15\"}",
+          "verifier_actual": "RuntimeError: HTTP 状态未被接受: 503",
+          "failure_reason": "execution_failed",
+          "skill_calls": 1,
+          "redundant_calls": 1,
+          "skill_context_tokens": 216,
+          "context_budget_tokens": 2600,
+          "planner_mode": "one_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 1,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [],
+          "selection_context_tokens": 216,
+          "planning_context_tokens": 0,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp02",
+            "shttp01",
+            "shttp09",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 359,
+            "completion_tokens": 75,
+            "total_tokens": 434
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.886200000626559,
+          "llm_time_ms": 1733.1287999995766,
+          "end_to_end_time_ms": 1736.365100000512,
+          "llm_calls": [
+            {
+              "phase": "one_stage_joint_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1733.1287999995766,
+              "prompt_tokens": 359,
+              "completion_tokens": 75,
+              "total_tokens": 434,
+              "message_count": 1,
+              "prompt_chars": 790,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "RuntimeError: HTTP 状态未被接受: 503",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_get_text",
+              "plan": [
+                {
+                  "skill_name": "http_get_text",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "访问任务输入 path 恰好一次，读取纯文本正文。如果状态不是 200，保持错误正文原样返回，不自动重试。"
+                }
+              ],
+              "planner_mode": "one_stage",
+              "selected_for_schema": [],
+              "selection_evidence": [],
+              "requested_disclosure_levels": [],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "RuntimeError: HTTP 状态未被接受: 503",
+              "index": 1,
+              "skill_id": "shttp02",
+              "skill_name": "http_get_text",
+              "arguments": {
+                "path": "/status/dependency"
+              },
+              "success": false,
+              "duration_ms": 1.886200000626559
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /status/dependency": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/status/dependency",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 503
+                }
+              ],
+              "route_call_counts": {
+                "GET /status/dependency": 1
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 6,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.7238095238095239,
+          "ndcg@1": 0.6666666666666666,
+          "ndcg@3": 0.6666666666666666,
+          "ndcg@5": 0.7311421345390903,
+          "ndcg@9": 0.7866976900946457,
+          "recall@1": 0.5833333333333334,
+          "recall@3": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "recall@9": 1.0
+        },
+        "agent": {
+          "skill_selection_f1": 0.8333333333333334,
+          "sequence_accuracy": 0.8333333333333334,
+          "task_success_rate": 0.6666666666666666
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 216.0,
+          "total_tokens": 2636,
+          "avg_total_tokens_per_task": 439.3333333333333,
+          "avg_skill_calls": 1.1666666666666667,
+          "avg_planner_calls": 1.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 2154.3966833334403,
+          "llm_time_p50_ms": 1904.9669000005451,
+          "llm_time_p95_ms": 3577.99310000064,
+          "avg_end_to_end_time_ms": 2163.1316500000444,
+          "end_to_end_time_p50_ms": 1908.4299999994982,
+          "end_to_end_time_p95_ms": 3583.002399999714
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 6
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    },
+    "always_full": {
+      "per_task": [
+        {
+          "task_id": "thttpc01",
+          "instruction": "获取任务输入 path 对应的运单 API JSON，并完整返回。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            8.074413798453154,
+            5.756387622665296,
+            5.345940969992859,
+            2.9364536120028015,
+            2.2709089971820973,
+            2.010888964560666,
+            1.2226832999547161,
+            1.0732027530391572,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.2,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.38685280723454163,
+            "recall@9": 1.0,
+            "ndcg@9": 0.38685280723454163
+          },
+          "selected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 561,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "获取运单 API JSON",
+              "skill_id": "shttp01",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 334,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp07",
+            "shttp09",
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [
+            "shttp01"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 791,
+            "completion_tokens": 69,
+            "total_tokens": 860
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.1525000001929584,
+          "llm_time_ms": 3136.6173999995226,
+          "end_to_end_time_ms": 3140.8648000005996,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1348.3587000000625,
+              "prompt_tokens": 379,
+              "completion_tokens": 27,
+              "total_tokens": 406,
+              "message_count": 1,
+              "prompt_chars": 805,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1788.25869999946,
+              "prompt_tokens": 412,
+              "completion_tokens": 42,
+              "total_tokens": 454,
+              "message_count": 1,
+              "prompt_chars": 984,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_get_json",
+              "plan": [
+                {
+                  "skill_name": "http_get_json",
+                  "arguments": {
+                    "path": "/shipments/SHP-88"
+                  },
+                  "reason": "获取指定运单的API JSON数据"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp01"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "获取运单 API JSON",
+                  "skill_id": "shttp01",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+              "index": 1,
+              "skill_id": "shttp01",
+              "skill_name": "http_get_json",
+              "arguments": {
+                "path": "/shipments/SHP-88"
+              },
+              "success": true,
+              "duration_ms": 2.1525000001929584
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc02",
+          "instruction": "对任务输入 path 做 HEAD 探测，只返回 HTTP 状态码。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            15.361461488336655,
+            11.733918017000377,
+            3.878338761199535,
+            1.8249222967842706,
+            0.056980648599241714,
+            0.05511620402782641,
+            0.05511620402782641,
+            0.051730867515027215,
+            0.04544975452061435
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_sequence": [
+            "shttp03"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": 200,
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": "200",
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 373,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "对路径 /ready/search 做 HEAD 探测并返回 HTTP 状态码",
+              "skill_id": "shttp03",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 146,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp06",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [
+            "shttp03"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 660,
+            "completion_tokens": 82,
+            "total_tokens": 742
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.7989999996643746,
+          "llm_time_ms": 3171.8368000001647,
+          "end_to_end_time_ms": 3175.3562000003512,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1512.3813000000155,
+              "prompt_tokens": 377,
+              "completion_tokens": 38,
+              "total_tokens": 415,
+              "message_count": 1,
+              "prompt_chars": 802,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1659.4555000001492,
+              "prompt_tokens": 283,
+              "completion_tokens": 44,
+              "total_tokens": 327,
+              "message_count": 1,
+              "prompt_chars": 625,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "200",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_head_status",
+              "plan": [
+                {
+                  "skill_name": "http_head_status",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "对任务输入中的路径执行 HEAD 探测，直接返回状态码"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp03"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "对路径 /ready/search 做 HEAD 探测并返回 HTTP 状态码",
+                  "skill_id": "shttp03",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "200",
+              "index": 1,
+              "skill_id": "shttp03",
+              "skill_name": "http_head_status",
+              "arguments": {
+                "path": "/ready/search"
+              },
+              "success": true,
+              "duration_ms": 1.7989999996643746
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "HEAD /ready/search": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc03",
+          "instruction": "使用输入 scope 先签发令牌，然后将该输出作为 token 读取输入 path 的受保护账单 JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieved_scores": [
+            16.240161108820434,
+            14.676301225499826,
+            4.368435392799292,
+            4.282768578543244,
+            3.1763338591467103,
+            1.9133039468422537,
+            0.8985712230597263,
+            0.8592443182547349,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 0.5,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_sequence": [
+            "shttp04",
+            "shttp05"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 2
+          },
+          "verifier_expected": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "response_status": 200
+                },
+                {
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /invoices/INV-9": 1,
+                "POST /oauth/token": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 581,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief",
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "使用输入 scope 签发令牌",
+              "skill_id": "shttp04",
+              "information_need": "brief",
+              "need_reason": ""
+            },
+            {
+              "requirement": "将签发的令牌作为 Bearer token 读取输入 path 的受保护账单 JSON",
+              "skill_id": "shttp05",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 354,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp09",
+            "shttp01",
+            "shttp02",
+            "shttp03"
+          ],
+          "detailed_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 834,
+            "completion_tokens": 186,
+            "total_tokens": 1020
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 3.417700000682089,
+          "llm_time_ms": 3791.150000000016,
+          "end_to_end_time_ms": 3796.234700000241,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1795.1388999999836,
+              "prompt_tokens": 398,
+              "completion_tokens": 76,
+              "total_tokens": 474,
+              "message_count": 1,
+              "prompt_chars": 850,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1996.0111000000325,
+              "prompt_tokens": 436,
+              "completion_tokens": 110,
+              "total_tokens": 546,
+              "message_count": 1,
+              "prompt_chars": 1109,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_issue_token -> http_get_bearer_json",
+              "plan": [
+                {
+                  "skill_name": "http_issue_token",
+                  "arguments": {
+                    "scope": "$input.scope"
+                  },
+                  "reason": "使用输入 scope 签发访问令牌"
+                },
+                {
+                  "skill_name": "http_get_bearer_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "token": "$last_output"
+                  },
+                  "reason": "使用上一步签发的令牌读取受保护账单 JSON"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp04",
+                "shttp05"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "使用输入 scope 签发令牌",
+                  "skill_id": "shttp04",
+                  "information_need": "brief",
+                  "need_reason": ""
+                },
+                {
+                  "requirement": "将签发的令牌作为 Bearer token 读取输入 path 的受保护账单 JSON",
+                  "skill_id": "shttp05",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief",
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "tok-confirm-invoice",
+              "index": 1,
+              "skill_id": "shttp04",
+              "skill_name": "http_issue_token",
+              "arguments": {
+                "scope": "invoices:read"
+              },
+              "success": true,
+              "duration_ms": 1.9676000001709326
+            },
+            {
+              "step": "action",
+              "content": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+              "index": 2,
+              "skill_id": "shttp05",
+              "skill_name": "http_get_bearer_json",
+              "arguments": {
+                "path": "/invoices/INV-9",
+                "token": "tok-confirm-invoice"
+              },
+              "success": true,
+              "duration_ms": 1.4501000005111564
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /oauth/token": 0,
+                "GET /invoices/INV-9": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc04",
+          "instruction": "向 path 提交 payload。仅当返回 201 时认定提交成功；否则原样返回响应正文，绝不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.154052368889428,
+            7.15619042608899,
+            4.455237825262915,
+            4.194361706819612,
+            2.2107213796823437,
+            0.6423940303009293,
+            0.5599459232429405,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_sequence": [
+            "shttp06"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+            "http": {
+              "requests": [
+                {
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "method": "POST",
+                  "path": "/imports",
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/imports",
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 616,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "向 path 提交 payload，并检查返回状态码是否为 201",
+              "skill_id": "shttp06",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 389,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp08",
+            "shttp02",
+            "shttp03",
+            "shttp01",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp06"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 906,
+            "completion_tokens": 134,
+            "total_tokens": 1040
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 2.257099999951606,
+          "llm_time_ms": 3410.7053000007,
+          "end_to_end_time_ms": 3414.9889999998777,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1475.4197000002023,
+              "prompt_tokens": 413,
+              "completion_tokens": 45,
+              "total_tokens": 458,
+              "message_count": 1,
+              "prompt_chars": 888,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1935.2856000004977,
+              "prompt_tokens": 493,
+              "completion_tokens": 89,
+              "total_tokens": 582,
+              "message_count": 1,
+              "prompt_chars": 1182,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_post_json",
+              "plan": [
+                {
+                  "skill_name": "http_post_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "payload": "$input.payload",
+                    "idempotency_key": "$input.idempotency_key",
+                    "accepted_statuses": [
+                      201
+                    ],
+                    "on_unaccepted": "return_body"
+                  },
+                  "reason": "向指定路径提交payload，仅接受201为成功，否则原样返回响应正文"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp06"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "向 path 提交 payload，并检查返回状态码是否为 201",
+                  "skill_id": "shttp06",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+              "index": 1,
+              "skill_id": "shttp06",
+              "skill_name": "http_post_json",
+              "arguments": {
+                "path": "/imports",
+                "payload": {
+                  "source": "ledger"
+                },
+                "idempotency_key": "import-confirm-9",
+                "accepted_statuses": [
+                  201
+                ],
+                "on_unaccepted": "return_body"
+              },
+              "success": true,
+              "duration_ms": 2.257099999951606
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /imports": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/imports",
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc05",
+          "instruction": "把任务输入 patch 作为局部更新提交到 path，并返回 API JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieved_scores": [
+            17.142922793419118,
+            7.188742029706228,
+            7.154508191605167,
+            6.6443716039995175,
+            2.7437738409216994,
+            1.6809923916710343,
+            1.1428432120209249,
+            0.8446635099077185,
+            0.16390534690581282
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp08"
+          ],
+          "expected_skill_ids": [
+            "shttp08"
+          ],
+          "expected_skill_sequence": [
+            "shttp08"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": {
+              "team": "team-a",
+              "timezone": "Asia/Shanghai",
+              "unchanged": 4
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "team": "team-a",
+              "timezone": "Asia/Shanghai",
+              "unchanged": 4
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 395,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "将 patch 作为局部更新提交到 path",
+              "skill_id": "shttp08",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 168,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp08"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 703,
+            "completion_tokens": 126,
+            "total_tokens": 829
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 20.557300000291434,
+          "llm_time_ms": 3686.9612000000416,
+          "end_to_end_time_ms": 3709.4114000001355,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1455.1980999995067,
+              "prompt_tokens": 392,
+              "completion_tokens": 40,
+              "total_tokens": 432,
+              "message_count": 1,
+              "prompt_chars": 851,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2231.763100000535,
+              "prompt_tokens": 311,
+              "completion_tokens": 86,
+              "total_tokens": 397,
+              "message_count": 1,
+              "prompt_chars": 712,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"team\": \"team-a\", \"timezone\": \"Asia/Shanghai\", \"unchanged\": 4}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_patch_json",
+              "plan": [
+                {
+                  "skill_name": "http_patch_json",
+                  "arguments": {
+                    "path": "/settings/team-a",
+                    "patch": {
+                      "timezone": "Asia/Shanghai"
+                    }
+                  },
+                  "reason": "直接使用任务输入中的 path 和 patch 参数调用 PATCH 技能，完成局部更新。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp08"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "将 patch 作为局部更新提交到 path",
+                  "skill_id": "shttp08",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"team\": \"team-a\", \"timezone\": \"Asia/Shanghai\", \"unchanged\": 4}",
+              "index": 1,
+              "skill_id": "shttp08",
+              "skill_name": "http_patch_json",
+              "arguments": {
+                "path": "/settings/team-a",
+                "patch": {
+                  "timezone": "Asia/Shanghai"
+                }
+              },
+              "success": true,
+              "duration_ms": 20.557300000291434
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "PATCH",
+                  "path": "/settings/team-a",
+                  "headers": {},
+                  "json": {
+                    "timezone": "Asia/Shanghai"
+                  },
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc06",
+          "instruction": "访问任务输入 path 恰好一次；如果状态不是 200，保持错误正文原样返回，不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.388723413639225,
+            7.79058380403995,
+            6.553253394047303,
+            5.042977175013103,
+            2.1074709374802443,
+            1.7768799858438185,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@9": 1.0,
+            "ndcg@9": 0.3333333333333333
+          },
+          "selected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 0.0,
+          "sequence_correct": false,
+          "execution_success": true,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {},
+          "verifier_expected": {
+            "requests": [
+              {
+                "headers": {},
+                "json": null,
+                "method": "GET",
+                "path": "/status/dependency",
+                "response_status": 503
+              }
+            ],
+            "route_call_counts": {
+              "GET /status/dependency": 1
+            }
+          },
+          "verifier_actual": {
+            "requests": [
+              {
+                "method": "HEAD",
+                "path": "/status/dependency",
+                "headers": {},
+                "json": null,
+                "response_status": 404
+              }
+            ],
+            "route_call_counts": {
+              "GET /status/dependency": 0
+            }
+          },
+          "failure_reason": "http_state_mismatch",
+          "skill_calls": 1,
+          "redundant_calls": 1,
+          "skill_context_tokens": 373,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "full",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [],
+          "escalation_reasons": [],
+          "disclosure_signals": {},
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "访问任务输入 path 恰好一次",
+              "skill_id": "shttp03",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 146,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp02",
+            "shttp01",
+            "shttp09",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp03"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 680,
+            "completion_tokens": 92,
+            "total_tokens": 772
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.9166000001860084,
+          "llm_time_ms": 3802.9556999990746,
+          "end_to_end_time_ms": 3807.0148000006157,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1818.2382999993933,
+              "prompt_tokens": 387,
+              "completion_tokens": 38,
+              "total_tokens": 425,
+              "message_count": 1,
+              "prompt_chars": 818,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1984.7173999996812,
+              "prompt_tokens": 293,
+              "completion_tokens": 54,
+              "total_tokens": 347,
+              "message_count": 1,
+              "prompt_chars": 641,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "404",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_head_status",
+              "plan": [
+                {
+                  "skill_name": "http_head_status",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "检查任务输入中的路径状态码，仅发起一次 HEAD 请求"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp03"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "访问任务输入 path 恰好一次",
+                  "skill_id": "shttp03",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {},
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "404",
+              "index": 1,
+              "skill_id": "shttp03",
+              "skill_name": "http_head_status",
+              "arguments": {
+                "path": "/status/dependency"
+              },
+              "success": true,
+              "duration_ms": 1.9166000001860084
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /status/dependency": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/status/dependency",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 404
+                }
+              ],
+              "route_call_counts": {
+                "GET /status/dependency": 0
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 6,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.7238095238095239,
+          "ndcg@1": 0.6666666666666666,
+          "ndcg@3": 0.6666666666666666,
+          "ndcg@5": 0.7311421345390903,
+          "ndcg@9": 0.7866976900946457,
+          "recall@1": 0.5833333333333334,
+          "recall@3": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "recall@9": 1.0
+        },
+        "agent": {
+          "skill_selection_f1": 0.8333333333333334,
+          "sequence_accuracy": 0.8333333333333334,
+          "task_success_rate": 0.8333333333333334
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 483.1666666666667,
+          "total_tokens": 5263,
+          "avg_total_tokens_per_task": 877.1666666666666,
+          "avg_skill_calls": 1.1666666666666667,
+          "avg_planner_calls": 2.0,
+          "avg_argument_repairs": 0.0,
+          "avg_llm_time_ms": 3500.037733333253,
+          "llm_time_p50_ms": 3410.7053000007,
+          "llm_time_p95_ms": 3802.9556999990746,
+          "avg_end_to_end_time_ms": 3507.31181666697,
+          "end_to_end_time_p50_ms": 3414.9889999998777,
+          "end_to_end_time_p95_ms": 3807.0148000006157
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "full": 6
+          },
+          "escalation_reason_counts": {}
+        }
+      }
+    },
+    "adaptive_signals": {
+      "per_task": [
+        {
+          "task_id": "thttpc01",
+          "instruction": "获取任务输入 path 对应的运单 API JSON，并完整返回。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            8.074413798453154,
+            5.756387622665296,
+            5.345940969992859,
+            2.9364536120028015,
+            2.2709089971820973,
+            2.010888964560666,
+            1.2226832999547161,
+            1.0732027530391572,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp07",
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp01",
+            "shttp05",
+            "shttp02",
+            "shttp06",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.2,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 1.0,
+            "ndcg@5": 0.38685280723454163,
+            "recall@9": 1.0,
+            "ndcg@9": 0.38685280723454163
+          },
+          "selected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "carrier": "北辰",
+              "id": "SHP-88",
+              "state": "in_transit"
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 244,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "path"
+            ],
+            "task_input_keys": [
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "获取运单 API JSON",
+              "skill_id": "shttp01",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 17,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp07",
+            "shttp09",
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [
+            "shttp01"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 581,
+            "completion_tokens": 80,
+            "total_tokens": 661
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 20.72390000012092,
+          "llm_time_ms": 3375.5870000004506,
+          "end_to_end_time_ms": 3398.3166999996683,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1474.1865000005419,
+              "prompt_tokens": 379,
+              "completion_tokens": 27,
+              "total_tokens": 406,
+              "message_count": 1,
+              "prompt_chars": 805,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1901.4004999999088,
+              "prompt_tokens": 202,
+              "completion_tokens": 53,
+              "total_tokens": 255,
+              "message_count": 1,
+              "prompt_chars": 385,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_get_json",
+              "plan": [
+                {
+                  "skill_name": "http_get_json",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "直接获取指定运单路径的JSON数据"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp01"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "获取运单 API JSON",
+                  "skill_id": "shttp01",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "path"
+                ],
+                "task_input_keys": [
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"carrier\": \"北辰\", \"id\": \"SHP-88\", \"state\": \"in_transit\"}",
+              "index": 1,
+              "skill_id": "shttp01",
+              "skill_name": "http_get_json",
+              "arguments": {
+                "path": "/shipments/SHP-88"
+              },
+              "success": true,
+              "duration_ms": 20.72390000012092
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "GET",
+                  "path": "/shipments/SHP-88",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /shipments/SHP-88": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc02",
+          "instruction": "对任务输入 path 做 HEAD 探测，只返回 HTTP 状态码。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieved_scores": [
+            15.361461488336655,
+            11.733918017000377,
+            3.878338761199535,
+            1.8249222967842706,
+            0.056980648599241714,
+            0.05511620402782641,
+            0.05511620402782641,
+            0.051730867515027215,
+            0.04544975452061435
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp05",
+            "shttp01",
+            "shttp06",
+            "shttp02",
+            "shttp04"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_sequence": [
+            "shttp03"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": 200,
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": null,
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": "200",
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 246,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "brief",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "path"
+            ],
+            "task_input_keys": [
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "对路径 /ready/search 做 HEAD 探测并返回 HTTP 状态码",
+              "skill_id": "shttp03",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 19,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp09",
+            "shttp08",
+            "shttp07",
+            "shttp06",
+            "shttp05",
+            "shttp04"
+          ],
+          "detailed_skill_ids": [
+            "shttp03"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 579,
+            "completion_tokens": 99,
+            "total_tokens": 678
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.6720000003260793,
+          "llm_time_ms": 3196.5657000000647,
+          "end_to_end_time_ms": 3199.9410999997053,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1380.3501000002143,
+              "prompt_tokens": 377,
+              "completion_tokens": 38,
+              "total_tokens": 415,
+              "message_count": 1,
+              "prompt_chars": 802,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1816.2155999998504,
+              "prompt_tokens": 202,
+              "completion_tokens": 61,
+              "total_tokens": 263,
+              "message_count": 1,
+              "prompt_chars": 387,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "200",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_head_status",
+              "plan": [
+                {
+                  "skill_name": "http_head_status",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "对任务输入中的路径执行 HEAD 探测，直接返回 HTTP 状态码。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp03"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "对路径 /ready/search 做 HEAD 探测并返回 HTTP 状态码",
+                  "skill_id": "shttp03",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "brief",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "path"
+                ],
+                "task_input_keys": [
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "200",
+              "index": 1,
+              "skill_id": "shttp03",
+              "skill_name": "http_head_status",
+              "arguments": {
+                "path": "/ready/search"
+              },
+              "success": true,
+              "duration_ms": 1.6720000003260793
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "HEAD /ready/search": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/ready/search",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "HEAD /ready/search": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc03",
+          "instruction": "使用输入 scope 先签发令牌，然后将该输出作为 token 读取输入 path 的受保护账单 JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieved_scores": [
+            16.240161108820434,
+            14.676301225499826,
+            4.368435392799292,
+            4.282768578543244,
+            3.1763338591467103,
+            1.9133039468422537,
+            0.8985712230597263,
+            0.8592443182547349,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp01",
+            "shttp02",
+            "shttp03",
+            "shttp06",
+            "shttp08",
+            "shttp09"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 0.5,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "expected_skill_sequence": [
+            "shttp04",
+            "shttp05"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 2
+          },
+          "verifier_expected": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "response_status": 200
+                },
+                {
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "GET /invoices/INV-9": 1,
+                "POST /oauth/token": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": {
+              "amount": 880,
+              "id": "INV-9",
+              "paid": false
+            },
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 2,
+          "redundant_calls": 0,
+          "skill_context_tokens": 479,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "schema",
+          "requested_disclosure_levels": [
+            "schema"
+          ],
+          "disclosure_reasons": [
+            "multi_skill_dataflow_requires_schema"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 2,
+            "required_parameters": [
+              "path",
+              "scope",
+              "token"
+            ],
+            "task_input_keys": [
+              "path",
+              "scope"
+            ],
+            "missing_required_parameters": [
+              "token"
+            ],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "使用输入 scope 签发令牌",
+              "skill_id": "shttp04",
+              "information_need": "brief",
+              "need_reason": ""
+            },
+            {
+              "requirement": "将签发的令牌作为 Bearer token 读取输入 path 的受保护账单 JSON",
+              "skill_id": "shttp05",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 252,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp05",
+            "shttp04",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp09",
+            "shttp01",
+            "shttp02",
+            "shttp03"
+          ],
+          "detailed_skill_ids": [
+            "shttp04",
+            "shttp05"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 762,
+            "completion_tokens": 186,
+            "total_tokens": 948
+          },
+          "execution_steps": 3,
+          "execution_time_ms": 3.5950000001321314,
+          "llm_time_ms": 3969.725500000095,
+          "end_to_end_time_ms": 3975.125500000104,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1832.7265999996598,
+              "prompt_tokens": 398,
+              "completion_tokens": 76,
+              "total_tokens": 474,
+              "message_count": 1,
+              "prompt_chars": 850,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2136.9989000004352,
+              "prompt_tokens": 364,
+              "completion_tokens": 110,
+              "total_tokens": 474,
+              "message_count": 1,
+              "prompt_chars": 916,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_issue_token -> http_get_bearer_json",
+              "plan": [
+                {
+                  "skill_name": "http_issue_token",
+                  "arguments": {
+                    "scope": "$input.scope"
+                  },
+                  "reason": "使用输入 scope 签发访问令牌"
+                },
+                {
+                  "skill_name": "http_get_bearer_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "token": "$last_output"
+                  },
+                  "reason": "使用上一步签发的令牌读取受保护账单 JSON"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp04",
+                "shttp05"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "使用输入 scope 签发令牌",
+                  "skill_id": "shttp04",
+                  "information_need": "brief",
+                  "need_reason": ""
+                },
+                {
+                  "requirement": "将签发的令牌作为 Bearer token 读取输入 path 的受保护账单 JSON",
+                  "skill_id": "shttp05",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "schema"
+              ],
+              "disclosure_reasons": [
+                "multi_skill_dataflow_requires_schema"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "schema",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 2,
+                "required_parameters": [
+                  "path",
+                  "scope",
+                  "token"
+                ],
+                "task_input_keys": [
+                  "path",
+                  "scope"
+                ],
+                "missing_required_parameters": [
+                  "token"
+                ],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "tok-confirm-invoice",
+              "index": 1,
+              "skill_id": "shttp04",
+              "skill_name": "http_issue_token",
+              "arguments": {
+                "scope": "invoices:read"
+              },
+              "success": true,
+              "duration_ms": 2.073999999993248
+            },
+            {
+              "step": "action",
+              "content": "{\"amount\": 880, \"id\": \"INV-9\", \"paid\": false}",
+              "index": 2,
+              "skill_id": "shttp05",
+              "skill_name": "http_get_bearer_json",
+              "arguments": {
+                "path": "/invoices/INV-9",
+                "token": "tok-confirm-invoice"
+              },
+              "success": true,
+              "duration_ms": 1.5210000001388835
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /oauth/token": 0,
+                "GET /invoices/INV-9": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/oauth/token",
+                  "headers": {},
+                  "json": {
+                    "scope": "invoices:read"
+                  },
+                  "response_status": 200
+                },
+                {
+                  "method": "GET",
+                  "path": "/invoices/INV-9",
+                  "headers": {
+                    "authorization": "Bearer tok-confirm-invoice"
+                  },
+                  "json": null,
+                  "response_status": 200
+                }
+              ],
+              "route_call_counts": {
+                "POST /oauth/token": 1,
+                "GET /invoices/INV-9": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc04",
+          "instruction": "向 path 提交 payload。仅当返回 201 时认定提交成功；否则原样返回响应正文，绝不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.154052368889428,
+            7.15619042608899,
+            4.455237825262915,
+            4.194361706819612,
+            2.2107213796823437,
+            0.6423940303009293,
+            0.5599459232429405,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp06",
+            "shttp02",
+            "shttp09",
+            "shttp03",
+            "shttp04",
+            "shttp01",
+            "shttp07",
+            "shttp05",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_ids": [
+            "shttp06"
+          ],
+          "expected_skill_sequence": [
+            "shttp06"
+          ],
+          "skill_selection_f1": 1.0,
+          "sequence_correct": true,
+          "execution_success": true,
+          "task_success": true,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {
+            "request_count": 1
+          },
+          "verifier_expected": {
+            "output": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+            "http": {
+              "requests": [
+                {
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "method": "POST",
+                  "path": "/imports",
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "verifier_actual": {
+            "output": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/imports",
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "failure_reason": null,
+          "skill_calls": 1,
+          "redundant_calls": 0,
+          "skill_context_tokens": 616,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "observed_non_schema_behavior_constraint"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "idempotency_key",
+              "path",
+              "payload"
+            ],
+            "task_input_keys": [
+              "idempotency_key",
+              "path",
+              "payload"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": [
+              "仅当",
+              "原样",
+              "不自动"
+            ]
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "向 path 提交 payload，并检查返回状态码是否为 201",
+              "skill_id": "shttp06",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 389,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp08",
+            "shttp02",
+            "shttp03",
+            "shttp01",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp06"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 906,
+            "completion_tokens": 134,
+            "total_tokens": 1040
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 24.127800000314892,
+          "llm_time_ms": 3601.2590999998793,
+          "end_to_end_time_ms": 3627.112699999998,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1465.6085999995412,
+              "prompt_tokens": 413,
+              "completion_tokens": 45,
+              "total_tokens": 458,
+              "message_count": 1,
+              "prompt_chars": 888,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2135.650500000338,
+              "prompt_tokens": 493,
+              "completion_tokens": 89,
+              "total_tokens": 582,
+              "message_count": 1,
+              "prompt_chars": 1182,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_post_json",
+              "plan": [
+                {
+                  "skill_name": "http_post_json",
+                  "arguments": {
+                    "path": "$input.path",
+                    "payload": "$input.payload",
+                    "idempotency_key": "$input.idempotency_key",
+                    "accepted_statuses": [
+                      201
+                    ],
+                    "on_unaccepted": "return_body"
+                  },
+                  "reason": "向指定路径提交payload，仅接受201为成功，否则原样返回响应正文"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp06"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "向 path 提交 payload，并检查返回状态码是否为 201",
+                  "skill_id": "shttp06",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "observed_non_schema_behavior_constraint"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "idempotency_key",
+                  "path",
+                  "payload"
+                ],
+                "task_input_keys": [
+                  "idempotency_key",
+                  "path",
+                  "payload"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": [
+                  "仅当",
+                  "原样",
+                  "不自动"
+                ]
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "{\"error\": \"accepted_later\", \"request_id\": \"q-confirm\"}",
+              "index": 1,
+              "skill_id": "shttp06",
+              "skill_name": "http_post_json",
+              "arguments": {
+                "path": "/imports",
+                "payload": {
+                  "source": "ledger"
+                },
+                "idempotency_key": "import-confirm-9",
+                "accepted_statuses": [
+                  201
+                ],
+                "on_unaccepted": "return_body"
+              },
+              "success": true,
+              "duration_ms": 24.127800000314892
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "POST /imports": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "POST",
+                  "path": "/imports",
+                  "headers": {
+                    "idempotency-key": "import-confirm-9"
+                  },
+                  "json": {
+                    "source": "ledger"
+                  },
+                  "response_status": 202
+                }
+              ],
+              "route_call_counts": {
+                "POST /imports": 1
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc05",
+          "instruction": "把任务输入 patch 作为局部更新提交到 path，并返回 API JSON。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieved_scores": [
+            17.142922793419118,
+            7.188742029706228,
+            7.154508191605167,
+            6.6443716039995175,
+            2.7437738409216994,
+            1.6809923916710343,
+            1.1428432120209249,
+            0.8446635099077185,
+            0.16390534690581282
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp03",
+            "shttp09",
+            "shttp07",
+            "shttp04",
+            "shttp01",
+            "shttp05",
+            "shttp02"
+          ],
+          "retrieval_metrics": {
+            "mrr": 1.0,
+            "recall@1": 1.0,
+            "ndcg@1": 1.0,
+            "recall@3": 1.0,
+            "ndcg@3": 1.0,
+            "recall@5": 1.0,
+            "ndcg@5": 1.0,
+            "recall@9": 1.0,
+            "ndcg@9": 1.0
+          },
+          "selected_skill_ids": [],
+          "expected_skill_ids": [
+            "shttp08"
+          ],
+          "expected_skill_sequence": [
+            "shttp08"
+          ],
+          "skill_selection_f1": 0.0,
+          "sequence_correct": false,
+          "execution_success": false,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {},
+          "verifier_expected": {
+            "requests": [
+              {
+                "headers": {},
+                "json": {
+                  "timezone": "Asia/Shanghai"
+                },
+                "method": "PATCH",
+                "path": "/settings/team-a",
+                "response_status": 200
+              }
+            ],
+            "route_call_counts": {
+              "PATCH /settings/team-a": 1
+            }
+          },
+          "verifier_actual": {
+            "requests": [],
+            "route_call_counts": {
+              "PATCH /settings/team-a": 0
+            }
+          },
+          "failure_reason": "schema_validation_failed",
+          "skill_calls": 0,
+          "redundant_calls": 0,
+          "skill_context_tokens": 365,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "schema",
+          "requested_disclosure_levels": [
+            "brief"
+          ],
+          "disclosure_reasons": [
+            "named_inputs_cover_single_skill_required_parameters"
+          ],
+          "escalation_reasons": [
+            "hidden_schema_validation_failed"
+          ],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "patch",
+              "path"
+            ],
+            "task_input_keys": [
+              "patch",
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": []
+          },
+          "planner_calls": 3,
+          "repair_attempts": 1,
+          "validation_errors": [
+            "步骤 1 (http_patch_json): arguments.patch 应为 object，实际为 string"
+          ],
+          "selection_evidence": [
+            {
+              "requirement": "将 patch 作为局部更新提交到 path",
+              "skill_id": "shttp08",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 138,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp08",
+            "shttp06",
+            "shttp09",
+            "shttp07",
+            "shttp03",
+            "shttp01",
+            "shttp02",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp08"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 1034,
+            "completion_tokens": 190,
+            "total_tokens": 1224
+          },
+          "execution_steps": 1,
+          "execution_time_ms": 0.0,
+          "llm_time_ms": 5112.3234999995475,
+          "end_to_end_time_ms": 5114.130700000715,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1030.464800000118,
+              "prompt_tokens": 392,
+              "completion_tokens": 40,
+              "total_tokens": 432,
+              "message_count": 1,
+              "prompt_chars": 851,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2357.8121999998984,
+              "prompt_tokens": 220,
+              "completion_tokens": 75,
+              "total_tokens": 295,
+              "message_count": 1,
+              "prompt_chars": 441,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_repair",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 1724.046499999531,
+              "prompt_tokens": 422,
+              "completion_tokens": 75,
+              "total_tokens": 497,
+              "message_count": 1,
+              "prompt_chars": 1022,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "未生成有效计划",
+              "plan": [],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp08"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "将 patch 作为局部更新提交到 path",
+                  "skill_id": "shttp08",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "brief"
+              ],
+              "disclosure_reasons": [
+                "named_inputs_cover_single_skill_required_parameters"
+              ],
+              "escalation_reasons": [
+                "hidden_schema_validation_failed"
+              ],
+              "resolved_disclosure_level": "schema",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "patch",
+                  "path"
+                ],
+                "task_input_keys": [
+                  "patch",
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": []
+              },
+              "validation_errors": [
+                "步骤 1 (http_patch_json): arguments.patch 应为 object，实际为 string"
+              ],
+              "repair_attempts": 1
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "PATCH /settings/team-a": 0
+              }
+            }
+          },
+          "attempts": 1
+        },
+        {
+          "task_id": "thttpc06",
+          "instruction": "访问任务输入 path 恰好一次；如果状态不是 200，保持错误正文原样返回，不自动重试。",
+          "ground_truth": null,
+          "retrieved_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieved_scores": [
+            8.388723413639225,
+            7.79058380403995,
+            6.553253394047303,
+            5.042977175013103,
+            2.1074709374802443,
+            1.7768799858438185,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "raw_bm25_skill_ids": [
+            "shttp03",
+            "shttp09",
+            "shttp02",
+            "shttp04",
+            "shttp05",
+            "shttp07",
+            "shttp01",
+            "shttp06",
+            "shttp08"
+          ],
+          "retrieval_metrics": {
+            "mrr": 0.14285714285714285,
+            "recall@1": 0.0,
+            "ndcg@1": 0.0,
+            "recall@3": 0.0,
+            "ndcg@3": 0.0,
+            "recall@5": 0.0,
+            "ndcg@5": 0.0,
+            "recall@9": 1.0,
+            "ndcg@9": 0.3333333333333333
+          },
+          "selected_skill_ids": [
+            "shttp03"
+          ],
+          "expected_skill_ids": [
+            "shttp01"
+          ],
+          "expected_skill_sequence": [
+            "shttp01"
+          ],
+          "skill_selection_f1": 0.0,
+          "sequence_correct": false,
+          "execution_success": true,
+          "task_success": false,
+          "scored": true,
+          "verifier_type": "http_state",
+          "verifier_details": {},
+          "verifier_expected": {
+            "requests": [
+              {
+                "headers": {},
+                "json": null,
+                "method": "GET",
+                "path": "/status/dependency",
+                "response_status": 503
+              }
+            ],
+            "route_call_counts": {
+              "GET /status/dependency": 1
+            }
+          },
+          "verifier_actual": {
+            "requests": [
+              {
+                "method": "HEAD",
+                "path": "/status/dependency",
+                "headers": {},
+                "json": null,
+                "response_status": 404
+              }
+            ],
+            "route_call_counts": {
+              "GET /status/dependency": 0
+            }
+          },
+          "failure_reason": "http_state_mismatch",
+          "skill_calls": 1,
+          "redundant_calls": 1,
+          "skill_context_tokens": 373,
+          "context_budget_tokens": 2600,
+          "planner_mode": "two_stage",
+          "planner_disclosure_level": "adaptive_signals",
+          "resolved_disclosure_level": "full",
+          "requested_disclosure_levels": [
+            "full"
+          ],
+          "disclosure_reasons": [
+            "observed_non_schema_behavior_constraint"
+          ],
+          "escalation_reasons": [],
+          "disclosure_signals": {
+            "policy_id": "signal-disclosure-dev-v01",
+            "selected_skill_count": 1,
+            "required_parameters": [
+              "path"
+            ],
+            "task_input_keys": [
+              "path"
+            ],
+            "missing_required_parameters": [],
+            "matched_behavior_markers": [
+              "原样",
+              "不自动"
+            ]
+          },
+          "planner_calls": 2,
+          "repair_attempts": 0,
+          "validation_errors": [],
+          "selection_evidence": [
+            {
+              "requirement": "访问任务输入 path 恰好一次",
+              "skill_id": "shttp03",
+              "information_need": "brief",
+              "need_reason": ""
+            }
+          ],
+          "selection_context_tokens": 227,
+          "planning_context_tokens": 146,
+          "candidate_count": 9,
+          "gold_augmented_skill_ids": [],
+          "target_gold_rank": null,
+          "exposed_skill_ids": [
+            "shttp03",
+            "shttp02",
+            "shttp01",
+            "shttp09",
+            "shttp07",
+            "shttp06",
+            "shttp08",
+            "shttp04",
+            "shttp05"
+          ],
+          "detailed_skill_ids": [
+            "shttp03"
+          ],
+          "truncated_skill_ids": [],
+          "added_skill_ids": [],
+          "graph_issues": [],
+          "token_usage": {
+            "prompt_tokens": 680,
+            "completion_tokens": 99,
+            "total_tokens": 779
+          },
+          "execution_steps": 2,
+          "execution_time_ms": 1.9333000000187894,
+          "llm_time_ms": 24851.14109999904,
+          "end_to_end_time_ms": 24855.23639999974,
+          "llm_calls": [
+            {
+              "phase": "skill_selection",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 22772.344399999383,
+              "prompt_tokens": 387,
+              "completion_tokens": 38,
+              "total_tokens": 425,
+              "message_count": 1,
+              "prompt_chars": 818,
+              "success": true,
+              "error_type": null
+            },
+            {
+              "phase": "argument_planning",
+              "provider": "deepseek",
+              "model": "deepseek-v4-pro",
+              "duration_ms": 2078.796699999657,
+              "prompt_tokens": 293,
+              "completion_tokens": 61,
+              "total_tokens": 354,
+              "message_count": 1,
+              "prompt_chars": 641,
+              "success": true,
+              "error_type": null
+            }
+          ],
+          "answer": "404",
+          "trajectory": [
+            {
+              "step": "plan",
+              "content": "http_head_status",
+              "plan": [
+                {
+                  "skill_name": "http_head_status",
+                  "arguments": {
+                    "path": "$input.path"
+                  },
+                  "reason": "检查任务输入路径的状态码，仅发起一次 HEAD 请求，不下载正文，符合要求。"
+                }
+              ],
+              "planner_mode": "two_stage",
+              "selected_for_schema": [
+                "shttp03"
+              ],
+              "selection_evidence": [
+                {
+                  "requirement": "访问任务输入 path 恰好一次",
+                  "skill_id": "shttp03",
+                  "information_need": "brief",
+                  "need_reason": ""
+                }
+              ],
+              "requested_disclosure_levels": [
+                "full"
+              ],
+              "disclosure_reasons": [
+                "observed_non_schema_behavior_constraint"
+              ],
+              "escalation_reasons": [],
+              "resolved_disclosure_level": "full",
+              "disclosure_signals": {
+                "policy_id": "signal-disclosure-dev-v01",
+                "selected_skill_count": 1,
+                "required_parameters": [
+                  "path"
+                ],
+                "task_input_keys": [
+                  "path"
+                ],
+                "missing_required_parameters": [],
+                "matched_behavior_markers": [
+                  "原样",
+                  "不自动"
+                ]
+              },
+              "validation_errors": [],
+              "repair_attempts": 0
+            },
+            {
+              "step": "action",
+              "content": "404",
+              "index": 1,
+              "skill_id": "shttp03",
+              "skill_name": "http_head_status",
+              "arguments": {
+                "path": "/status/dependency"
+              },
+              "success": true,
+              "duration_ms": 1.9333000000187894
+            }
+          ],
+          "initial_state": {
+            "files": {},
+            "http": {
+              "requests": [],
+              "route_call_counts": {
+                "GET /status/dependency": 0
+              }
+            }
+          },
+          "final_state": {
+            "files": {},
+            "http": {
+              "requests": [
+                {
+                  "method": "HEAD",
+                  "path": "/status/dependency",
+                  "headers": {},
+                  "json": null,
+                  "response_status": 404
+                }
+              ],
+              "route_call_counts": {
+                "GET /status/dependency": 0
+              }
+            }
+          },
+          "attempts": 1
+        }
+      ],
+      "api_errors": [],
+      "summary": {
+        "completed_tasks": 6,
+        "api_failures": 0,
+        "retrieval": {
+          "mrr": 0.7238095238095239,
+          "ndcg@1": 0.6666666666666666,
+          "ndcg@3": 0.6666666666666666,
+          "ndcg@5": 0.7311421345390903,
+          "ndcg@9": 0.7866976900946457,
+          "recall@1": 0.5833333333333334,
+          "recall@3": 0.6666666666666666,
+          "recall@5": 0.8333333333333334,
+          "recall@9": 1.0
+        },
+        "agent": {
+          "skill_selection_f1": 0.6666666666666666,
+          "sequence_accuracy": 0.6666666666666666,
+          "task_success_rate": 0.6666666666666666
+        },
+        "efficiency": {
+          "avg_skill_context_tokens": 387.1666666666667,
+          "total_tokens": 5330,
+          "avg_total_tokens_per_task": 888.3333333333334,
+          "avg_skill_calls": 1.0,
+          "avg_planner_calls": 2.1666666666666665,
+          "avg_argument_repairs": 0.16666666666666666,
+          "avg_llm_time_ms": 7351.100316666513,
+          "llm_time_p50_ms": 3601.2590999998793,
+          "llm_time_p95_ms": 24851.14109999904,
+          "avg_end_to_end_time_ms": 7361.643849999989,
+          "end_to_end_time_p50_ms": 3627.112699999998,
+          "end_to_end_time_p95_ms": 24855.23639999974
+        },
+        "disclosure": {
+          "resolved_level_counts": {
+            "brief": 2,
+            "schema": 2,
+            "full": 2
+          },
+          "escalation_reason_counts": {
+            "hidden_schema_validation_failed": 1
+          }
+        }
+      }
+    }
+  },
+  "transfer_assessment": {
+    "classification": "partial_transfer",
+    "observed": {
+      "adaptive_success_count": 4,
+      "always_full_success_count": 5,
+      "adaptive_api_errors": 0,
+      "adaptive_disclosure_levels": {
+        "brief": 2,
+        "schema": 2,
+        "full": 2
+      }
+    },
+    "cross_domain_checks": {
+      "adaptive_success_count": false,
+      "success_drop_vs_always_full": true,
+      "api_errors": true,
+      "observed_levels": true
+    },
+    "partial_transfer_checks": {
+      "adaptive_success_count": true,
+      "api_errors": true
+    }
+  }
+}
